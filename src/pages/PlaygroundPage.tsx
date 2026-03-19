@@ -34,18 +34,18 @@ interface SpellDef {
 }
 
 const BATTLE_SPELLS: SpellDef[] = [
-  { name: 'Execute',    icon: '/images/spells/Execute.png',    cd: 90,  effect: 'Deal True Damage to a low-HP nearby enemy hero' },
-  { name: 'Retribution',icon: '/images/spells/Retribution.png',cd: 35, effect: 'Deal True Damage to a nearby creep/monster; reduces jungle damage taken' },
-  { name: 'Inspire',    icon: '/images/spells/Inspire.png',    cd: 75,  effect: '+55% Attack Speed & ignore 8 Physical Defense on basic attacks for 5s' },
-  { name: 'Sprint',     icon: '/images/spells/Sprint.png',     cd: 100, effect: '+30% Move Speed for 5s (decreasing over time)' },
-  { name: 'Revitalize', icon: '/images/spells/Revitalize.png', cd: 75,  effect: 'Create a zone healing yourself & nearby allies for 3s' },
-  { name: 'Aegis',      icon: '/images/spells/Aegis.png',      cd: 75,  effect: 'Grant yourself & a nearby ally a large shield for 3s' },
-  { name: 'Petrify',    icon: '/images/spells/Petrify.png',    cd: 75,  effect: 'Petrify nearby enemies for 0.8s (AOE crowd control)' },
-  { name: 'Purify',     icon: '/images/spells/Purify.png',     cd: 90,  effect: 'Remove all debuffs & become CC-immune for 1.2s' },
-  { name: 'Flameshot',  icon: '/images/spells/Flameshot.png',  cd: 50,  effect: 'Fire a flaming shot dealing Magic Damage & knocking enemies back' },
-  { name: 'Flicker',    icon: '/images/spells/Flicker.png',    cd: 120, effect: 'Instantly blink a short distance in any direction' },
-  { name: 'Arrival',    icon: '/images/spells/Arrival.png',    cd: 75,  effect: 'Channel 3s then teleport to a friendly structure or minion' },
-  { name: 'Vengeance',  icon: '/images/spells/Vengeance.png',  cd: 75,  effect: 'Reflect 35% of damage received as Magic Damage for 3s' },
+  { name: 'Execute',    icon: '/images/spells/Execute.webp',    cd: 90,  effect: 'Deal True Damage to a low-HP nearby enemy hero' },
+  { name: 'Retribution',icon: '/images/spells/Retribution.webp',cd: 35, effect: 'Deal True Damage to a nearby creep/monster; reduces jungle damage taken' },
+  { name: 'Inspire',    icon: '/images/spells/Inspire.webp',    cd: 75,  effect: '+55% Attack Speed & ignore 8 Physical Defense on basic attacks for 5s' },
+  { name: 'Sprint',     icon: '/images/spells/Sprint.webp',     cd: 100, effect: '+30% Move Speed for 5s (decreasing over time)' },
+  { name: 'Revitalize', icon: '/images/spells/Revitalize.webp', cd: 75,  effect: 'Create a zone healing yourself & nearby allies for 3s' },
+  { name: 'Aegis',      icon: '/images/spells/Aegis.webp',      cd: 75,  effect: 'Grant yourself & a nearby ally a large shield for 3s' },
+  { name: 'Petrify',    icon: '/images/spells/Petrify.webp',    cd: 75,  effect: 'Petrify nearby enemies for 0.8s (AOE crowd control)' },
+  { name: 'Purify',     icon: '/images/spells/Purify.webp',     cd: 90,  effect: 'Remove all debuffs & become CC-immune for 1.2s' },
+  { name: 'Flameshot',  icon: '/images/spells/Flameshot.webp',  cd: 50,  effect: 'Fire a flaming shot dealing Magic Damage & knocking enemies back' },
+  { name: 'Flicker',    icon: '/images/spells/Flicker.webp',    cd: 120, effect: 'Instantly blink a short distance in any direction' },
+  { name: 'Arrival',    icon: '/images/spells/Arrival.webp',    cd: 75,  effect: 'Channel 3s then teleport to a friendly structure or minion' },
+  { name: 'Vengeance',  icon: '/images/spells/Vengeance.webp',  cd: 75,  effect: 'Reflect 35% of damage received as Magic Damage for 3s' },
 ];
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────

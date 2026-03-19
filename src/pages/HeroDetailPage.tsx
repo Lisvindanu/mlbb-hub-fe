@@ -469,7 +469,7 @@ export function HeroDetailPage() {
                               <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">Battle Spell</p>
                               <div className="flex items-center gap-2 px-3 py-1.5 bg-dark-200 rounded-lg border border-white/10">
                                 <img
-                                  src={`/images/spells/${build.battleSpell.replace(/ /g, '_')}.png`}
+                                  src={`/images/spells/${build.battleSpell.replace(/ /g, '_')}.webp`}
                                   alt={build.battleSpell}
                                   className="w-7 h-7 rounded object-contain"
                                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
