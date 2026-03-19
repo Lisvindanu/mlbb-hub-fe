@@ -454,7 +454,6 @@ function OfficialMetaTierList({ tierConfig, tierOrder }: { tierConfig: typeof TI
       .catch(() => setIsLoading(false));
   }, []);
 
-  const currentRank = RANK_OPTIONS.find(r => r.key === selectedRank)!;
   const heroes = metaData?.ranks[selectedRank]?.heroes || [];
 
   return (

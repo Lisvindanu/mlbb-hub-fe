@@ -31,6 +31,7 @@ interface Tournament {
   id: number; name: string; description: string;
   team_count: number; bracket_type: string; status: string;
   created_by_name: string; created_at: string;
+  creator_id?: number | null;
   teams: Team[]; matches: Match[];
 }
 
@@ -84,7 +85,7 @@ function MatchCard({
 }: {
   match: Match; teams: Team[]; isCreator: boolean; token: string; tournamentId: string; onUpdated: () => void;
 }) {
-  const [scores, setScores] = useState({ s1: match.score1 || 0, s2: match.score2 || 0 });
+  const [scores] = useState({ s1: match.score1 || 0, s2: match.score2 || 0 });
   const [err, setErr] = useState('');
 
   const t1 = teams.find(t => t.id === match.team1_id);
@@ -286,8 +287,6 @@ export function TournamentDetailPage() {
   const [joinName, setJoinName] = useState('');
   const [copied, setCopied] = useState(false);
   const [startErr, setStartErr] = useState('');
-  const [score1, setScore1] = useState(0);
-  const [score2, setScore2] = useState(0);
 
   // Creator detection: compare user id (string) with tournament creator_id (number)
   const isCreator = !!currentUser && !!t?.creator_id && String(currentUser.id) === String(t.creator_id);

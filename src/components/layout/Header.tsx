@@ -1,5 +1,5 @@
 import { Link, useLocation } from '@tanstack/react-router';
-import { Menu, X, ChevronDown, LogOut, LogIn, LayoutDashboard, BarChart3, Shield, Trophy, UserPlus, Home, Users, Layers, Sparkles, Zap, CreditCard, Swords, Gem, Target, Map, Music2, Combine } from 'lucide-react';
+import { Menu, X, ChevronDown, LogOut, LogIn, LayoutDashboard, BarChart3, Shield, Trophy, UserPlus, Home, Users, Layers, Sparkles, Zap, CreditCard, Swords, Gem, Target, Map, Combine } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useUser } from '../../hooks/useUser';

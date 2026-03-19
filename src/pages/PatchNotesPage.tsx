@@ -11,7 +11,6 @@ import {
   Zap,
   X,
   Shield,
-  BarChart2,
   Wrench,
 } from 'lucide-react';
 

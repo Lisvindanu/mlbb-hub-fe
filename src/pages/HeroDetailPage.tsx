@@ -1,6 +1,6 @@
 import { useParams, Link } from '@tanstack/react-router';
-import { ArrowLeft, Shield, X, ChevronLeft, ChevronRight, Users, Crosshair, TrendingUp, TrendingDown, Minus, ArrowRight } from 'lucide-react';
-import { useState, useMemo, useEffect } from 'react';
+import { ArrowLeft, Shield, X, ChevronLeft, ChevronRight, Users, Crosshair, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useHeroById } from '../hooks/useHeroes';
 import { Loading } from '../components/ui/Loading';

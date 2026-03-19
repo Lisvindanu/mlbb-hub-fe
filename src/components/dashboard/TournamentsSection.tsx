@@ -88,7 +88,7 @@ export function TournamentsSection() {
     <div className="text-center py-12">
       <Trophy className="w-10 h-10 mx-auto mb-3 text-gray-700" />
       <p className="text-gray-500 text-sm mb-4">Kamu belum mengikuti atau membuat turnamen</p>
-      <Link to="/tournament/" className="inline-flex items-center gap-2 px-4 py-2 bg-primary-500/20 hover:bg-primary-500/30 text-primary-400 rounded-xl text-sm font-medium transition-colors border border-primary-500/30">
+      <Link to="/tournament" className="inline-flex items-center gap-2 px-4 py-2 bg-primary-500/20 hover:bg-primary-500/30 text-primary-400 rounded-xl text-sm font-medium transition-colors border border-primary-500/30">
         <Plus className="w-4 h-4" /> Lihat Turnamen
       </Link>
     </div>

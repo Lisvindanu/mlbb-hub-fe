@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import { Sword, Wand2 } from 'lucide-react';
 import type { Hero } from '../../types/hero';
-import { getTierColor } from '../../lib/utils';
 
 const SPECIALTY_COLOR: Record<string, string> = {
   'Finisher':     'text-red-400 border-red-500/40 bg-red-500/10',

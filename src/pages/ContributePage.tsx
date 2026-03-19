@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Upload, CheckCircle, AlertCircle, Info, Plus, X, Search, Shield, Sword, Zap, Wand2, Target, HeartPulse, Swords, Users, TrendingUp, Sprout, Map, Send, LogIn } from 'lucide-react';
+import { Upload, CheckCircle, AlertCircle, Info, Plus, X, Search, Shield, Sword, Zap, Wand2, Target, HeartPulse, Swords, TrendingUp, Sprout, Map, Send, LogIn } from 'lucide-react';
 import { useHeroes } from '../hooks/useHeroes';
 import { useAuth } from '../contexts/AuthContext';
 import { useUser } from '../hooks/useUser';

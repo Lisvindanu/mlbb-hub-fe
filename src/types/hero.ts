@@ -99,6 +99,7 @@ export interface Hero {
   suppressedHeroes: Record<string, HeroRelation>;
   stats: HeroStats;
   world: HeroWorld;
+  speciality?: string[];
 }
 
 export interface ApiResponse {
