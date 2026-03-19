@@ -129,86 +129,136 @@ function CopyButton({ text, size = 'sm' }: { text: string; size?: 'sm' | 'xs' })
   );
 }
 
-// ─── Winner confirmation overlay ──────────────────────────────────────────────
-interface WinnerConfirmProps {
-  teamName: string;
-  score1: number;
-  score2: number;
+// ─── Winner modal (global centered dialog) ────────────────────────────────────
+interface WinnerModalProps {
+  match: Match;
+  teamId: number;
   isTeam1: boolean;
-  onChangeScore: (s1: number, s2: number) => void;
-  onConfirm: () => void;
-  onCancel: () => void;
+  teams: Team[];
+  tournamentId: string;
+  token: string;
+  onSuccess: () => void;
+  onClose: () => void;
 }
-function WinnerConfirm({ teamName, score1, score2, isTeam1, onChangeScore, onConfirm, onCancel }: WinnerConfirmProps) {
+function WinnerModal({ match, teamId, isTeam1, teams, tournamentId, token, onSuccess, onClose }: WinnerModalProps) {
+  const [scores, setScores] = useState({ s1: match.score1 || 0, s2: match.score2 || 0 });
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState('');
+
+  const winnerTeam = teams.find(t => t.id === teamId);
+  const t1 = teams.find(t => t.id === match.team1_id);
+  const t2 = teams.find(t => t.id === match.team2_id);
+
+  async function confirm() {
+    setLoading(true);
+    setErr('');
+    try {
+      await setWinner(tournamentId, match.id, teamId, token, scores.s1, scores.s2);
+      onSuccess();
+      onClose();
+    } catch (e: unknown) {
+      setErr(e instanceof Error ? e.message : 'Error');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      className="absolute inset-0 z-20 bg-dark-300/95 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center gap-2 p-2"
-      onClick={e => e.stopPropagation()}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+      onClick={onClose}
     >
-      <p className="text-[10px] text-gray-400 text-center leading-tight">
-        Set pemenang:
-      </p>
-      <p className="text-xs font-bold text-yellow-300 text-center leading-tight truncate w-full px-1 text-center">
-        {teamName}
-      </p>
-      {/* Score inputs */}
-      <div className="flex items-center gap-1">
-        <input
-          type="number"
-          min={0}
-          value={isTeam1 ? score1 : score2}
-          onChange={e => {
-            const v = Math.max(0, Number(e.target.value));
-            isTeam1 ? onChangeScore(v, score2) : onChangeScore(score1, v);
-          }}
-          className="w-10 text-center bg-dark-400 border border-white/15 rounded text-white text-xs py-0.5 focus:outline-none focus:border-primary-500/50"
-          placeholder="0"
-        />
-        <span className="text-gray-600 text-[10px]">vs</span>
-        <input
-          type="number"
-          min={0}
-          value={isTeam1 ? score2 : score1}
-          onChange={e => {
-            const v = Math.max(0, Number(e.target.value));
-            isTeam1 ? onChangeScore(score1, v) : onChangeScore(v, score1);
-          }}
-          className="w-10 text-center bg-dark-400 border border-white/15 rounded text-white text-xs py-0.5 focus:outline-none focus:border-primary-500/50"
-          placeholder="0"
-        />
-      </div>
-      <div className="flex gap-1.5 w-full">
-        <button
-          onClick={onCancel}
-          className="flex-1 py-1 text-[10px] rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all"
-        >
-          Tidak
-        </button>
-        <button
-          onClick={onConfirm}
-          className="flex-1 py-1 text-[10px] rounded-lg bg-green-600 hover:bg-green-500 text-white font-medium transition-all"
-        >
-          Ya
-        </button>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.92, y: 16 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.92, y: 16 }}
+        transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+        className="bg-dark-300 border border-white/10 rounded-2xl p-6 w-full max-w-sm shadow-2xl"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-5">
+          <div className="w-9 h-9 rounded-xl bg-yellow-500/15 border border-yellow-500/25 flex items-center justify-center shrink-0">
+            <Trophy className="w-5 h-5 text-yellow-400" />
+          </div>
+          <div>
+            <p className="text-xs text-gray-500">Set pemenang pertandingan</p>
+            <p className="text-sm font-semibold text-yellow-300 mt-0.5">{winnerTeam?.name ?? '?'}</p>
+          </div>
+        </div>
+
+        {/* Score inputs */}
+        <div className="bg-dark-400/60 rounded-xl p-4 mb-4">
+          <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-3">Skor Akhir</p>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 text-center">
+              <p className="text-[11px] text-gray-400 mb-1.5 truncate">{t1?.name ?? 'Tim 1'}</p>
+              <input
+                type="number"
+                min={0}
+                value={scores.s1}
+                onChange={e => setScores(s => ({ ...s, s1: Math.max(0, Number(e.target.value)) }))}
+                className="w-full text-center bg-dark-500 border border-white/15 rounded-lg text-white text-xl font-bold py-2 focus:outline-none focus:border-primary-500/50 transition-colors"
+              />
+            </div>
+            <span className="text-gray-600 font-bold text-lg">vs</span>
+            <div className="flex-1 text-center">
+              <p className="text-[11px] text-gray-400 mb-1.5 truncate">{t2?.name ?? 'Tim 2'}</p>
+              <input
+                type="number"
+                min={0}
+                value={scores.s2}
+                onChange={e => setScores(s => ({ ...s, s2: Math.max(0, Number(e.target.value)) }))}
+                className="w-full text-center bg-dark-500 border border-white/15 rounded-lg text-white text-xl font-bold py-2 focus:outline-none focus:border-primary-500/50 transition-colors"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Winner highlight */}
+        <div className="flex items-center gap-2 bg-green-500/8 border border-green-500/20 rounded-xl px-4 py-2.5 mb-4">
+          <Trophy className="w-3.5 h-3.5 text-green-400 shrink-0" />
+          <p className="text-sm text-green-300">
+            <span className="text-gray-400 font-normal">Pemenang: </span>
+            <span className="font-semibold">{winnerTeam?.name}</span>
+          </p>
+        </div>
+
+        {err && <p className="text-red-400 text-xs mb-3">{err}</p>}
+
+        {/* Actions */}
+        <div className="flex gap-3">
+          <button
+            onClick={onClose}
+            className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-all"
+          >
+            Batal
+          </button>
+          <button
+            onClick={confirm}
+            disabled={loading}
+            className="flex-1 py-2.5 rounded-xl bg-green-600 hover:bg-green-500 disabled:opacity-60 text-white text-sm font-semibold flex items-center justify-center gap-2 transition-all"
+          >
+            {loading
+              ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              : <><Trophy className="w-3.5 h-3.5" /> Konfirmasi</>}
+          </button>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }
 
 // ─── Match Card ───────────────────────────────────────────────────────────────
 function MatchCard({
-  match, teams, isCreator, token, tournamentId, onUpdated,
+  match, teams, isCreator, onRequestWinner,
 }: {
-  match: Match; teams: Team[]; isCreator: boolean; token: string;
-  tournamentId: string; onUpdated: () => void;
+  match: Match; teams: Team[]; isCreator: boolean;
+  onRequestWinner: (match: Match, teamId: number, isTeam1: boolean) => void;
 }) {
-  const [pendingWinner, setPendingWinner] = useState<{ teamId: number; isTeam1: boolean } | null>(null);
-  const [scores, setScores] = useState({ s1: match.score1 || 0, s2: match.score2 || 0 });
-  const [err, setErr] = useState('');
-
   const t1 = teams.find(t => t.id === match.team1_id);
   const t2 = teams.find(t => t.id === match.team2_id);
   const winner = teams.find(t => t.id === match.winner_id);
@@ -218,23 +268,9 @@ function MatchCard({
   const isLive = !isDone && !!match.team1_id && !!match.team2_id;
   const canAdmin = isLive && isCreator;
 
-  async function confirmWinner() {
-    if (!pendingWinner) return;
-    setErr('');
-    try {
-      await setWinner(tournamentId, match.id, pendingWinner.teamId, token, scores.s1, scores.s2);
-      setPendingWinner(null);
-      onUpdated();
-    } catch (e: unknown) {
-      setErr(e instanceof Error ? e.message : 'Error');
-      setPendingWinner(null);
-    }
-  }
-
   function handleTeamClick(teamId: number | null, isTeam1: boolean) {
     if (!canAdmin || !teamId) return;
-    setPendingWinner({ teamId, isTeam1 });
-    setScores({ s1: match.score1 || 0, s2: match.score2 || 0 });
+    onRequestWinner(match, teamId, isTeam1);
   }
 
   const borderColor = isLive
@@ -307,33 +343,17 @@ function MatchCard({
         )}
       </div>
 
-      {err && <div className="px-2 text-[10px] text-red-400 truncate absolute bottom-0 left-0 right-0">{err}</div>}
-
-      {/* Winner confirm overlay */}
-      <AnimatePresence>
-        {pendingWinner && (
-          <WinnerConfirm
-            teamName={teams.find(t => t.id === pendingWinner.teamId)?.name ?? '?'}
-            score1={scores.s1}
-            score2={scores.s2}
-            isTeam1={pendingWinner.isTeam1}
-            onChangeScore={(s1, s2) => setScores({ s1, s2 })}
-            onConfirm={confirmWinner}
-            onCancel={() => setPendingWinner(null)}
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 }
 
 // ─── Bracket section ──────────────────────────────────────────────────────────
 function BracketSection({
-  label, labelColor, matches, teams, isCreator, token, tournamentId, onUpdated,
+  label, labelColor, matches, teams, isCreator, onRequestWinner,
 }: {
   label: string; labelColor: string; matches: Match[];
-  teams: Team[]; isCreator: boolean; token: string;
-  tournamentId: string; onUpdated: () => void;
+  teams: Team[]; isCreator: boolean;
+  onRequestWinner: (match: Match, teamId: number, isTeam1: boolean) => void;
 }) {
   if (matches.length === 0) return null;
 
@@ -408,9 +428,7 @@ function BracketSection({
                   match={match}
                   teams={teams}
                   isCreator={isCreator}
-                  token={token}
-                  tournamentId={tournamentId}
-                  onUpdated={onUpdated}
+                  onRequestWinner={onRequestWinner}
                 />
               </div>
             ))
@@ -518,6 +536,7 @@ export function TournamentDetailPage() {
   const [startErr, setStartErr] = useState('');
   const [roomForm, setRoomForm] = useState({ room_id: '', room_password: '' });
   const [roomSaved, setRoomSaved] = useState(false);
+  const [winnerModal, setWinnerModal] = useState<{ match: Match; teamId: number; isTeam1: boolean } | null>(null);
 
   const isCreator = !!currentUser && !!t?.creator_id && String(currentUser.id) === String(t.creator_id);
 
@@ -880,9 +899,7 @@ export function TournamentDetailPage() {
                   matches={winnerMatches}
                   teams={t.teams}
                   isCreator={isCreator}
-                  token={token ?? ''}
-                  tournamentId={id}
-                  onUpdated={refresh}
+                  onRequestWinner={(match, teamId, isTeam1) => setWinnerModal({ match, teamId, isTeam1 })}
                 />
                 {isDouble && loserMatches.length > 0 && (
                   <>
@@ -893,9 +910,7 @@ export function TournamentDetailPage() {
                       matches={loserMatches}
                       teams={t.teams}
                       isCreator={isCreator}
-                      token={token ?? ''}
-                      tournamentId={id}
-                      onUpdated={refresh}
+                      onRequestWinner={(match, teamId, isTeam1) => setWinnerModal({ match, teamId, isTeam1 })}
                     />
                   </>
                 )}
@@ -912,9 +927,7 @@ export function TournamentDetailPage() {
                           match={m}
                           teams={t.teams}
                           isCreator={isCreator}
-                          token={token ?? ''}
-                          tournamentId={id}
-                          onUpdated={refresh}
+                          onRequestWinner={(match, teamId, isTeam1) => setWinnerModal({ match, teamId, isTeam1 })}
                         />
                       ))}
                     </div>
@@ -925,6 +938,22 @@ export function TournamentDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* ── Global winner confirmation modal ─────────────────────────────── */}
+      <AnimatePresence>
+        {winnerModal && (
+          <WinnerModal
+            match={winnerModal.match}
+            teamId={winnerModal.teamId}
+            isTeam1={winnerModal.isTeam1}
+            teams={t.teams}
+            tournamentId={id}
+            token={token ?? ''}
+            onSuccess={refresh}
+            onClose={() => setWinnerModal(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
