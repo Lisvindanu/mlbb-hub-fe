@@ -78,39 +78,12 @@ export function HeroDetailPage() {
 
   // Helper: Group skills for multi-mode heroes
   const getSkillGroups = () => {
-    if (!hero.skill || hero.skill.length <= 5) {
-      return [{ name: 'Skills', skills: hero.skill || [] }];
+    // Use skillSets from API if available (transform/multi-form heroes)
+    if (hero.skillSets && hero.skillSets.length > 1) {
+      return hero.skillSets.map(ss => ({ name: ss.name, skills: ss.skills }));
     }
 
-    // Chicha pattern: 4+4+4 (3 weapon modes)
-    if (hero.name === 'Chicha' && hero.skill.length === 12) {
-      return [
-        { name: 'Polearm', skills: hero.skill.slice(0, 4) },
-        { name: 'Dagger-Axe', skills: hero.skill.slice(4, 8) },
-        { name: 'Bow', skills: hero.skill.slice(8, 12) }
-      ];
-    }
-
-    // Li Xin pattern: 5 base + 5 light + 5 dark
-    if (hero.name === 'Li Xin' && hero.skill.length === 15) {
-      return [
-        { name: 'Base', skills: hero.skill.slice(0, 5) },
-        { name: 'Light Form', skills: hero.skill.slice(5, 10) },
-        { name: 'Dark Form', skills: hero.skill.slice(10, 15) }
-      ];
-    }
-
-    // Generic multi-mode: try to split evenly
-    const skillsPerMode = hero.skill.length <= 10 ? 5 : 4;
-    const modes = Math.ceil(hero.skill.length / skillsPerMode);
-    const groups = [];
-    for (let i = 0; i < modes; i++) {
-      groups.push({
-        name: `Mode ${i + 1}`,
-        skills: hero.skill.slice(i * skillsPerMode, (i + 1) * skillsPerMode)
-      });
-    }
-    return groups;
+    return [{ name: 'Skills', skills: hero.skill || [] }];
   };
 
   const skillGroups = getSkillGroups();

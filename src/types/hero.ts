@@ -86,6 +86,7 @@ export interface Hero {
   painting?: string;
   squarehead?: string;
   skill: Skill[];
+  skillSets?: { name: string; skills: Skill[] }[];
   skins: Skin[];
   survivalPercentage: string;
   attackPercentage: string;
