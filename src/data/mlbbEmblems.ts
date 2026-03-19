@@ -27,7 +27,7 @@ function t(name: string, file: string, effect: string): TalentDef {
 export const EMBLEMS: EmblemDef[] = [
   {
     id: 'common', name: 'Common',
-    icon: `${API_BASE}/images/emblems/common.png`,
+    icon: `${API_BASE}/images/emblems/common.webp`,
     color: '#A3A3A3', bg: 'rgba(163,163,163,0.12)', border: 'rgba(163,163,163,0.35)',
     attrs: ['HP +275', 'Hybrid Regen +12', 'Adaptive Attack +22'],
     standard: [
@@ -45,7 +45,7 @@ export const EMBLEMS: EmblemDef[] = [
   },
   {
     id: 'tank', name: 'Tank',
-    icon: `${API_BASE}/images/emblems/tank.png`,
+    icon: `${API_BASE}/images/emblems/tank.webp`,
     color: '#94A3B8', bg: 'rgba(148,163,184,0.12)', border: 'rgba(148,163,184,0.35)',
     attrs: ['HP +500', 'Hybrid Defense +10', 'HP Regen +4'],
     standard: [
@@ -58,7 +58,7 @@ export const EMBLEMS: EmblemDef[] = [
   },
   {
     id: 'assassin', name: 'Assassin',
-    icon: `${API_BASE}/images/emblems/assassin.png`,
+    icon: `${API_BASE}/images/emblems/assassin.webp`,
     color: '#A855F7', bg: 'rgba(168,85,247,0.15)', border: 'rgba(168,85,247,0.4)',
     attrs: ['Adaptive Penetration +14', 'Adaptive Attack +10', 'Move Speed +3%'],
     standard: [
@@ -71,7 +71,7 @@ export const EMBLEMS: EmblemDef[] = [
   },
   {
     id: 'mage', name: 'Mage',
-    icon: `${API_BASE}/images/emblems/mage.png`,
+    icon: `${API_BASE}/images/emblems/mage.webp`,
     color: '#3B82F6', bg: 'rgba(59,130,246,0.15)', border: 'rgba(59,130,246,0.4)',
     attrs: ['Magic Power +30', 'Cooldown Reduction +5%', 'Magic Penetration +8'],
     standard: [
@@ -84,7 +84,7 @@ export const EMBLEMS: EmblemDef[] = [
   },
   {
     id: 'fighter', name: 'Fighter',
-    icon: `${API_BASE}/images/emblems/fighter.png`,
+    icon: `${API_BASE}/images/emblems/fighter.webp`,
     color: '#F97316', bg: 'rgba(251,146,60,0.15)', border: 'rgba(251,146,60,0.4)',
     attrs: ['Spell Vamp +10%', 'Adaptive Attack +22', 'Hybrid Defense +6'],
     standard: [
@@ -97,7 +97,7 @@ export const EMBLEMS: EmblemDef[] = [
   },
   {
     id: 'support', name: 'Support',
-    icon: `${API_BASE}/images/emblems/support.png`,
+    icon: `${API_BASE}/images/emblems/support.webp`,
     color: '#22C55E', bg: 'rgba(34,197,94,0.15)', border: 'rgba(34,197,94,0.4)',
     attrs: ['Healing Effect +12%', 'Cooldown Reduction +10%', 'Move Speed +6%'],
     standard: [
@@ -110,7 +110,7 @@ export const EMBLEMS: EmblemDef[] = [
   },
   {
     id: 'marksman', name: 'Marksman',
-    icon: `${API_BASE}/images/emblems/marksman.png`,
+    icon: `${API_BASE}/images/emblems/marksman.webp`,
     color: '#EAB308', bg: 'rgba(234,179,8,0.15)', border: 'rgba(234,179,8,0.4)',
     attrs: ['Attack Speed +15%', 'Adaptive Attack +16', 'Lifesteal +5%'],
     standard: [
