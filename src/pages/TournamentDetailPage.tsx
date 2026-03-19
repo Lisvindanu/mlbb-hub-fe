@@ -140,7 +140,7 @@ interface WinnerModalProps {
   onSuccess: () => void;
   onClose: () => void;
 }
-function WinnerModal({ match, teamId, isTeam1, teams, tournamentId, token, onSuccess, onClose }: WinnerModalProps) {
+function WinnerModal({ match, teamId, teams, tournamentId, token, onSuccess, onClose }: WinnerModalProps) {
   const [scores, setScores] = useState({ s1: match.score1 || 0, s2: match.score2 || 0 });
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState('');
