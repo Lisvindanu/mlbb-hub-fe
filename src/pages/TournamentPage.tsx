@@ -16,6 +16,7 @@ interface Tournament {
   description: string;
   team_count: number;
   bracket_type: string;
+  bo_format?: string;
   status: 'registration' | 'ongoing' | 'completed';
   created_by_name: string;
   created_at: string;
@@ -29,6 +30,7 @@ interface CreateForm {
   description: string;
   team_count: number;
   bracket_type: string;
+  bo_format: string;
   prize: string;
   scheduled_at: string;
   rules: string;
@@ -46,6 +48,7 @@ async function createTournament(data: CreateForm, token: string) {
     description: data.description,
     team_count: data.team_count,
     bracket_type: data.bracket_type,
+    bo_format: data.bo_format,
   };
   if (data.prize.trim()) body.prize = data.prize.trim();
   if (data.scheduled_at) body.scheduled_at = new Date(data.scheduled_at).toISOString();
@@ -96,6 +99,7 @@ const BLANK_FORM: CreateForm = {
   description: '',
   team_count: 8,
   bracket_type: 'single',
+  bo_format: 'BO3',
   prize: '',
   scheduled_at: '',
   rules: '',
@@ -233,6 +237,11 @@ export function TournamentPage() {
                             <GitBranch className="w-2.5 h-2.5" /> DE
                           </span>
                         )}
+                        {t.bo_format && (
+                          <span className="text-xs px-2 py-0.5 rounded-full border text-cyan-400 bg-cyan-500/10 border-cyan-500/25">
+                            {t.bo_format}
+                          </span>
+                        )}
                       </div>
 
                       {t.description && (
@@ -349,6 +358,30 @@ export function TournamentPage() {
                           }`}
                         >
                           <div className="font-semibold">{opt.label}</div>
+                          <div className="text-[10px] opacity-70 mt-0.5">{opt.desc}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs text-gray-400 mb-1.5 block">Format Game (BO)</label>
+                    <div className="flex gap-2">
+                      {[
+                        { value: 'BO1', label: 'BO1', desc: 'Best of 1' },
+                        { value: 'BO3', label: 'BO3', desc: 'Best of 3' },
+                        { value: 'BO5', label: 'BO5', desc: 'Best of 5' },
+                      ].map(opt => (
+                        <button
+                          key={opt.value}
+                          onClick={() => setField('bo_format', opt.value)}
+                          className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-medium border text-center transition-all ${
+                            form.bo_format === opt.value
+                              ? 'bg-primary-500/20 border-primary-500 text-primary-300'
+                              : 'bg-dark-400 border-white/10 text-gray-400 hover:border-white/20'
+                          }`}
+                        >
+                          <div className="font-bold text-sm">{opt.label}</div>
                           <div className="text-[10px] opacity-70 mt-0.5">{opt.desc}</div>
                         </button>
                       ))}

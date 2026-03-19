@@ -35,6 +35,7 @@ interface Match {
 interface Tournament {
   id: number; name: string; description: string;
   team_count: number; bracket_type: string; status: string;
+  bo_format?: string;
   created_by_name: string; created_at: string;
   creator_id?: number | null;
   teams: Team[]; matches: Match[];
@@ -137,11 +138,16 @@ interface WinnerModalProps {
   teams: Team[];
   tournamentId: string;
   token: string;
+  boFormat: string;
   onSuccess: () => void;
   onClose: () => void;
 }
-function WinnerModal({ match, teamId, teams, tournamentId, token, onSuccess, onClose }: WinnerModalProps) {
-  const [scores, setScores] = useState({ s1: match.score1 || 0, s2: match.score2 || 0 });
+function WinnerModal({ match, teamId, isTeam1, teams, tournamentId, token, boFormat, onSuccess, onClose }: WinnerModalProps) {
+  const maxWins = boFormat === 'BO5' ? 3 : boFormat === 'BO1' ? 1 : 2;
+  const [scores, setScores] = useState({
+    s1: match.score1 || (isTeam1 ? maxWins : 0),
+    s2: match.score2 || (isTeam1 ? 0 : maxWins),
+  });
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState('');
 
@@ -184,38 +190,65 @@ function WinnerModal({ match, teamId, teams, tournamentId, token, onSuccess, onC
           <div className="w-9 h-9 rounded-xl bg-yellow-500/15 border border-yellow-500/25 flex items-center justify-center shrink-0">
             <Trophy className="w-5 h-5 text-yellow-400" />
           </div>
-          <div>
-            <p className="text-xs text-gray-500">Set pemenang pertandingan</p>
-            <p className="text-sm font-semibold text-yellow-300 mt-0.5">{winnerTeam?.name ?? '?'}</p>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <p className="text-xs text-gray-500">Set pemenang pertandingan</p>
+              <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-cyan-500/15 border border-cyan-500/25 text-cyan-400 font-bold">
+                {boFormat}
+              </span>
+            </div>
+            <p className="text-sm font-semibold text-yellow-300 mt-0.5 truncate">{winnerTeam?.name ?? '?'}</p>
           </div>
+        </div>
+
+        {/* BO info */}
+        <div className="flex items-center gap-2 bg-dark-400/40 rounded-lg px-3 py-2 mb-4">
+          <span className="text-xs text-gray-500">
+            {boFormat === 'BO1' ? 'Single game — menang 1 kali' :
+             boFormat === 'BO3' ? 'First to 2 wins (max 3 game)' :
+             'First to 3 wins (max 5 game)'}
+          </span>
         </div>
 
         {/* Score inputs */}
         <div className="bg-dark-400/60 rounded-xl p-4 mb-4">
-          <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-3">Skor Akhir</p>
+          <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-3">
+            Skor Akhir (jumlah game menang)
+          </p>
           <div className="flex items-center gap-3">
             <div className="flex-1 text-center">
-              <p className="text-[11px] text-gray-400 mb-1.5 truncate">{t1?.name ?? 'Tim 1'}</p>
+              <p className={`text-[11px] mb-1.5 truncate font-medium ${isTeam1 ? 'text-yellow-300' : 'text-gray-400'}`}>
+                {t1?.name ?? 'Tim 1'}
+              </p>
               <input
                 type="number"
                 min={0}
+                max={maxWins}
                 value={scores.s1}
-                onChange={e => setScores(s => ({ ...s, s1: Math.max(0, Number(e.target.value)) }))}
-                className="w-full text-center bg-dark-500 border border-white/15 rounded-lg text-white text-xl font-bold py-2 focus:outline-none focus:border-primary-500/50 transition-colors"
+                onChange={e => setScores(s => ({ ...s, s1: Math.min(maxWins, Math.max(0, Number(e.target.value))) }))}
+                className={`w-full text-center bg-dark-500 border rounded-lg text-white text-xl font-bold py-2 focus:outline-none transition-colors ${
+                  isTeam1 ? 'border-yellow-500/40 focus:border-yellow-400/60' : 'border-white/15 focus:border-primary-500/50'
+                }`}
               />
             </div>
-            <span className="text-gray-600 font-bold text-lg">vs</span>
+            <span className="text-gray-600 font-bold text-lg">:</span>
             <div className="flex-1 text-center">
-              <p className="text-[11px] text-gray-400 mb-1.5 truncate">{t2?.name ?? 'Tim 2'}</p>
+              <p className={`text-[11px] mb-1.5 truncate font-medium ${!isTeam1 ? 'text-yellow-300' : 'text-gray-400'}`}>
+                {t2?.name ?? 'Tim 2'}
+              </p>
               <input
                 type="number"
                 min={0}
+                max={maxWins}
                 value={scores.s2}
-                onChange={e => setScores(s => ({ ...s, s2: Math.max(0, Number(e.target.value)) }))}
-                className="w-full text-center bg-dark-500 border border-white/15 rounded-lg text-white text-xl font-bold py-2 focus:outline-none focus:border-primary-500/50 transition-colors"
+                onChange={e => setScores(s => ({ ...s, s2: Math.min(maxWins, Math.max(0, Number(e.target.value))) }))}
+                className={`w-full text-center bg-dark-500 border rounded-lg text-white text-xl font-bold py-2 focus:outline-none transition-colors ${
+                  !isTeam1 ? 'border-yellow-500/40 focus:border-yellow-400/60' : 'border-white/15 focus:border-primary-500/50'
+                }`}
               />
             </div>
           </div>
+          <p className="text-[10px] text-gray-600 text-center mt-2">Skor pemenang max: {maxWins}</p>
         </div>
 
         {/* Winner highlight */}
@@ -634,6 +667,11 @@ export function TournamentDetailPage() {
                       Double Elim
                     </span>
                   )}
+                  {t.bo_format && (
+                    <span className="text-xs px-2 py-0.5 rounded-full border text-cyan-400 bg-cyan-500/10 border-cyan-500/25 font-semibold">
+                      {t.bo_format}
+                    </span>
+                  )}
                 </div>
                 {t.description && (
                   <p className="text-sm text-gray-400 truncate">{t.description}</p>
@@ -672,9 +710,21 @@ export function TournamentDetailPage() {
           <div className="space-y-4 lg:col-span-1">
 
             {/* Info card (registration phase) */}
-            {(t.scheduled_at || t.prize || t.contact || t.rules) && (
+            {(t.scheduled_at || t.prize || t.contact || t.rules || t.bo_format) && (
               <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 space-y-3">
                 <p className="text-xs text-gray-500 uppercase tracking-wider">Info Turnamen</p>
+
+                {t.bo_format && (
+                  <div className="flex items-center justify-between bg-dark-400/50 rounded-lg px-3 py-2">
+                    <span className="text-xs text-gray-400">Format Game</span>
+                    <div className="text-right">
+                      <span className="text-sm font-bold text-cyan-300">{t.bo_format}</span>
+                      <span className="text-[10px] text-gray-500 ml-1.5">
+                        {t.bo_format === 'BO1' ? '(1 game)' : t.bo_format === 'BO3' ? '(first to 2)' : '(first to 3)'}
+                      </span>
+                    </div>
+                  </div>
+                )}
 
                 {t.scheduled_at && (
                   <div className="flex items-start gap-2">
@@ -949,6 +999,7 @@ export function TournamentDetailPage() {
             teams={t.teams}
             tournamentId={id}
             token={token ?? ''}
+            boFormat={t.bo_format ?? 'BO3'}
             onSuccess={refresh}
             onClose={() => setWinnerModal(null)}
           />
