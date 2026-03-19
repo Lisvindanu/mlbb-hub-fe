@@ -344,7 +344,8 @@ export function HeroDetailPage() {
                       } else if (skill.skillName.toLowerCase().includes('awakening')) {
                         skillLabel = 'Ultimate';
                       } else if (!isMultiMode) {
-                        skillLabel = index === 4 ? 'Ultimate' : `Skill ${index}`;
+                        const totalSkills = skillGroups[0].skills.length;
+                        skillLabel = index === totalSkills - 1 ? 'Ultimate' : `Skill ${index}`;
                       } else {
                         // For multi-mode, show proper labels within each mode
                         const skillsInMode = skillGroups[activeSkillMode].skills.length;
