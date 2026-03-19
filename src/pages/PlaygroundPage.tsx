@@ -82,6 +82,7 @@ function decodeBuild(encoded: string): EncodedBuild | null {
 // ─── Stat definitions ─────────────────────────────────────────────────────────
 
 const STAT_INFO: Record<number, { name: string; isPercent: boolean }> = {
+  0: { name: 'Physical Attack', isPercent: false },
   1: { name: 'Physical Attack', isPercent: false },
   2: { name: 'Magical Attack', isPercent: false },
   3: { name: 'Physical Defense', isPercent: false },
@@ -240,7 +241,8 @@ export function PlaygroundPage() {
     for (const item of buildItems) {
       if (!item) continue;
       for (const e of item.effects ?? []) {
-        acc[e.effectType] = (acc[e.effectType] ?? 0) + parseEffectValue(e.valueType, e.value);
+        const et = e.effectType === 0 ? 1 : e.effectType;
+        acc[et] = (acc[et] ?? 0) + parseEffectValue(e.valueType, e.value);
       }
     }
     return acc;
