@@ -1,0 +1,1614 @@
+{
+  "scrapedAt": "2026-02-22T01:25:52.788Z",
+  "season": {
+    "id": "13",
+    "name": "S13"
+  },
+  "adjustments": [
+    {
+      "heroId": 120,
+      "heroName": "Bai Qi",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/uY7c38Tt.png",
+      "shortDesc": "Adjusted skill damage and recovery",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 51.53,
+        "pickRate": 0.38,
+        "banRate": 0.05
+      },
+      "skillChanges": [
+        {
+          "skillName": "Blood Echo",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/12010.png",
+          "skillIndex": "Skill 1",
+          "title": "Blood Echo",
+          "description": "Base Damage:<br>Before: 200 (+40 per skill level) (+40% Physical Attack)<br>Now: 180 (+44 per skill level) (+40% Physical Attack)<br>Health Recovery:<br>Before: 100 (+20 per skill level) (+2% extra Health)<br>Now: 90 (+18 per skill level) (+2% extra Health)",
+          "descriptionText": "Base Damage:\nBefore: 200 (+40 per skill level) (+40% Physical Attack)\nNow: 180 (+44 per skill level) (+40% Physical Attack)\nHealth Recovery:\nBefore: 100 (+20 per skill level) (+2% extra Health)\nNow: 90 (+18 per skill level) (+2% extra Health)"
+        }
+      ]
+    },
+    {
+      "heroId": 149,
+      "heroName": "Liu Bang",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/bVHGeH45.png",
+      "shortDesc": "Increased skill damage",
+      "type": "Stat Buffs",
+      "tagEnum": 4,
+      "tagColor": "#30B13A26",
+      "stats": {
+        "winRate": 48.94,
+        "pickRate": 0.25,
+        "banRate": 0.04
+      },
+      "skillChanges": [
+        {
+          "skillName": "Royal Ambition",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/14900.png",
+          "skillIndex": "Passive",
+          "title": "Royal Ambition",
+          "description": "Base Damage:<br>Before: 70–140 (+10% Magical Attack)<br>Now: 80–160 (+10% Magical Attack)<br>Ranged Damage:<br>Before: 280–560 (+40% Magical Attack)<br>Now: 294–588 (+42% Magical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 70–140 (+10% Magical Attack)\nNow: 80–160 (+10% Magical Attack)\nRanged Damage:\nBefore: 280–560 (+40% Magical Attack)\nNow: 294–588 (+42% Magical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 169,
+      "heroName": "Hou Yi",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/S5isJokI.png",
+      "shortDesc": "Increased skill damage",
+      "type": "Stat Buffs",
+      "tagEnum": 4,
+      "tagColor": "#30B13A26",
+      "stats": {
+        "winRate": 50.36,
+        "pickRate": 3.3,
+        "banRate": 0.36
+      },
+      "skillChanges": [
+        {
+          "skillName": "Afterglow",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/16920.png",
+          "skillIndex": "Skill 2",
+          "title": "Afterglow",
+          "description": "Base Damage:<br>Before: 400 (+80 per skill level) (+110% extra Physical Attack)<br>Now: 480 (+96 per skill level) (+110% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 400 (+80 per skill level) (+110% extra Physical Attack)\nNow: 480 (+96 per skill level) (+110% extra Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 172,
+      "heroName": "Chicha",
+      "heroIcon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/lkU98jAV.png",
+      "shortDesc": "Adjusted Attack Speed",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 50.82,
+        "pickRate": 1.84,
+        "banRate": 1.39
+      },
+      "skillChanges": [
+        {
+          "skillName": "Return of the Armsmaster",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/17230.png",
+          "skillIndex": "Ultimate",
+          "title": "Return of the Armsmaster",
+          "description": "Attack Speed Bonus:<br>Before: 40%–80%<br>Now: 35%–70%",
+          "descriptionText": "Attack Speed Bonus:\nBefore: 40%–80%\nNow: 35%–70%"
+        }
+      ]
+    },
+    {
+      "heroId": 156,
+      "heroName": "Liang",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/cNugkXGO.png",
+      "shortDesc": "Adjusted skill damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 50.77,
+        "pickRate": 0.79,
+        "banRate": 3.79
+      },
+      "skillChanges": [
+        {
+          "skillName": "Power Word - Trance",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/15600.png",
+          "skillIndex": "Passive",
+          "title": "Power Word - Trance",
+          "description": "Base Damage:<br>Before: 120–330 (+70% Magical Attack)<br>Now: 120–260 (+70% Magical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 120–330 (+70% Magical Attack)\nNow: 120–260 (+70% Magical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 141,
+      "heroName": "Diaochan",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/qFBebEbk.png",
+      "shortDesc": "Increased skill damage and recovery",
+      "type": "Stat Buffs",
+      "tagEnum": 4,
+      "tagColor": "#30B13A26",
+      "stats": {
+        "winRate": 47.51,
+        "pickRate": 1.67,
+        "banRate": 0.3
+      },
+      "skillChanges": [
+        {
+          "skillName": "Explosion of Fragrance",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/14100.png",
+          "skillIndex": "Passive",
+          "title": "Explosion of Fragrance",
+          "description": "Base Damage:<br>Before: 130–260 (+40% Magical Attack)<br>Now: 140–280 (+40% Magical Attack)<br>Health Recovery:<br>Before: 130–260 (+1.5% extra Health)<br>Now: 140–280 (+1.5% extra Health)",
+          "descriptionText": "Base Damage:\nBefore: 130–260 (+40% Magical Attack)\nNow: 140–280 (+40% Magical Attack)\nHealth Recovery:\nBefore: 130–260 (+1.5% extra Health)\nNow: 140–280 (+1.5% extra Health)"
+        },
+        {
+          "skillName": "Returning Lotus",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/14110.png",
+          "skillIndex": "Skill 1",
+          "title": "Returning Lotus",
+          "description": "Base Damage:<br>Before: 260 (+52 per skill level) (+52% Magical Attack)<br>Now: 260 (+52 per skill level) (+55% Magical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 260 (+52 per skill level) (+52% Magical Attack)\nNow: 260 (+52 per skill level) (+55% Magical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 177,
+      "heroName": "Chano",
+      "heroIcon": "https://camp.honorofkings.com/camp/admin/default/sJURXorM.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 50.88,
+        "pickRate": 0.77,
+        "banRate": 0.08
+      },
+      "skillChanges": [
+        {
+          "skillName": "Soaring Signal",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/17710.png",
+          "skillIndex": "Skill 1",
+          "title": "Soaring Signal",
+          "description": "Skill 1: Soaring Signal<br>Base Damage:<br>Before: 250 (+50 per skill level) (+145% Physical Attack)<br>Now: 230 (+46 per skill level) (+140% Physical Attack)",
+          "descriptionText": "Skill 1: Soaring Signal\nBase Damage:\nBefore: 250 (+50 per skill level) (+145% Physical Attack)\nNow: 230 (+46 per skill level) (+140% Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 173,
+      "heroName": "Fang",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/6dGNjKTe.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Buffs",
+      "tagEnum": 4,
+      "tagColor": "#30B13A26",
+      "stats": {
+        "winRate": 50.78,
+        "pickRate": 0.94,
+        "banRate": 0.04
+      },
+      "skillChanges": [
+        {
+          "skillName": "Base Stats",
+          "skillIcon": "",
+          "skillIndex": "",
+          "title": "Base Stats",
+          "description": "Base Stats<br>Basic Attack Range:<br>Before: 725<br>Now: 750<br>",
+          "descriptionText": "Base Stats\nBasic Attack Range:\nBefore: 725\nNow: 750\n"
+        },
+        {
+          "skillName": "Target Sighted",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/17310.png",
+          "skillIndex": "Skill 1",
+          "title": "Target Sighted",
+          "description": "Skill 1: Target Sighted<br>Base Damage:<br>Before: 220 (+44 per skill level) (+70% extra Physical Attack)<br>Now: 230 (+46 per skill level) (+75% extra Physical Attack)<br>Extra Damage:<br>Before: 220 (+44 per skill level) (+70% extra Physical Attack)<br>Now: 230 (+46 per skill level) (+75% extra Physical Attack)",
+          "descriptionText": "Skill 1: Target Sighted\nBase Damage:\nBefore: 220 (+44 per skill level) (+70% extra Physical Attack)\nNow: 230 (+46 per skill level) (+75% extra Physical Attack)\nExtra Damage:\nBefore: 220 (+44 per skill level) (+70% extra Physical Attack)\nNow: 230 (+46 per skill level) (+75% extra Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 174,
+      "heroName": "Consort Yu",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/Ku5RzFmQ.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 51.83,
+        "pickRate": 1.53,
+        "banRate": 0.17
+      },
+      "skillChanges": [
+        {
+          "skillName": "Blessing of the Dryads",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/17400.png",
+          "skillIndex": "Passive",
+          "title": "Blessing of the Dryads",
+          "description": "Passive: Blessing of the Dryads<br>Base Damage:<br>Before: 95–190 (+14% Physical Attack)<br>Now: 90–180 (+12% Physical Attack)",
+          "descriptionText": "Passive: Blessing of the Dryads\nBase Damage:\nBefore: 95–190 (+14% Physical Attack)\nNow: 90–180 (+12% Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 584,
+      "heroName": "Flowborn (Marksman)",
+      "heroIcon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/WuG07My1.jpeg",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 52.04,
+        "pickRate": 0.97,
+        "banRate": 0.05
+      },
+      "skillChanges": [
+        {
+          "skillName": "Arrow of No Retreat",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/58410.png",
+          "skillIndex": "Skill 2",
+          "title": "Arrow of No Retreat",
+          "description": "Skill 2: Arrow of No Retreat<br>Base Damage:<br>Before: 480 (+96 per skill level) (+120% extra Physical Attack)<br>Now: 470 (+94 per skill level) (+120% extra Physical Attack)",
+          "descriptionText": "Skill 2: Arrow of No Retreat\nBase Damage:\nBefore: 480 (+96 per skill level) (+120% extra Physical Attack)\nNow: 470 (+94 per skill level) (+120% extra Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 117,
+      "heroName": "Wuyan",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/D1f9UN1O.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Buffs",
+      "tagEnum": 4,
+      "tagColor": "#30B13A26",
+      "stats": {
+        "winRate": 51.41,
+        "pickRate": 0.45,
+        "banRate": 0.03
+      },
+      "skillChanges": [
+        {
+          "skillName": "Hurricane Hammer",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/11730.png",
+          "skillIndex": "Ultimate",
+          "title": "Hurricane Hammer",
+          "description": "Increased Skill Damage<br>Ultimate: Hurricane Hammer<br>Base Damage:<br>Before: 280 (+140 per skill level) (+95% extra Physical Attack)<br>Now: 300 (+150 per skill level) (+95% extra Physical Attack)",
+          "descriptionText": "Increased Skill Damage\nUltimate: Hurricane Hammer\nBase Damage:\nBefore: 280 (+140 per skill level) (+95% extra Physical Attack)\nNow: 300 (+150 per skill level) (+95% extra Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 563,
+      "heroName": "Heino",
+      "heroIcon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/YO6iwLAg.jpg",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Buffs",
+      "tagEnum": 4,
+      "tagColor": "#30B13A26",
+      "stats": {
+        "winRate": 49.06,
+        "pickRate": 0.92,
+        "banRate": 0.24
+      },
+      "skillChanges": [
+        {
+          "skillName": "Scepter of Fate",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/56312.png",
+          "skillIndex": "Skill 1",
+          "title": "Scepter of Fate",
+          "description": "Skill 1: Scepter of Fate<br>Ranged Damage:<br>Before: 400 (+80 per skill level) (+70% Magical Attack)<br>Now: 410 (+84 per skill level) (+75% Magical Attack)<br>Melee Damage:<br>Before: 250 (+50 per skill level) (+45% Magical Attack)<br>Now: 260 (+52 per skill level) (+45% Magical Attack)",
+          "descriptionText": "Skill 1: Scepter of Fate\nRanged Damage:\nBefore: 400 (+80 per skill level) (+70% Magical Attack)\nNow: 410 (+84 per skill level) (+75% Magical Attack)\nMelee Damage:\nBefore: 250 (+50 per skill level) (+45% Magical Attack)\nNow: 260 (+52 per skill level) (+45% Magical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 140,
+      "heroName": "Guan Yu",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/V5e2k18Z.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Buffs",
+      "tagEnum": 4,
+      "tagColor": "#30B13A26",
+      "stats": {
+        "winRate": 46.85,
+        "pickRate": 0.82,
+        "banRate": 0.22
+      },
+      "skillChanges": [
+        {
+          "skillName": "Rider of Triumph",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/14000.png",
+          "skillIndex": "Passive",
+          "title": "Rider of Triumph",
+          "description": "Passive: Rider of Triumph<br>Charge Attack:<br>Before: 100% Physical Attack (cannot crit)<br>Now: 100% Physical Attack (can crit)<br>Charge Basic Attack's Extra Damage:<br>Before: 100% Physical Attack + 10% max Health<br>Now: 500–1,000 (+125% extra Physical Attack)<br>",
+          "descriptionText": "Passive: Rider of Triumph\nCharge Attack:\nBefore: 100% Physical Attack (cannot crit)\nNow: 100% Physical Attack (can crit)\nCharge Basic Attack's Extra Damage:\nBefore: 100% Physical Attack + 10% max Health\nNow: 500–1,000 (+125% extra Physical Attack)\n"
+        },
+        {
+          "skillName": "Heroic Charge",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/14010.png",
+          "skillIndex": "Skill 1",
+          "title": "Heroic Charge",
+          "description": "Skill 1: Heroic Charge<br>Base Damage:<br>Before: 480 (+264 per skill level) (+140% extra Physical Attack)<br>Now: 500 (+280 per skill level) (+140% extra Physical Attack)<br>",
+          "descriptionText": "Skill 1: Heroic Charge\nBase Damage:\nBefore: 480 (+264 per skill level) (+140% extra Physical Attack)\nNow: 500 (+280 per skill level) (+140% extra Physical Attack)\n"
+        },
+        {
+          "skillName": "Razor Cavalry",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/14030.png",
+          "skillIndex": "Ultimate",
+          "title": "Razor Cavalry",
+          "description": "Ultimate: Razor Cavalry<br>Base Damage:<br>Before: 100% Physical Attack + 10% max Health<br>Now: 620 (+310 per skill level) (+200% extra Physical Attack)",
+          "descriptionText": "Ultimate: Razor Cavalry\nBase Damage:\nBefore: 100% Physical Attack + 10% max Health\nNow: 620 (+310 per skill level) (+200% extra Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 115,
+      "heroName": "Gao",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/QWFCuWNn.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Buffs",
+      "tagEnum": 4,
+      "tagColor": "#30B13A26",
+      "stats": {
+        "winRate": 50.16,
+        "pickRate": 0.37,
+        "banRate": 0.04
+      },
+      "skillChanges": [
+        {
+          "skillName": "Guitar Solo",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/11500.png",
+          "skillIndex": "Passive",
+          "title": "Guitar Solo",
+          "description": "Passive: Guitar Solo<br>Base Damage:<br>Before: 280–560 (+80% Magical Attack)<br>Now: 290–580 (+80% Magical Attack)<br>",
+          "descriptionText": "Passive: Guitar Solo\nBase Damage:\nBefore: 280–560 (+80% Magical Attack)\nNow: 290–580 (+80% Magical Attack)\n"
+        },
+        {
+          "skillName": "Wild Chord",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/11510.png",
+          "skillIndex": "Skill 1",
+          "title": "Wild Chord",
+          "description": "Skill 1: Wild Chord<br>Base Damage:<br>Before: 300 (+60 per skill level) (+40% Magical Attack)<br>Now: 320 (+64 per skill level) (+40% Magical Attack)",
+          "descriptionText": "Skill 1: Wild Chord\nBase Damage:\nBefore: 300 (+60 per skill level) (+40% Magical Attack)\nNow: 320 (+64 per skill level) (+40% Magical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 139,
+      "heroName": "Fuzi",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/UhQkVUBi.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 53.44,
+        "pickRate": 0.53,
+        "banRate": 0.17
+      },
+      "skillChanges": [
+        {
+          "skillName": "Ancient Wisdom",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/13900.png",
+          "skillIndex": "Passive",
+          "title": "Ancient Wisdom",
+          "description": "True Damage:<br>Before: 90–180 (+35% extra Physical Attack)<br>Now: 80–160 (+35% extra Physical Attack)",
+          "descriptionText": "True Damage:\nBefore: 90–180 (+35% extra Physical Attack)\nNow: 80–160 (+35% extra Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 556,
+      "heroName": "Ata",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/eafz1moy.png",
+      "shortDesc": "Upgraded Skill Effects",
+      "type": "Stat Buffs",
+      "tagEnum": 4,
+      "tagColor": "#30B13A26",
+      "stats": {
+        "winRate": 53.15,
+        "pickRate": 0.51,
+        "banRate": 0.03
+      },
+      "skillChanges": [
+        {
+          "skillName": "Child of the Sea",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/55600.png",
+          "skillIndex": "Passive",
+          "title": "Child of the Sea",
+          "description": "Base Health Conversaion Rate (non-hero units):<br>Before: 15%<br>Now: 20%",
+          "descriptionText": "Base Health Conversaion Rate (non-hero units):\nBefore: 15%\nNow: 20%"
+        },
+        {
+          "skillName": "Wavewalking",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/55610.png",
+          "skillIndex": "Skill 1",
+          "title": "Wavewalking",
+          "description": "Before: 450 (+90 per skill level) (+12% extra Health)<br>Now: 460 (+92 per skill level) (+13% extra Health)",
+          "descriptionText": "Before: 450 (+90 per skill level) (+12% extra Health)\nNow: 460 (+92 per skill level) (+13% extra Health)"
+        }
+      ]
+    },
+    {
+      "heroId": 128,
+      "heroName": "Fatih",
+      "heroIcon": "https://camp.honorofkings.com/camp/admin/default/6IY77h7c.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Buffs",
+      "tagEnum": 4,
+      "tagColor": "#30B13A26",
+      "stats": {
+        "winRate": 48.52,
+        "pickRate": 0.27,
+        "banRate": 0.04
+      },
+      "skillChanges": [
+        {
+          "skillName": "The King's Return",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/12820.png",
+          "skillIndex": "Skill 2",
+          "title": "The King's Return",
+          "description": "Base Damage:<br>Before: 320 (+64 per skill level) (+100% extra Physical Attack)<br>Now: 340 (+68 per skill level) (+100% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 320 (+64 per skill level) (+100% extra Physical Attack)\nNow: 340 (+68 per skill level) (+100% extra Physical Attack)"
+        },
+        {
+          "skillName": "Sacred Tree Blessing",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/12830.png",
+          "skillIndex": "Ultimate",
+          "title": "Sacred Tree Blessing",
+          "description": "Base Damage:<br>Before: 220 (+110 per skill level) (+70% extra Physical Attack)<br>Now: 230 (+115 per skill level) (+75% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 220 (+110 per skill level) (+70% extra Physical Attack)\nNow: 230 (+115 per skill level) (+75% extra Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 519,
+      "heroName": "Ao'yin",
+      "heroIcon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/OzH2TSZN.jpg",
+      "shortDesc": "Increased Skill Damage",
+      "type": "Stat Buffs",
+      "tagEnum": 4,
+      "tagColor": "#30B13A26",
+      "stats": {
+        "winRate": 47.18,
+        "pickRate": 1.13,
+        "banRate": 3.56
+      },
+      "skillChanges": [
+        {
+          "skillName": "Flaming Palm",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/51910.png",
+          "skillIndex": "Skill 1",
+          "title": "Flaming Palm",
+          "description": "Enhanced Basic Attack Damage:<br>Before: 48 (+16 per skill level) (+30% Physical Attack)<br>Now: 54 (+18 per skill level) (+30% Physical Attack)",
+          "descriptionText": "Enhanced Basic Attack Damage:\nBefore: 48 (+16 per skill level) (+30% Physical Attack)\nNow: 54 (+18 per skill level) (+30% Physical Attack)"
+        },
+        {
+          "skillName": "Downpour",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/51920.png",
+          "skillIndex": "Skill 2",
+          "title": "Downpour",
+          "description": "Enhanced Basic Attack Damage:<br>Before: 48 (+16 per skill level) (+30% Physical Attack)<br>Now: 54 (+18 per skill level) (+30% Physical Attack)",
+          "descriptionText": "Enhanced Basic Attack Damage:\nBefore: 48 (+16 per skill level) (+30% Physical Attack)\nNow: 54 (+18 per skill level) (+30% Physical Attack)"
+        },
+        {
+          "skillName": "Riding the Wind",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/51940.png",
+          "skillIndex": "Skill 3",
+          "title": "Riding the Wind",
+          "description": "Base Movement Speed:<br>Before: 12–24<br>Now: 16–32<br>Enhanced Basic Attack Damage:<br>Before: 48 (+16 per skill level) (+30% Physical Attack)<br>Now: 54 (+18 per skill level) (+30% Physical Attack)",
+          "descriptionText": "Base Movement Speed:\nBefore: 12–24\nNow: 16–32\nEnhanced Basic Attack Damage:\nBefore: 48 (+16 per skill level) (+30% Physical Attack)\nNow: 54 (+18 per skill level) (+30% Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 514,
+      "heroName": "Allain",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/Ek9OHopQ.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Buffs",
+      "tagEnum": 4,
+      "tagColor": "#30B13A26",
+      "stats": {
+        "winRate": 48.92,
+        "pickRate": 0.42,
+        "banRate": 0.02
+      },
+      "skillChanges": [
+        {
+          "skillName": "Howling Blade",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/51400.png",
+          "skillIndex": "Passive",
+          "title": "Howling Blade",
+          "description": "Magical Damage:<br>Before: 16–44 (+29% Physical Attack)<br>Now: 22–44 (+30% Physical Attack)<br>Physical Damage:<br>Before: 16–44 (+29% Physical Attack)<br>Now: 22–44 (+30% Physical Attack)<br>True Damage:<br>Before: 30–72 (+43% Physical Attack)<br>Now: 36–72 (+45% Physical Attack)",
+          "descriptionText": "Magical Damage:\nBefore: 16–44 (+29% Physical Attack)\nNow: 22–44 (+30% Physical Attack)\nPhysical Damage:\nBefore: 16–44 (+29% Physical Attack)\nNow: 22–44 (+30% Physical Attack)\nTrue Damage:\nBefore: 30–72 (+43% Physical Attack)\nNow: 36–72 (+45% Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 159,
+      "heroName": "Dolia",
+      "heroIcon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/tfvb3IJf.png",
+      "shortDesc": "Increased Skill Damage",
+      "type": "Stat Buffs",
+      "tagEnum": 4,
+      "tagColor": "#30B13A26",
+      "stats": {
+        "winRate": 46.05,
+        "pickRate": 2.6,
+        "banRate": 0.45
+      },
+      "skillChanges": [
+        {
+          "skillName": "Ode",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/15910.png",
+          "skillIndex": "Skill 1",
+          "title": "Ode",
+          "description": "First Three Soundwaves:<br>Before: 125 (+25 per skill level) (+20% Magical Attack)<br>Now: 130 (+26 per skill level) (+20% Magical Attack)",
+          "descriptionText": "First Three Soundwaves:\nBefore: 125 (+25 per skill level) (+20% Magical Attack)\nNow: 130 (+26 per skill level) (+20% Magical Attack)"
+        },
+        {
+          "skillName": "Wavebreaker",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/15920.png",
+          "skillIndex": "Skill 2",
+          "title": "Wavebreaker",
+          "description": "Base Recovery:<br>Before: 300 (+60 per skill level) (+40% Magical Attack)<br>Now: 320 (+64 per skill level) (+40% Magical Attack)",
+          "descriptionText": "Base Recovery:\nBefore: 300 (+60 per skill level) (+40% Magical Attack)\nNow: 320 (+64 per skill level) (+40% Magical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 178,
+      "heroName": "Yang Jian",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/LntokS4z.png",
+      "shortDesc": "Adjusted Skill Effect and Cooldown",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 50.95,
+        "pickRate": 0.38,
+        "banRate": 0.04
+      },
+      "skillChanges": [
+        {
+          "skillName": "Unleash the Hound",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/17810.png",
+          "skillIndex": "Skill 1",
+          "title": "Unleash the Hound",
+          "description": "Cooldown:<br>Before: 6.5 (-0.3s per skill level)<br>Now: 7.5 (-0.3s per skill level)",
+          "descriptionText": "Cooldown:\nBefore: 6.5 (-0.3s per skill level)\nNow: 7.5 (-0.3s per skill level)"
+        },
+        {
+          "skillName": "Vain Disillusionment",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/17820.png",
+          "skillIndex": "Skill 2",
+          "title": "Vain Disillusionment",
+          "description": "Movement Speed Reduction:<br>Before: 25–50%<br>Now: 15–30%",
+          "descriptionText": "Movement Speed Reduction:\nBefore: 25–50%\nNow: 15–30%"
+        }
+      ]
+    },
+    {
+      "heroId": 183,
+      "heroName": "Athena",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/BEh6QC3Q.png",
+      "shortDesc": "Divine Form Upgrade",
+      "type": "Mechanics Upgrade",
+      "tagEnum": 2,
+      "tagColor": "#30B13A26",
+      "stats": {
+        "winRate": 52.78,
+        "pickRate": 0.06,
+        "banRate": 0
+      },
+      "skillChanges": [
+        {
+          "skillName": "Divine Awakening",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/18300.png",
+          "skillIndex": "Passive",
+          "title": "Divine Awakening",
+          "description": "New Effect:<br>When Athena resurrects, she will fly toward the nearest allied tower, dealing physical damage and launching nearby enemies at the point of takeoff.<br>Changed Active Skills While in True Form<br>Divine Form – Skill 1: Dashes in the target direction.<br>Divine Form – Skill 2: Grants a shield to a nearby ally for 2s.<br>Divine Form – Ultimate: Flies to the nearest allied tower, dealing physical damage and launching nearby enemies at the point of takeoff. At the same time, protects nearby teammates. Those protected by Athena will go along with her.",
+          "descriptionText": "New Effect:\nWhen Athena resurrects, she will fly toward the nearest allied tower, dealing physical damage and launching nearby enemies at the point of takeoff.\nChanged Active Skills While in True Form\nDivine Form – Skill 1: Dashes in the target direction.\nDivine Form – Skill 2: Grants a shield to a nearby ally for 2s.\nDivine Form – Ultimate: Flies to the nearest allied tower, dealing physical damage and launching nearby enemies at the point of takeoff. At the same time, protects nearby teammates. Those protected by Athena will go along with her."
+        }
+      ]
+    },
+    {
+      "heroId": 199,
+      "heroName": "Arli",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/hF8AFVqh.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 46.34,
+        "pickRate": 0.92,
+        "banRate": 0.5
+      },
+      "skillChanges": [
+        {
+          "skillName": "Falling Leaves",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/19900.png",
+          "skillIndex": "Passive",
+          "title": "Falling Leaves",
+          "description": "Mark Damage:<br>Before: 200–400 (+35% Physical Attack)<br>Now: 220–440 (+40% Physical Attack)<br>Additional Basic Attack's Damage (counts as Basic Attack):<br>Before: 20–40 (+30% Physical Attack) (cannot critical hit)<br>Now: 20–40 (+20% Physical Attack) (can critical hit)",
+          "descriptionText": "Mark Damage:\nBefore: 200–400 (+35% Physical Attack)\nNow: 220–440 (+40% Physical Attack)\nAdditional Basic Attack's Damage (counts as Basic Attack):\nBefore: 20–40 (+30% Physical Attack) (cannot critical hit)\nNow: 20–40 (+20% Physical Attack) (can critical hit)"
+        },
+        {
+          "skillName": "Maple Dance",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/19920.png",
+          "skillIndex": "Skill 2",
+          "title": "Maple Dance",
+          "description": "Damage Radius:<br>Before: 700<br>Now: 650<br>Parasol's Radius Around Arli:<br>Before: 600<br>Now: 575<br>Base Damage:<br>Before: 200 (+65 per skill level) (+72% Physical Attack)<br>Now: 300 (+60 per skill level) (+72% extra Physical Attack)",
+          "descriptionText": "Damage Radius:\nBefore: 700\nNow: 650\nParasol's Radius Around Arli:\nBefore: 600\nNow: 575\nBase Damage:\nBefore: 200 (+65 per skill level) (+72% Physical Attack)\nNow: 300 (+60 per skill level) (+72% extra Physical Attack)"
+        },
+        {
+          "skillName": "Autumn Storm",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/19930.png",
+          "skillIndex": "Ultimate",
+          "title": "Autumn Storm",
+          "description": "Base Damage:<br>Before: 250 (+125 per skill level) (+80% Physical Attack)<br>Now: 400 (+200 per skill level) (+90% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 250 (+125 per skill level) (+80% Physical Attack)\nNow: 400 (+200 per skill level) (+90% extra Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 112,
+      "heroName": "Luban No.7",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/0VBMiUN5.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 50.54,
+        "pickRate": 1.5,
+        "banRate": 0.13
+      },
+      "skillChanges": [
+        {
+          "skillName": "Suppressive Fire",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/11200.png",
+          "skillIndex": "Passive",
+          "title": "Suppressive Fire",
+          "description": "Precision equipment passive multiplier (to heroes):<br>Before: 0.3<br>Now: 0.5<br>Precision equipment passive multiplier (to non-hero units):<br>Before: 0.8<br>Now: 0.5",
+          "descriptionText": "Precision equipment passive multiplier (to heroes):\nBefore: 0.3\nNow: 0.5\nPrecision equipment passive multiplier (to non-hero units):\nBefore: 0.8\nNow: 0.5"
+        },
+        {
+          "skillName": "Blowfish Grenade",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/11210.png",
+          "skillIndex": "Skill 1",
+          "title": "Blowfish Grenade",
+          "description": "Base Damage:<br>Before: 450 (+50 per skill level) (+75% Physical Attack)<br>Now: 520 (+104 per skill level) (+120% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 450 (+50 per skill level) (+75% Physical Attack)\nNow: 520 (+104 per skill level) (+120% extra Physical Attack)"
+        },
+        {
+          "skillName": "Shark Cannon",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/11220.png",
+          "skillIndex": "Skill 2",
+          "title": "Shark Cannon",
+          "description": "Base Damage:<br>Before: 400 (+50 per skill level) (+70% Physical Attack)<br>Now: 450 (+90 per skill level) (+100% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 400 (+50 per skill level) (+70% Physical Attack)\nNow: 450 (+90 per skill level) (+100% extra Physical Attack)"
+        },
+        {
+          "skillName": "Air Support",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/11230.png",
+          "skillIndex": "Ultimate",
+          "title": "Air Support",
+          "description": "Base Damage:<br>Before: 500 (+125 per skill level) (+75% Physical Attack)<br>Now: 520 (+260 per skill level) (+120% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 500 (+125 per skill level) (+75% Physical Attack)\nNow: 520 (+260 per skill level) (+120% extra Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 196,
+      "heroName": "Shouyue",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/4bUKKH66.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 50.11,
+        "pickRate": 0.73,
+        "banRate": 0.09
+      },
+      "skillChanges": [
+        {
+          "skillName": "Wild Wind",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/19620.png",
+          "skillIndex": "Skill 2",
+          "title": "Wild Wind",
+          "description": "Base Damage:<br>Before: 700 (+140 per skill level) (+250% extra Physical Attack)<br>Now: 750 (+150 per skill level) (+250% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 700 (+140 per skill level) (+250% extra Physical Attack)\nNow: 750 (+150 per skill level) (+250% extra Physical Attack)"
+        },
+        {
+          "skillName": "Getaway",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/19630.png",
+          "skillIndex": "Ultimate",
+          "title": "Getaway",
+          "description": "Base Damage:<br>Before: 500 (+200 per skill level) (+168% Physical Attack)<br>Now: 750 (+375 per skill level) (+180% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 500 (+200 per skill level) (+168% Physical Attack)\nNow: 750 (+375 per skill level) (+180% extra Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 508,
+      "heroName": "Garo",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/g0jHNDf6.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 54.45,
+        "pickRate": 1.68,
+        "banRate": 0.31
+      },
+      "skillChanges": [
+        {
+          "skillName": "Enchanted Arrows",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/50810.png",
+          "skillIndex": "Skill 1",
+          "title": "Enchanted Arrows",
+          "description": "Base Damage:<br>Before: 25 (+5 per skill level) (+5% Physical Attack)<br>Now: 32 (+6.4 per skill level) (+7% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 25 (+5 per skill level) (+5% Physical Attack)\nNow: 32 (+6.4 per skill level) (+7% extra Physical Attack)"
+        },
+        {
+          "skillName": "Silent Arrow",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/50820.png",
+          "skillIndex": "Skill 2",
+          "title": "Silent Arrow",
+          "description": "Base Damage:<br>Before: 250 (+30 per skill level) (+40% Physical Attack)<br>Now: 300 (+60 per skill level) (+60% extra Physical Attack)<br>Phase 2 Damage:<br>Before: 500 (+60 per skill level) (+80% Physical Attack)<br>Now: 600 (+120 per skill level) (+120% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 250 (+30 per skill level) (+40% Physical Attack)\nNow: 300 (+60 per skill level) (+60% extra Physical Attack)\nPhase 2 Damage:\nBefore: 500 (+60 per skill level) (+80% Physical Attack)\nNow: 600 (+120 per skill level) (+120% extra Physical Attack)"
+        },
+        {
+          "skillName": "Sphere of Purity",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/50830.png",
+          "skillIndex": "Ultimate",
+          "title": "Sphere of Purity",
+          "description": "Base Damage:<br>Before: 250 (+100 per skill level) (+75% Physical Attack)<br>Now: 380 (+190 per skill level) (+85% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 250 (+100 per skill level) (+75% Physical Attack)\nNow: 380 (+190 per skill level) (+85% extra Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 155,
+      "heroName": "Erin",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/joVNQWhw.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 51.52,
+        "pickRate": 1.6,
+        "banRate": 0.19
+      },
+      "skillChanges": [
+        {
+          "skillName": "Dance - Leaf Greeting",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/15510.png",
+          "skillIndex": "Skill 1",
+          "title": "Dance - Leaf Greeting",
+          "description": "Base Damage:<br>Before: 380 (+76 per skill level) (+40% Physical Attack) (+100% Magical Attack)<br>Now: 525 (+105 per skill level) (+120% extra Physical Attack) (+110% Magical Attack)<br>Contact Damage:<br>Before: 135 (+27 per skill level) (+22% Physical Attack) (+32% Magical Attack)<br>Now: 175 (+35 per skill level) (+40% extra Physical Attack) (+37% Magical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 380 (+76 per skill level) (+40% Physical Attack) (+100% Magical Attack)\nNow: 525 (+105 per skill level) (+120% extra Physical Attack) (+110% Magical Attack)\nContact Damage:\nBefore: 135 (+27 per skill level) (+22% Physical Attack) (+32% Magical Attack)\nNow: 175 (+35 per skill level) (+40% extra Physical Attack) (+37% Magical Attack)"
+        },
+        {
+          "skillName": "Waltz - Laurel Bloom",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/15530.png",
+          "skillIndex": "Ultimate",
+          "title": "Waltz - Laurel Bloom",
+          "description": "On-Hit Adjustment:<br>Every 3 leaves counts as 1 Basic Attack<br>Base Damage (counts as Basic Attack):<br>Before: 60 (+30 per skill level) (+40% Physical Attack) (+35% Magical Attack)<br>Now: 72 (+36 per skill level) (+35% Physical Attack) (+30% Magical Attack)",
+          "descriptionText": "On-Hit Adjustment:\nEvery 3 leaves counts as 1 Basic Attack\nBase Damage (counts as Basic Attack):\nBefore: 60 (+30 per skill level) (+40% Physical Attack) (+35% Magical Attack)\nNow: 72 (+36 per skill level) (+35% Physical Attack) (+30% Magical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 192,
+      "heroName": "Huang Zhong",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/LNECT7PW.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 51.79,
+        "pickRate": 0.41,
+        "banRate": 0.02
+      },
+      "skillChanges": [
+        {
+          "skillName": "Lay the Mines",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/19220.png",
+          "skillIndex": "Skill 2",
+          "title": "Lay the Mines",
+          "description": "Base Damage:<br>Before: 200 (+40 per skill level) (+60% Physical Attack)<br>Now: 360 (+72 per skill level) (+80% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 200 (+40 per skill level) (+60% Physical Attack)\nNow: 360 (+72 per skill level) (+80% extra Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 533,
+      "heroName": "Agudo",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/TYN9rh81.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 51.94,
+        "pickRate": 0.49,
+        "banRate": 0.04
+      },
+      "skillChanges": [
+        {
+          "skillName": "Mountain Encounter",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/53300.png",
+          "skillIndex": "Passive",
+          "title": "Mountain Encounter",
+          "description": "Removed Effects: Health recovery from picking up Seed Mines and slow on enemies that touch Seed Mines",
+          "descriptionText": "Removed Effects: Health recovery from picking up Seed Mines and slow on enemies that touch Seed Mines"
+        },
+        {
+          "skillName": "Wild Growth",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/53310.png",
+          "skillIndex": "Skill 1",
+          "title": "Wild Growth",
+          "description": "Effect Adjustment: Monsters no longer trigger on-hit effects",
+          "descriptionText": "Effect Adjustment: Monsters no longer trigger on-hit effects"
+        },
+        {
+          "skillName": "Gorge Mobilization",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/53330.png",
+          "skillIndex": "Ultimate",
+          "title": "Gorge Mobilization",
+          "description": "Effect Adjustment:<br>Before: Furball triggers 50% on-hit effect<br>Now: Furball triggers 100% on-hit effect",
+          "descriptionText": "Effect Adjustment:\nBefore: Furball triggers 50% on-hit effect\nNow: Furball triggers 100% on-hit effect"
+        }
+      ]
+    },
+    {
+      "heroId": 168,
+      "heroName": "Lapulapu",
+      "heroIcon": "https://camp.honorofkings.com/camp/admin/default/AuWJ7G0J.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 55.6,
+        "pickRate": 0.55,
+        "banRate": 0.07
+      },
+      "skillChanges": [
+        {
+          "skillName": "Torrential Blade",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/16810.png",
+          "skillIndex": "Skill 1",
+          "title": "Torrential Blade",
+          "description": "Base Damage:<br>Before: 380 (+76 per skill level) (+120% Physical Attack)<br>Now: 350 (+70 per skill level) (+110% Physical Attack)<br>Weapon Flying Damage:<br>Before: 380 (+76 per skill level) (+120% Physical Attack)<br>Now: 350 (+70 per skill level) (+110% Physical Attack)<br>Cooldown:<br>Before: 8s (-0.3 per skill level)<br>Now: 10s (-0.4 per skill level)",
+          "descriptionText": "Base Damage:\nBefore: 380 (+76 per skill level) (+120% Physical Attack)\nNow: 350 (+70 per skill level) (+110% Physical Attack)\nWeapon Flying Damage:\nBefore: 380 (+76 per skill level) (+120% Physical Attack)\nNow: 350 (+70 per skill level) (+110% Physical Attack)\nCooldown:\nBefore: 8s (-0.3 per skill level)\nNow: 10s (-0.4 per skill level)"
+        },
+        {
+          "skillName": "Island's Blessing",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/16820.png",
+          "skillIndex": "Skill 2",
+          "title": "Island's Blessing",
+          "description": "Base Damage:<br>Before: 450 (+90 per skill level) (+90% Physical Attack)<br>Now: 400 (+80 per skill level) (+80% Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 450 (+90 per skill level) (+90% Physical Attack)\nNow: 400 (+80 per skill level) (+80% Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 132,
+      "heroName": "Marco Polo",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/48d8GxkP.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 50.7,
+        "pickRate": 2.18,
+        "banRate": 0.47
+      },
+      "skillChanges": [
+        {
+          "skillName": "Chain Reaction",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/13200.png",
+          "skillIndex": "Passive",
+          "title": "Chain Reaction",
+          "description": "True Damage:<br>Before: 40–82 (+35% Physical Attack) (can critical hit)<br>Now: 100–200 (+35% extra Physical Attack) (cannot critical hit)",
+          "descriptionText": "True Damage:\nBefore: 40–82 (+35% Physical Attack) (can critical hit)\nNow: 100–200 (+35% extra Physical Attack) (cannot critical hit)"
+        },
+        {
+          "skillName": "Resplendent Revolver",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/13210.png",
+          "skillIndex": "Skill 1",
+          "title": "Resplendent Revolver",
+          "description": "New Effect:<br>Can Physical Lifesteal, can critical hit<br>On-Hit Multiplier:<br>50% → Every 3 bullets count as 1 Basic Attack<br>Effect Adjustment:<br>Precision equipment passive multiplier adjusted to match Physical Attack bonus<br>Base Damage (counts as Basic Attack):<br>Before: 145 (+18 per skill level) (+25% Physical Attack) (cannot critical hit or lifesteal)<br>Now: 150 (+19 per skill level) (+23% Physical Attack) (can critical hit and lifesteal)",
+          "descriptionText": "New Effect:\nCan Physical Lifesteal, can critical hit\nOn-Hit Multiplier:\n50% → Every 3 bullets count as 1 Basic Attack\nEffect Adjustment:\nPrecision equipment passive multiplier adjusted to match Physical Attack bonus\nBase Damage (counts as Basic Attack):\nBefore: 145 (+18 per skill level) (+25% Physical Attack) (cannot critical hit or lifesteal)\nNow: 150 (+19 per skill level) (+23% Physical Attack) (can critical hit and lifesteal)"
+        },
+        {
+          "skillName": "Roaming Gun",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/13220.png",
+          "skillIndex": "Skill 2",
+          "title": "Roaming Gun",
+          "description": "Effect Adjustment: Skill cast point animation lengthened slightly",
+          "descriptionText": "Effect Adjustment: Skill cast point animation lengthened slightly"
+        },
+        {
+          "skillName": "Fevered Barrage",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/13230.png",
+          "skillIndex": "Ultimate",
+          "title": "Fevered Barrage",
+          "description": "New Effect:<br>Can Physical Lifesteal, can critical hit<br>On-Hit Multiplier:<br>50% → Every 3 barrages count as 1 Basic Attack<br>Effect Adjustment:<br>Precision equipment passive multiplier adjusted to match Physical Attack bonus<br>New Effect:<br>Every 2% Attack Speed increases skill casting speed by 1%.<br>Barrage Count:<br>Before: 12 (+1 for every 30% Attack Speed)<br>Now: 12 (+3 per skill level) (casting time increases proportionally with barrage count)<br>Base Damage (counts as Basic Attack):<br>Before: 165 (+60 per skill level) (+35% Physical Attack) (cannot critical hit or lifesteal)<br>Now: 170 (+65 per skill level) (+25% Physical Attack) (can critical hit and lifesteal)",
+          "descriptionText": "New Effect:\nCan Physical Lifesteal, can critical hit\nOn-Hit Multiplier:\n50% → Every 3 barrages count as 1 Basic Attack\nEffect Adjustment:\nPrecision equipment passive multiplier adjusted to match Physical Attack bonus\nNew Effect:\nEvery 2% Attack Speed increases skill casting speed by 1%.\nBarrage Count:\nBefore: 12 (+1 for every 30% Attack Speed)\nNow: 12 (+3 per skill level) (casting time increases proportionally with barrage count)\nBase Damage (counts as Basic Attack):\nBefore: 165 (+60 per skill level) (+35% Physical Attack) (cannot critical hit or lifesteal)\nNow: 170 (+65 per skill level) (+25% Physical Attack) (can critical hit and lifesteal)"
+        }
+      ]
+    },
+    {
+      "heroId": 133,
+      "heroName": "Di Renjie",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/XTSDAJkR.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 51.71,
+        "pickRate": 1.46,
+        "banRate": 0.03
+      },
+      "skillChanges": [
+        {
+          "skillName": "Respect the Law",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/13310.png",
+          "skillIndex": "Skill 1",
+          "title": "Respect the Law",
+          "description": "New Effect:<br>Every 2% Attack Speed increases skill casting speed by 1%<br>On-Hit Effect:<br>Each token triggers on-hit effects → Entire skill counts as 1 Basic Attack<br>Effect Adjustment:<br>Precision equipment passive multiplier adjusted to match Physical Attack bonus<br>Base Damage (counts as Basic Attack):<br>Before: 120 (+24 per skill level) (+24% Physical Attack) (cannot critical hit)<br>Now: 120 (+24 per skill level) (+18% Physical Attack) (can critical hit)<br>Additional Magical Damage:<br>Before: 100 (+20 per skill level) (+16% Physical Attack)<br>Now: 90 (+18 per skill level) (+18% extra Physical Attack)",
+          "descriptionText": "New Effect:\nEvery 2% Attack Speed increases skill casting speed by 1%\nOn-Hit Effect:\nEach token triggers on-hit effects → Entire skill counts as 1 Basic Attack\nEffect Adjustment:\nPrecision equipment passive multiplier adjusted to match Physical Attack bonus\nBase Damage (counts as Basic Attack):\nBefore: 120 (+24 per skill level) (+24% Physical Attack) (cannot critical hit)\nNow: 120 (+24 per skill level) (+18% Physical Attack) (can critical hit)\nAdditional Magical Damage:\nBefore: 100 (+20 per skill level) (+16% Physical Attack)\nNow: 90 (+18 per skill level) (+18% extra Physical Attack)"
+        },
+        {
+          "skillName": "Legal Immunity",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/13320.png",
+          "skillIndex": "Skill 2",
+          "title": "Legal Immunity",
+          "description": "On-Hit Effect:<br>Each token triggers on-hit effects → Entire skill counts as 1 Basic Attack<br>Effect Adjustment:<br>Precision equipment passive multiplier adjusted to match Physical Attack bonus<br>Physical Damage (counts as Basic Attack):<br>Before: 120 (+24 per skill level) (+24% Physical Attack) (cannot critical hit)<br>Now: 120 (+24 per skill level) (+18% extra Physical Attack) (can critical hit)<br>Additional Magical Damage:<br>Before: 100 (+20 per skill level) (+16% Physical Attack)<br>Now: 90 (+18 per skill level) (+18% extra Physical Attack)",
+          "descriptionText": "On-Hit Effect:\nEach token triggers on-hit effects → Entire skill counts as 1 Basic Attack\nEffect Adjustment:\nPrecision equipment passive multiplier adjusted to match Physical Attack bonus\nPhysical Damage (counts as Basic Attack):\nBefore: 120 (+24 per skill level) (+24% Physical Attack) (cannot critical hit)\nNow: 120 (+24 per skill level) (+18% extra Physical Attack) (can critical hit)\nAdditional Magical Damage:\nBefore: 100 (+20 per skill level) (+16% Physical Attack)\nNow: 90 (+18 per skill level) (+18% extra Physical Attack)"
+        },
+        {
+          "skillName": "Imperial Order",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/13330.png",
+          "skillIndex": "Ultimate",
+          "title": "Imperial Order",
+          "description": "Effect Adjustment: Removed on-hit effect",
+          "descriptionText": "Effect Adjustment: Removed on-hit effect"
+        }
+      ]
+    },
+    {
+      "heroId": 111,
+      "heroName": "Lady Sun",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/BmY46Zgb.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 48.04,
+        "pickRate": 1.85,
+        "banRate": 0.09
+      },
+      "skillChanges": [
+        {
+          "skillName": "Frag Grenade",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/11120.png",
+          "skillIndex": "Skill 2",
+          "title": "Frag Grenade",
+          "description": "Base Damage:<br>Before: 150 (+30 per skill level) (+100% Physical Attack)<br>Now: 380 (+76 per skill level) (+100% extra Physical Attack)<br>Extra Damage:<br>Before: 100 (+20 per skill level) (+20% Physical Attack)<br>Now: 120 (+24 per skill level) (+30% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 150 (+30 per skill level) (+100% Physical Attack)\nNow: 380 (+76 per skill level) (+100% extra Physical Attack)\nExtra Damage:\nBefore: 100 (+20 per skill level) (+20% Physical Attack)\nNow: 120 (+24 per skill level) (+30% extra Physical Attack)"
+        },
+        {
+          "skillName": "Ultimate Shell",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/11130.png",
+          "skillIndex": "Ultimate",
+          "title": "Ultimate Shell",
+          "description": "Base Damage:<br>Before: 500 (+250 per skill level) (+185% Physical Attack)<br>Now: 840 (+420 per skill level) (+210% extra Physical Attack)",
+          "descriptionText": "Base Damage:\nBefore: 500 (+250 per skill level) (+185% Physical Attack)\nNow: 840 (+420 per skill level) (+210% extra Physical Attack)"
+        }
+      ]
+    },
+    {
+      "heroId": 524,
+      "heroName": "Meng Ya",
+      "heroIcon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/vhBTA9jh.png",
+      "shortDesc": "Adjusted Skill Damage",
+      "type": "Stat Changes",
+      "tagEnum": 6,
+      "tagColor": "#0DAFEB26",
+      "stats": {
+        "winRate": 53.94,
+        "pickRate": 0.43,
+        "banRate": 0.01
+      },
+      "skillChanges": [
+        {
+          "skillName": "Awesome Barrage",
+          "skillIcon": "https://camp.honorofkings.com/Global/Common/UGUI/SystemRes/902_HeroSkillIcon/52410.png",
+          "skillIndex": "Skill 1",
+          "title": "Awesome Barrage",
+          "description": "New Effect:<br>Can lifesteal, every 3 bullets counts as 1 Basic Attack<br>On-Hit Multiplier:<br>50% → Every 3 bullets counts as 1 Basic Attack<br>Effect Adjustment:<br>Before: Every 1.5% Attack Speed increases firing rate by 1%, up to 100%<br>Now: Every 2% Attack Speed increases skill casting speed by 1%<br>Duration:<br>Before: 5s<br>Now: 4.5s (+0.9 per skill level)",
+          "descriptionText": "New Effect:\nCan lifesteal, every 3 bullets counts as 1 Basic Attack\nOn-Hit Multiplier:\n50% → Every 3 bullets counts as 1 Basic Attack\nEffect Adjustment:\nBefore: Every 1.5% Attack Speed increases firing rate by 1%, up to 100%\nNow: Every 2% Attack Speed increases skill casting speed by 1%\nDuration:\nBefore: 5s\nNow: 4.5s (+0.9 per skill level)"
+        }
+      ]
+    }
+  ],
+  "heroList": [
+    {
+      "heroId": 166,
+      "heroName": "Arthur",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/YTBrsBIg.png"
+    },
+    {
+      "heroId": 112,
+      "heroName": "Luban No.7",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/0VBMiUN5.png"
+    },
+    {
+      "heroId": 105,
+      "heroName": "Lian Po",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/csLOp1dL.png"
+    },
+    {
+      "heroId": 106,
+      "heroName": "Xiao Qiao",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/paTVVlNq.png"
+    },
+    {
+      "heroId": 522,
+      "heroName": "Yao",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/xw0HrvxD.png"
+    },
+    {
+      "heroId": 153,
+      "heroName": "Gao Changgong",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/hwk1ad6d.png"
+    },
+    {
+      "heroId": 118,
+      "heroName": "Sun Bin",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/1zkBQ1l1.png"
+    },
+    {
+      "heroId": 107,
+      "heroName": "Zilong",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/9xqbsAQC.png"
+    },
+    {
+      "heroId": 108,
+      "heroName": "Mozi",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/Za4OlJ6t.png"
+    },
+    {
+      "heroId": 124,
+      "heroName": "Zhou Yu",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/kqkpA18w.png"
+    },
+    {
+      "heroId": 111,
+      "heroName": "Lady Sun",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/BmY46Zgb.png"
+    },
+    {
+      "heroId": 114,
+      "heroName": "Liu Shan",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/i8WMjP6d.png"
+    },
+    {
+      "heroId": 109,
+      "heroName": "Daji",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/dYxuS6IA.png"
+    },
+    {
+      "heroId": 113,
+      "heroName": "Zhuangzi",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/UZC54GWu.png"
+    },
+    {
+      "heroId": 115,
+      "heroName": "Gao",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/QWFCuWNn.png"
+    },
+    {
+      "heroId": 581,
+      "heroName": "Flowborn (Tank)",
+      "icon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/jbrX5mQc.jpeg"
+    },
+    {
+      "heroId": 110,
+      "heroName": "Garuda",
+      "icon": "https://camp.honorofkings.com/camp/admin/default/h6UHy1TN.png"
+    },
+    {
+      "heroId": 116,
+      "heroName": "Arke",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/IUMPYUy4.png"
+    },
+    {
+      "heroId": 117,
+      "heroName": "Wuyan",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/D1f9UN1O.png"
+    },
+    {
+      "heroId": 119,
+      "heroName": "Dr Bian",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/YmpeG9H2.png"
+    },
+    {
+      "heroId": 120,
+      "heroName": "Bai Qi",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/uY7c38Tt.png"
+    },
+    {
+      "heroId": 150,
+      "heroName": "Han Xin",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/QTcSGEgM.png"
+    },
+    {
+      "heroId": 121,
+      "heroName": "Mi Yue",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/eHvcCJb0.png"
+    },
+    {
+      "heroId": 169,
+      "heroName": "Hou Yi",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/S5isJokI.png"
+    },
+    {
+      "heroId": 123,
+      "heroName": "Lu Bu",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/dXLF2kE7.png"
+    },
+    {
+      "heroId": 126,
+      "heroName": "Dun",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/23rrkYYy.png"
+    },
+    {
+      "heroId": 127,
+      "heroName": "Lady Zhen",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/gqPEOybC.png"
+    },
+    {
+      "heroId": 182,
+      "heroName": "Gan & Mo",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/ui5UKQex.png"
+    },
+    {
+      "heroId": 128,
+      "heroName": "Fatih",
+      "icon": "https://camp.honorofkings.com/camp/admin/default/6IY77h7c.png"
+    },
+    {
+      "heroId": 129,
+      "heroName": "Dian Wei",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/y6IMFSlI.png"
+    },
+    {
+      "heroId": 130,
+      "heroName": "Musashi",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/jgvSlz3u.png"
+    },
+    {
+      "heroId": 131,
+      "heroName": "Li Bai",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/k3w1wjDA.png"
+    },
+    {
+      "heroId": 170,
+      "heroName": "Liu Bei",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/argPlTxR.png"
+    },
+    {
+      "heroId": 132,
+      "heroName": "Marco Polo",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/48d8GxkP.png"
+    },
+    {
+      "heroId": 558,
+      "heroName": "Umbrosa",
+      "icon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/ioDVAbAf.jpg"
+    },
+    {
+      "heroId": 133,
+      "heroName": "Di Renjie",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/XTSDAJkR.png"
+    },
+    {
+      "heroId": 134,
+      "heroName": "Dharma",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/9u997w0x.png"
+    },
+    {
+      "heroId": 148,
+      "heroName": "Ziya",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/km2HzQ71.png"
+    },
+    {
+      "heroId": 135,
+      "heroName": "Xiang Yu",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/FLyy9J46.png"
+    },
+    {
+      "heroId": 517,
+      "heroName": "Augran",
+      "icon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/ue6KY05b.png"
+    },
+    {
+      "heroId": 174,
+      "heroName": "Consort Yu",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/Ku5RzFmQ.png"
+    },
+    {
+      "heroId": 137,
+      "heroName": "Sima Yi",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/sU3BsR6P.png"
+    },
+    {
+      "heroId": 139,
+      "heroName": "Fuzi",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/UhQkVUBi.png"
+    },
+    {
+      "heroId": 162,
+      "heroName": "Nakoruru",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/H9WAmWdN.png"
+    },
+    {
+      "heroId": 157,
+      "heroName": "Mai Shiranui",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/4jaM0F19.png"
+    },
+    {
+      "heroId": 140,
+      "heroName": "Guan Yu",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/V5e2k18Z.png"
+    },
+    {
+      "heroId": 146,
+      "heroName": "Luna",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/hz3BqNue.png"
+    },
+    {
+      "heroId": 584,
+      "heroName": "Flowborn (Marksman)",
+      "icon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/WuG07My1.jpeg"
+    },
+    {
+      "heroId": 141,
+      "heroName": "Diaochan",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/qFBebEbk.png"
+    },
+    {
+      "heroId": 142,
+      "heroName": "Angela",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/wjaExUFU.png"
+    },
+    {
+      "heroId": 154,
+      "heroName": "Mulan",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/p4dfuWXS.png"
+    },
+    {
+      "heroId": 149,
+      "heroName": "Liu Bang",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/bVHGeH45.png"
+    },
+    {
+      "heroId": 533,
+      "heroName": "Agudo",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/TYN9rh81.png"
+    },
+    {
+      "heroId": 152,
+      "heroName": "Wang Zhaojun",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/lhZtGJlg.png"
+    },
+    {
+      "heroId": 155,
+      "heroName": "Erin",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/joVNQWhw.png"
+    },
+    {
+      "heroId": 178,
+      "heroName": "Yang Jian",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/LntokS4z.png"
+    },
+    {
+      "heroId": 173,
+      "heroName": "Fang",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/6dGNjKTe.png"
+    },
+    {
+      "heroId": 156,
+      "heroName": "Liang",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/cNugkXGO.png"
+    },
+    {
+      "heroId": 514,
+      "heroName": "Allain",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/Ek9OHopQ.png"
+    },
+    {
+      "heroId": 163,
+      "heroName": "Ukyo Tachibana",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/8e9WRFgL.png"
+    },
+    {
+      "heroId": 180,
+      "heroName": "Nezha",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/WDh84DWg.png"
+    },
+    {
+      "heroId": 167,
+      "heroName": "Wukong",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/Go3mMeu4.png"
+    },
+    {
+      "heroId": 168,
+      "heroName": "Lapulapu",
+      "icon": "https://camp.honorofkings.com/camp/admin/default/AuWJ7G0J.png"
+    },
+    {
+      "heroId": 171,
+      "heroName": "Zhang Fei",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/w0QS7N1L.png"
+    },
+    {
+      "heroId": 175,
+      "heroName": "Kui",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/wRGzV266.png"
+    },
+    {
+      "heroId": 176,
+      "heroName": "Yuhuan",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/r97AVgaV.png"
+    },
+    {
+      "heroId": 177,
+      "heroName": "Chano",
+      "icon": "https://camp.honorofkings.com/camp/admin/default/sJURXorM.png"
+    },
+    {
+      "heroId": 503,
+      "heroName": "Biron",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/F3A0JkoT.png"
+    },
+    {
+      "heroId": 179,
+      "heroName": "Nuwa",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/E39kxNsD.png"
+    },
+    {
+      "heroId": 183,
+      "heroName": "Athena",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/BEh6QC3Q.png"
+    },
+    {
+      "heroId": 193,
+      "heroName": "Kaizer",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/xUdtJiLO.png"
+    },
+    {
+      "heroId": 184,
+      "heroName": "Cai Yan",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/kQXkW7ab.png"
+    },
+    {
+      "heroId": 198,
+      "heroName": "Menki",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/Ym7KcrIW.png"
+    },
+    {
+      "heroId": 187,
+      "heroName": "Donghuang",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/PRcq49iS.png"
+    },
+    {
+      "heroId": 189,
+      "heroName": "Guiguzi",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/AXjJlMvi.png"
+    },
+    {
+      "heroId": 195,
+      "heroName": "Xuance",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/keW8Hfo0.png"
+    },
+    {
+      "heroId": 190,
+      "heroName": "Kongming",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/XDnXeq3x.png"
+    },
+    {
+      "heroId": 191,
+      "heroName": "Da Qiao",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/IEPtzR5z.png"
+    },
+    {
+      "heroId": 192,
+      "heroName": "Huang Zhong",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/LNECT7PW.png"
+    },
+    {
+      "heroId": 196,
+      "heroName": "Shouyue",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/4bUKKH66.png"
+    },
+    {
+      "heroId": 197,
+      "heroName": "Yixing",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/RLA5jvBk.png"
+    },
+    {
+      "heroId": 199,
+      "heroName": "Arli",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/hF8AFVqh.png"
+    },
+    {
+      "heroId": 534,
+      "heroName": "Sakeer",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/ionwVFtV.png"
+    },
+    {
+      "heroId": 501,
+      "heroName": "Ming",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/ubeT1R84.png"
+    },
+    {
+      "heroId": 502,
+      "heroName": "Pei",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/XlRczGYM.png"
+    },
+    {
+      "heroId": 504,
+      "heroName": "Milady",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/orlOit3f.png"
+    },
+    {
+      "heroId": 505,
+      "heroName": "Yaria",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/uHnzeJbu.png"
+    },
+    {
+      "heroId": 506,
+      "heroName": "Cirrus",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/bwygx1aS.png"
+    },
+    {
+      "heroId": 507,
+      "heroName": "Li Xin",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/mWSBbpVr.png"
+    },
+    {
+      "heroId": 508,
+      "heroName": "Garo",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/g0jHNDf6.png"
+    },
+    {
+      "heroId": 510,
+      "heroName": "Sun Ce",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/Te1nmDGP.png"
+    },
+    {
+      "heroId": 513,
+      "heroName": "Shangguan",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/zyA68GFr.png"
+    },
+    {
+      "heroId": 646,
+      "heroName": "Butterfly",
+      "icon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/FPq2P4ew.png"
+    },
+    {
+      "heroId": 521,
+      "heroName": "Haya",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/iIdXNhQ5.png"
+    },
+    {
+      "heroId": 523,
+      "heroName": "Shi",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/MjBadKpJ.png"
+    },
+    {
+      "heroId": 524,
+      "heroName": "Meng Ya",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/vhBTA9jh.png"
+    },
+    {
+      "heroId": 528,
+      "heroName": "Lam",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/02i6M2YK.png"
+    },
+    {
+      "heroId": 531,
+      "heroName": "Jing",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/HVRw4cpB.png"
+    },
+    {
+      "heroId": 536,
+      "heroName": "Charlotte",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/iIwO0Kwk.png"
+    },
+    {
+      "heroId": 538,
+      "heroName": "Ying",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/diRuUQDV.png"
+    },
+    {
+      "heroId": 542,
+      "heroName": "Feyd",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/m8aOqFQE.png"
+    },
+    {
+      "heroId": 545,
+      "heroName": "Alessio",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/nnafEHV0.png"
+    },
+    {
+      "heroId": 556,
+      "heroName": "Ata",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/eafz1moy.png"
+    },
+    {
+      "heroId": 172,
+      "heroName": "Chicha",
+      "icon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/lkU98jAV.png"
+    },
+    {
+      "heroId": 564,
+      "heroName": "Mayene",
+      "icon": "https://camp.honorofkings.com/social/game/src/image_hero_head_128*128/FsGXCnH1.png"
+    },
+    {
+      "heroId": 159,
+      "heroName": "Dolia",
+      "icon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/tfvb3IJf.png"
+    },
+    {
+      "heroId": 563,
+      "heroName": "Heino",
+      "icon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/YO6iwLAg.jpg"
+    },
+    {
+      "heroId": 547,
+      "heroName": "Luara",
+      "icon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/znRnu3kt.png"
+    },
+    {
+      "heroId": 519,
+      "heroName": "Ao'yin",
+      "icon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/OzH2TSZN.jpg"
+    },
+    {
+      "heroId": 577,
+      "heroName": "Dyadia",
+      "icon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/Qdvu6qgO.png"
+    },
+    {
+      "heroId": 582,
+      "heroName": "Flowborn (Mage)",
+      "icon": "https://camp.honorofkings.com/camp/admin/hero/head_128-128/66xErXNs.jpeg"
+    }
+  ]
+}

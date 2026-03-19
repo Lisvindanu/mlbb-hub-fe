@@ -1,0 +1,27 @@
+{
+  "name": "HoK Hub - Honor of Kings Community",
+  "short_name": "HoK Hub",
+  "description": "Your ultimate Honor of Kings companion. Explore hero guides, tier lists, patch notes, counter picks, and community tools.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0e27",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/hokhub.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["games", "entertainment"],
+  "lang": "en",
+  "dir": "ltr"
+}

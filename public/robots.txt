@@ -1,0 +1,10 @@
+# robots.txt for HoK Hub
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://hok-hub.project-n.site/sitemap.xml
+
+# Disallow admin/api paths
+Disallow: /api/
+Disallow: /admin/
