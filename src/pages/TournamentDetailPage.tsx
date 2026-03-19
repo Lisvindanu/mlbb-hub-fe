@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Trophy, Users, Copy, Check, Play, Shield, LogIn, Settings,
   Gift, CalendarDays, Lock, Eye, EyeOff, MessageCircle, ScrollText,
-  ChevronLeft,
+  ChevronLeft, X, Crown, ChevronDown, ChevronUp,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useUser } from '../hooks/useUser';
@@ -25,7 +25,9 @@ function calcY(roundIdx: number, matchIdx: number): number {
 }
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-interface Team { id: number; name: string; seed: number | null; }
+interface Player { id: number; team_id: number; player_name: string; role: string; is_captain: boolean; }
+interface Team { id: number; name: string; seed: number | null; logo_url?: string; players?: Player[]; }
+interface JoinPlayer { player_name: string; role: string; is_captain: boolean; }
 interface Match {
   id: number; round: number; match_number: number; bracket: string;
   team1_id: number | null; team2_id: number | null;
@@ -54,11 +56,11 @@ async function fetchTournament(id: string): Promise<Tournament> {
   return res.json();
 }
 
-async function joinTournament(id: string, team_name: string, token: string) {
+async function joinTournament(id: string, team_name: string, token: string, logo_url?: string, players?: JoinPlayer[]) {
   const res = await fetch(`${API_BASE}/api/tournaments/${id}/join`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-    body: JSON.stringify({ team_name }),
+    body: JSON.stringify({ team_name, logo_url, players }),
   });
   if (!res.ok) throw new Error((await res.json()).error);
   return res.json();
@@ -551,6 +553,291 @@ function RoomInfoCard({ room_id, room_password }: { room_id?: string; room_passw
   );
 }
 
+// ─── MLBB lane roles ──────────────────────────────────────────────────────────
+const LANE_ROLES = ['Roamer', 'Jungler', 'Mid Lane', 'EXP Lane', 'Gold Lane', 'Cadangan'];
+
+const ROLE_COLOR: Record<string, string> = {
+  Roamer: 'text-blue-400',
+  Jungler: 'text-green-400',
+  'Mid Lane': 'text-purple-400',
+  'EXP Lane': 'text-orange-400',
+  'Gold Lane': 'text-yellow-400',
+  Cadangan: 'text-gray-500',
+};
+
+function TeamAvatar({ name, logoUrl, size = 'md' }: { name: string; logoUrl?: string; size?: 'sm' | 'md' }) {
+  const [imgErr, setImgErr] = useState(false);
+  const cls = size === 'sm'
+    ? 'w-7 h-7 rounded-lg text-xs font-bold'
+    : 'w-10 h-10 rounded-xl text-sm font-bold';
+  if (logoUrl && !imgErr) {
+    return (
+      <img
+        src={logoUrl}
+        alt={name}
+        onError={() => setImgErr(true)}
+        className={`${cls} object-cover border border-white/10 shrink-0`}
+      />
+    );
+  }
+  const initial = name.charAt(0).toUpperCase();
+  const colors = ['bg-primary-500/30 text-primary-300', 'bg-yellow-500/30 text-yellow-300', 'bg-green-500/30 text-green-300', 'bg-purple-500/30 text-purple-300', 'bg-red-500/30 text-red-300'];
+  const color = colors[name.charCodeAt(0) % colors.length];
+  return (
+    <div className={`${cls} ${color} flex items-center justify-center border border-white/10 shrink-0`}>
+      {initial}
+    </div>
+  );
+}
+
+// ─── Join modal ───────────────────────────────────────────────────────────────
+function JoinModal({ tournamentId, token, onSuccess, onClose }: {
+  tournamentId: string; token: string; onSuccess: () => void; onClose: () => void;
+}) {
+  const EMPTY_PLAYERS: JoinPlayer[] = Array.from({ length: 5 }, (_, i) => ({
+    player_name: '', role: '', is_captain: i === 0,
+  }));
+
+  const [teamName, setTeamName] = useState('');
+  const [logoUrl, setLogoUrl] = useState('');
+  const [players, setPlayers] = useState<JoinPlayer[]>(EMPTY_PLAYERS);
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState('');
+  const [logoImgErr, setLogoImgErr] = useState(false);
+
+  function updatePlayer(i: number, field: keyof JoinPlayer, value: string | boolean) {
+    setPlayers(ps => ps.map((p, idx) => idx === i ? { ...p, [field]: value } : p));
+  }
+
+  function setCaptain(i: number) {
+    setPlayers(ps => ps.map((p, idx) => ({ ...p, is_captain: idx === i })));
+  }
+
+  async function submit() {
+    if (!teamName.trim()) { setErr('Nama tim wajib diisi'); return; }
+    setLoading(true);
+    setErr('');
+    try {
+      const activePlayers = players.filter(p => p.player_name.trim());
+      await joinTournament(tournamentId, teamName.trim(), token, logoUrl.trim() || undefined, activePlayers.length > 0 ? activePlayers : undefined);
+      onSuccess();
+      onClose();
+    } catch (e: unknown) {
+      setErr(e instanceof Error ? e.message : 'Terjadi kesalahan');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.92, y: 16 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.92, y: 16 }}
+        transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+        className="bg-dark-300 border border-white/10 rounded-2xl w-full max-w-md shadow-2xl flex flex-col"
+        style={{ maxHeight: 'calc(100vh - 2rem)' }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-white/8 shrink-0">
+          <h3 className="font-bold text-white flex items-center gap-2">
+            <Shield className="w-4 h-4 text-primary-400" />
+            Daftarkan Tim
+          </h3>
+          <button onClick={onClose} className="text-gray-500 hover:text-white transition-colors">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* Scrollable body */}
+        <div className="overflow-y-auto flex-1 px-6 py-5 space-y-5">
+
+          {/* Identitas Tim */}
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Identitas Tim</p>
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs text-gray-400 mb-1.5 block">Nama Tim *</label>
+                <input
+                  className="w-full bg-dark-400 border border-white/10 rounded-xl px-3 py-2.5 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-primary-500/50 transition-colors"
+                  placeholder="Nama tim kamu di MLBB"
+                  value={teamName}
+                  onChange={e => setTeamName(e.target.value)}
+                  autoFocus
+                />
+              </div>
+              <div>
+                <label className="text-xs text-gray-400 mb-1.5 block">
+                  Logo Tim <span className="text-gray-600">(URL gambar, opsional)</span>
+                </label>
+                <div className="flex gap-2 items-center">
+                  <input
+                    className="flex-1 bg-dark-400 border border-white/10 rounded-xl px-3 py-2.5 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-primary-500/50 transition-colors"
+                    placeholder="https://i.imgur.com/..."
+                    value={logoUrl}
+                    onChange={e => { setLogoUrl(e.target.value); setLogoImgErr(false); }}
+                  />
+                  {logoUrl.trim() && !logoImgErr ? (
+                    <img
+                      src={logoUrl.trim()}
+                      alt="preview"
+                      onError={() => setLogoImgErr(true)}
+                      className="w-10 h-10 rounded-lg object-cover border border-white/15 shrink-0"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-lg bg-dark-400 border border-white/10 flex items-center justify-center shrink-0">
+                      <Shield className="w-4 h-4 text-gray-600" />
+                    </div>
+                  )}
+                </div>
+                {logoImgErr && <p className="text-[10px] text-red-400 mt-1">Gambar gagal dimuat — cek URL</p>}
+              </div>
+            </div>
+          </div>
+
+          {/* Data Pemain */}
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">
+              Data Pemain <span className="normal-case font-normal text-gray-600">(opsional, maks 5)</span>
+            </p>
+            <p className="text-[10px] text-gray-600 mb-3">Klik <Crown className="w-2.5 h-2.5 inline mb-0.5" /> untuk tandai captain</p>
+            <div className="space-y-2">
+              {players.map((p, i) => (
+                <div key={i} className="flex gap-2 items-center">
+                  <button
+                    onClick={() => setCaptain(i)}
+                    title="Tandai captain"
+                    className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all shrink-0 ${
+                      p.is_captain
+                        ? 'bg-yellow-500/20 border border-yellow-500/40 text-yellow-400'
+                        : 'bg-dark-400/60 border border-white/8 text-gray-600 hover:text-yellow-500/60'
+                    }`}
+                  >
+                    <Crown className="w-3 h-3" />
+                  </button>
+                  <input
+                    className="flex-1 min-w-0 bg-dark-400 border border-white/10 rounded-lg px-2.5 py-1.5 text-white placeholder-gray-600 text-xs focus:outline-none focus:border-primary-500/50 transition-colors"
+                    placeholder={`Pemain ${i + 1} (IGN)`}
+                    value={p.player_name}
+                    onChange={e => updatePlayer(i, 'player_name', e.target.value)}
+                  />
+                  <select
+                    value={p.role}
+                    onChange={e => updatePlayer(i, 'role', e.target.value)}
+                    className="w-28 bg-dark-400 border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-primary-500/50 transition-colors shrink-0"
+                  >
+                    <option value="">Lane/Role</option>
+                    {LANE_ROLES.map(r => <option key={r} value={r}>{r}</option>)}
+                  </select>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {err && <p className="text-red-400 text-xs">{err}</p>}
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 pb-5 pt-4 border-t border-white/8 shrink-0 flex gap-3">
+          <button
+            onClick={onClose}
+            className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 text-sm transition-all"
+          >
+            Batal
+          </button>
+          <button
+            onClick={submit}
+            disabled={!teamName.trim() || loading}
+            className="flex-1 py-2.5 rounded-xl bg-primary-500 hover:bg-primary-600 disabled:opacity-50 text-white text-sm font-semibold flex items-center justify-center gap-2 transition-all"
+          >
+            {loading
+              ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              : <><Shield className="w-3.5 h-3.5" /> Daftar Tim</>}
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ─── Team list with expandable roster ────────────────────────────────────────
+function TeamList({ teams }: { teams: Team[] }) {
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+
+  return (
+    <div className="space-y-1.5">
+      {teams.map((team, i) => {
+        const isExpanded = expandedId === team.id;
+        const hasPlayers = (team.players?.length ?? 0) > 0;
+        const captain = team.players?.find(p => p.is_captain);
+
+        return (
+          <div key={team.id} className="rounded-lg bg-white/[0.03] overflow-hidden">
+            <div
+              className={`flex items-center gap-2 px-2 py-1.5 ${hasPlayers ? 'cursor-pointer hover:bg-white/[0.05]' : ''} transition-all`}
+              onClick={() => hasPlayers && setExpandedId(isExpanded ? null : team.id)}
+            >
+              <span className="text-xs text-gray-600 w-4 text-right shrink-0">{team.seed ?? i + 1}</span>
+              <TeamAvatar name={team.name} logoUrl={team.logo_url} size="sm" />
+              <div className="flex-1 min-w-0">
+                <span className="text-sm text-gray-300 truncate block">{team.name}</span>
+                {captain && (
+                  <span className="text-[10px] text-gray-600 truncate">
+                    <Crown className="w-2 h-2 inline mr-0.5 text-yellow-600" />{captain.player_name}
+                  </span>
+                )}
+              </div>
+              {hasPlayers && (
+                <div className="flex items-center gap-1 shrink-0">
+                  <span className="text-[10px] text-gray-600">{team.players!.length}p</span>
+                  {isExpanded
+                    ? <ChevronUp className="w-3 h-3 text-gray-600" />
+                    : <ChevronDown className="w-3 h-3 text-gray-600" />}
+                </div>
+              )}
+            </div>
+
+            <AnimatePresence>
+              {isExpanded && hasPlayers && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-3 pb-2 pt-1 space-y-1 border-t border-white/5">
+                    {team.players!.map(p => (
+                      <div key={p.id} className="flex items-center gap-2">
+                        {p.is_captain && <Crown className="w-2.5 h-2.5 text-yellow-500 shrink-0" />}
+                        {!p.is_captain && <div className="w-2.5" />}
+                        <span className="text-xs text-gray-300 flex-1 truncate">{p.player_name}</span>
+                        {p.role && (
+                          <span className={`text-[10px] shrink-0 ${ROLE_COLOR[p.role] ?? 'text-gray-500'}`}>
+                            {p.role}
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─── Main page ────────────────────────────────────────────────────────────────
 export function TournamentDetailPage() {
   const { id } = useParams({ strict: false }) as { id: string };
@@ -564,7 +851,7 @@ export function TournamentDetailPage() {
     refetchInterval: 20000,
   });
 
-  const [joinName, setJoinName] = useState('');
+  const [showJoinModal, setShowJoinModal] = useState(false);
   const [copied, setCopied] = useState(false);
   const [startErr, setStartErr] = useState('');
   const [roomForm, setRoomForm] = useState({ room_id: '', room_password: '' });
@@ -584,14 +871,6 @@ export function TournamentDetailPage() {
     }
     return () => { document.title = 'MLBB Hub - Mobile Legends: Bang Bang Community Hub'; };
   }, [t]);
-
-  const joinMut = useMutation({
-    mutationFn: () => joinTournament(id, joinName, token!),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tournament', id] });
-      setJoinName('');
-    },
-  });
 
   const startMut = useMutation({
     mutationFn: () => startTournament(id, token!),
@@ -804,41 +1083,19 @@ export function TournamentDetailPage() {
               {t.teams.length === 0 ? (
                 <p className="text-xs text-gray-600 text-center py-3">Belum ada tim</p>
               ) : (
-                <div className="space-y-1.5">
-                  {t.teams.map((team, i) => (
-                    <div key={team.id} className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-white/[0.03]">
-                      <span className="text-xs text-gray-600 w-4 text-right">{team.seed ?? i + 1}</span>
-                      <Shield className="w-3 h-3 text-gray-600" />
-                      <span className="text-sm text-gray-300 flex-1 truncate">{team.name}</span>
-                    </div>
-                  ))}
-                </div>
+                <TeamList teams={t.teams} />
               )}
 
               {/* Join form */}
               {t.status === 'registration' && (
                 <div className="mt-4 pt-4 border-t border-white/5">
                   {isAuthenticated ? (
-                    <>
-                      <p className="text-xs text-gray-500 mb-1">Daftarkan tim kamu</p>
-                      <p className="text-[10px] text-gray-600 mb-2">Masukkan nama tim kamu di MLBB</p>
-                      <input
-                        className="w-full bg-dark-400 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-primary-500/50 mb-2 transition-colors"
-                        placeholder="Nama Tim"
-                        value={joinName}
-                        onChange={e => setJoinName(e.target.value)}
-                      />
-                      {joinMut.error && (
-                        <p className="text-red-400 text-xs mb-2">{(joinMut.error as Error).message}</p>
-                      )}
-                      <button
-                        onClick={() => joinMut.mutate()}
-                        disabled={!joinName.trim() || joinMut.isPending}
-                        className="w-full py-2 bg-primary-500 hover:bg-primary-600 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors"
-                      >
-                        {joinMut.isPending ? 'Mendaftar...' : 'Daftar Tim'}
-                      </button>
-                    </>
+                    <button
+                      onClick={() => setShowJoinModal(true)}
+                      className="w-full py-2.5 bg-primary-500 hover:bg-primary-600 text-white rounded-xl text-sm font-medium flex items-center justify-center gap-2 transition-colors"
+                    >
+                      <Shield className="w-3.5 h-3.5" /> Daftarkan Tim
+                    </button>
                   ) : (
                     <Link
                       to="/auth"
@@ -1002,6 +1259,18 @@ export function TournamentDetailPage() {
             boFormat={t.bo_format ?? 'BO3'}
             onSuccess={refresh}
             onClose={() => setWinnerModal(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ── Join modal ───────────────────────────────────────────────────── */}
+      <AnimatePresence>
+        {showJoinModal && (
+          <JoinModal
+            tournamentId={id}
+            token={token ?? ''}
+            onSuccess={refresh}
+            onClose={() => setShowJoinModal(false)}
           />
         )}
       </AnimatePresence>
