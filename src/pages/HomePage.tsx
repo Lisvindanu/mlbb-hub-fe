@@ -150,7 +150,7 @@ export function HomePage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
-            src="/mlbbhub-logo.webp"
+            src="/mlbbhub-bg.webp"
             alt="Mobile Legends: Bang Bang Heroes"
             className="w-full h-full object-cover"
             fetchPriority="high"
