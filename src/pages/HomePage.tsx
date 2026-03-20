@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { ArrowRight, ArrowDown, Users, Crown, Palette, Shield, Zap, Layers, Package, BarChart2, Music2 } from 'lucide-react';
+import { ArrowRight, ArrowDown, Users, Crown, Palette, Shield, Zap, Layers, Package, BarChart2, Music2, X } from 'lucide-react';
 import { useHeroes } from '../hooks/useHeroes';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
