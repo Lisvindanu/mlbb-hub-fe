@@ -32,7 +32,7 @@ function RankBadge({ points }: { points: number }) {
         style={{ filter: `drop-shadow(0 0 6px ${tier.glow}99)` }}
       />
       <p className="text-[9px] font-bold mt-0.5 leading-none" style={{ color: tier.textColor }}>
-        {tier.name === 'Grand Master' ? 'G.Master' : tier.name}
+        {tier.name === 'Mythical Glory' ? 'M.Glory' : tier.name === 'Mythical Honor' ? 'M.Honor' : tier.name}
       </p>
     </div>
   );
