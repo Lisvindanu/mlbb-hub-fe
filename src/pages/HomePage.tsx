@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { ArrowRight, ArrowDown, Users, Crown, Palette, Shield, Zap, Layers, Package, BarChart2, AlertTriangle, X, Music2 } from 'lucide-react';
+import { ArrowRight, ArrowDown, Users, Crown, Palette, Shield, Zap, Layers, Package, BarChart2, Music2 } from 'lucide-react';
 import { useHeroes } from '../hooks/useHeroes';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
@@ -77,14 +77,6 @@ function TrakteerMobileSection() {
 
 export function HomePage() {
   const { data: heroes } = useHeroes();
-  const [bannerDismissed, setBannerDismissed] = useState(
-    () => localStorage.getItem('incident-banner-dismissed') === '1'
-  );
-
-  const dismissBanner = () => {
-    localStorage.setItem('incident-banner-dismissed', '1');
-    setBannerDismissed(true);
-  };
 
   const features = [
     {
