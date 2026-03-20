@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchContributors } from '../api/tierLists';
 import { Loading } from '../components/ui/Loading';
-import { Trophy, Users, ListChecks, ThumbsUp, X, Loader2, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { Trophy, Users, ListChecks, ThumbsUp, X, Loader2, Clock, CheckCircle, XCircle, User } from 'lucide-react';
+import { getBadges } from '../components/dashboard/ProfileSection';
 
 const RANK_TIERS = [
   { name: 'Mythical Glory', minPts: 5000, image: 'https://static.wikia.nocookie.net/mobile-legends/images/4/42/Mythical_Glory.png/revision/latest?cb=20240224062034', glow: '#FFB300', textColor: '#FFD54F' },
@@ -164,10 +165,31 @@ export function ContributorsPage() {
                     <p className="text-xs font-bold text-gray-500">#{rank}</p>
                   </div>
 
+                  {/* Avatar */}
+                  <div className="flex-shrink-0 relative">
+                    <div className={`w-10 h-10 rounded-full overflow-hidden border-2 ${contributor.hasDonorFrame ? 'border-yellow-400 shadow-[0_0_10px_#FFB30066]' : 'border-white/15'}`}>
+                      {contributor.avatar ? (
+                        <img src={`${API_BASE_URL}${contributor.avatar.startsWith('/') ? contributor.avatar : '/' + contributor.avatar}`} alt={contributor.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full bg-dark-300 flex items-center justify-center">
+                          <User className="w-5 h-5 text-gray-500" />
+                        </div>
+                      )}
+                    </div>
+                    {contributor.hasDonorFrame && (
+                      <div className="absolute -bottom-0.5 -right-0.5 text-[10px] leading-none">💝</div>
+                    )}
+                  </div>
+
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <h3 className="text-base md:text-xl font-bold text-white truncate">{contributor.name}</h3>
+                      <div className="flex items-center gap-2 min-w-0">
+                        <h3 className="text-base md:text-xl font-bold text-white truncate">{contributor.name}</h3>
+                        {getBadges(contributor.totalContributions || 0).slice(0, 1).map(b => (
+                          <span key={b.id} title={b.name} className="text-base leading-none flex-shrink-0">{b.icon}</span>
+                        ))}
+                      </div>
                       {/* Score - Mobile */}
                       <div className="flex-shrink-0 text-right md:hidden">
                         <p className="text-xl font-bold text-primary-400">{points}</p>
