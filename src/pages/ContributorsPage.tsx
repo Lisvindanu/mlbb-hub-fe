@@ -5,16 +5,11 @@ import { Loading } from '../components/ui/Loading';
 import { Trophy, Users, ListChecks, ThumbsUp, X, Loader2, Clock, CheckCircle, XCircle } from 'lucide-react';
 
 const RANK_TIERS = [
-  { name: 'Legend',       minPts: 5000, image: '/assets/rankimage/gm.png',       glow: '#FFD700', textColor: '#FFD700' },
-  { name: 'Epic',         minPts: 3500, image: '/assets/rankimage/gm.png',       glow: '#FF6D00', textColor: '#FF8C00' },
-  { name: 'Mythic',       minPts: 2000, image: '/assets/rankimage/gm.png',       glow: '#FF1744', textColor: '#FF4569' },
-  { name: 'Grand Master', minPts: 1250, image: '/assets/rankimage/gm.png',       glow: '#F97316', textColor: '#FB923C' },
-  { name: 'Master',       minPts: 750,  image: '/assets/rankimage/master.png',   glow: '#A855F7', textColor: '#C084FC' },
-  { name: 'Diamond',      minPts: 400,  image: '/assets/rankimage/diamond.png',  glow: '#60A5FA', textColor: '#93C5FD' },
-  { name: 'Platinum',     minPts: 200,  image: '/assets/rankimage/platinum.png', glow: '#22D3EE', textColor: '#67E8F9' },
-  { name: 'Gold',         minPts: 75,   image: '/assets/rankimage/gold.png',     glow: '#FBBF24', textColor: '#FCD34D' },
-  { name: 'Silver',       minPts: 25,   image: '/assets/rankimage/silver.png',   glow: '#9CA3AF', textColor: '#D1D5DB' },
-  { name: 'Bronze',       minPts: 0,    image: '/assets/rankimage/bronze.png',   glow: '#D97706', textColor: '#F59E0B' },
+  { name: 'Mythical Glory', minPts: 5000, image: 'https://static.wikia.nocookie.net/mobile-legends/images/4/42/Mythical_Glory.png/revision/latest?cb=20240224062034', glow: '#FFB300', textColor: '#FFD54F' },
+  { name: 'Mythical Honor', minPts: 2000, image: 'https://static.wikia.nocookie.net/mobile-legends/images/c/c8/Mythical_Honor.png/revision/latest?cb=20240224062004', glow: '#E040FB', textColor: '#EA80FC' },
+  { name: 'Mythic',         minPts: 750,  image: 'https://static.wikia.nocookie.net/mobile-legends/images/e/ec/Mythic.png/revision/latest?cb=20240224061935',          glow: '#FF1744', textColor: '#FF6E7A' },
+  { name: 'Legend',         minPts: 200,  image: 'https://static.wikia.nocookie.net/mobile-legends/images/1/10/Legend.png/revision/latest?cb=20240224061855',          glow: '#FFD700', textColor: '#FFE57F' },
+  { name: 'Epic',           minPts: 0,    image: 'https://static.wikia.nocookie.net/mobile-legends/images/2/26/Epic.png/revision/latest?cb=20240224061803',            glow: '#3D5AFE', textColor: '#82B1FF' },
 ] as const;
 
 type RankTier = typeof RANK_TIERS[number];
