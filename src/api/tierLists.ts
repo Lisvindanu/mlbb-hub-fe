@@ -27,10 +27,12 @@ export interface Contributor {
   id: string;
   name: string;
   email: string | null;
+  avatar?: string | null;
+  hasDonorFrame?: boolean;
   createdAt: string;
   totalTierLists: number;
   totalVotes: number;
-  totalContributions?: number; // For skin/data contributions
+  totalContributions?: number;
 }
 
 // Tier Lists
