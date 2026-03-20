@@ -31,7 +31,6 @@ export function HeroDetailPage() {
     staleTime: 1000 * 60 * 30,
   });
 
-  const API_BASE = import.meta.env.DEV ? '' : 'https://mlbbapi.project-n.site';
   const { data: heroGuide } = useQuery({
     queryKey: ['hero-guide', hero?.name],
     queryFn: async () => {
@@ -100,11 +99,9 @@ export function HeroDetailPage() {
 
   // Helper: Group skills for multi-mode heroes
   const getSkillGroups = () => {
-    // Use skillSets from API if available (transform/multi-form heroes)
     if (hero.skillSets && hero.skillSets.length > 1) {
-      return hero.skillSets.map(ss => ({ name: ss.name, skills: ss.skills }));
+      return hero.skillSets.map((ss: any) => ({ name: ss.name, skills: ss.skills }));
     }
-
     return [{ name: 'Skills', skills: hero.skill || [] }];
   };
 
@@ -113,6 +110,7 @@ export function HeroDetailPage() {
 
   return (
     <div className="min-h-screen bg-dark-400">
+
       {/* Hero Header */}
       <section className="relative overflow-hidden">
         {/* Background */}
@@ -177,7 +175,7 @@ export function HeroDetailPage() {
                   <span className="px-3 py-1 rounded-lg bg-white/10 text-white/80 text-sm font-medium">
                     {hero.role}
                   </span>
-                  {(hero.lanes && hero.lanes.length > 0 ? hero.lanes : [hero.lane]).map((lane) => (
+                  {(hero.lanes && hero.lanes.length > 0 ? hero.lanes : [hero.lane]).map((lane: string) => (
                     <span key={lane} className="px-3 py-1 rounded-lg bg-white/5 text-white/60 text-sm">
                       {lane}
                     </span>
@@ -217,12 +215,340 @@ export function HeroDetailPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6 md:space-y-8">
-              {/* Hero Guide Section */}
+
+              {/* ── 1. SKILLS ─────────────────────────────────────────── */}
+              {hero.skill && hero.skill.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.2 }}
+                  className="p-4 md:p-6 bg-dark-300/50 border border-white/5 rounded-2xl"
+                >
+                  <div className="flex items-center justify-between mb-4 md:mb-5">
+                    <div>
+                      <h2 className="text-lg md:text-xl font-semibold text-white">Skill</h2>
+                      {isMultiMode && (
+                        <p className="text-[11px] text-amber-400 mt-0.5">Multi-Mode Hero</p>
+                      )}
+                    </div>
+                    <div className="flex rounded-lg overflow-hidden border border-white/10 text-xs">
+                      <button
+                        onClick={() => setSkillLang('id')}
+                        className={`px-2.5 py-1 transition-colors ${skillLang === 'id' ? 'bg-primary-500 text-white' : 'text-gray-400 hover:text-white'}`}
+                      >ID</button>
+                      <button
+                        onClick={() => setSkillLang('en')}
+                        className={`px-2.5 py-1 transition-colors ${skillLang === 'en' ? 'bg-primary-500 text-white' : 'text-gray-400 hover:text-white'}`}
+                      >EN</button>
+                    </div>
+                  </div>
+
+                  {/* Mode Tabs */}
+                  {isMultiMode && (
+                    <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
+                      {skillGroups.map((group: any, idx: number) => (
+                        <button
+                          key={idx}
+                          onClick={() => setActiveSkillMode(idx)}
+                          className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
+                            activeSkillMode === idx
+                              ? 'bg-primary-500 text-white'
+                              : 'bg-dark-200/50 text-gray-400 hover:bg-dark-200 hover:text-white'
+                          }`}
+                        >
+                          {group.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Skills List */}
+                  <div className="space-y-3">
+                    {skillGroups[activeSkillMode]?.skills.map((skill: any, index: number) => {
+                      let skillLabel = '';
+                      if (index === 0) {
+                        skillLabel = 'Passive';
+                      } else if (skill.skillName?.toLowerCase().includes('awakening')) {
+                        skillLabel = 'Ultimate';
+                      } else if (!isMultiMode) {
+                        const total = skillGroups[0].skills.length;
+                        skillLabel = index === total - 1 ? 'Ultimate' : `Skill ${index}`;
+                      } else {
+                        const count = skillGroups[activeSkillMode].skills.length;
+                        if (index === count - 1) skillLabel = 'Ultimate';
+                        else if (index > 0) skillLabel = `Skill ${index}`;
+                      }
+
+                      const labelStyle =
+                        skillLabel === 'Passive'
+                          ? 'bg-gray-500/20 text-gray-300 border-gray-500/30'
+                          : skillLabel === 'Ultimate'
+                          ? 'bg-orange-500/20 text-orange-300 border-orange-500/30'
+                          : 'bg-blue-500/20 text-blue-300 border-blue-500/30';
+
+                      const desc = skillLang === 'en' && skill.skillDescEn ? skill.skillDescEn : skill.skillDesc;
+
+                      return (
+                        <div
+                          key={`${activeSkillMode}-${index}`}
+                          className="bg-dark-200/50 rounded-xl border border-white/5 hover:border-primary-500/20 transition-all overflow-hidden"
+                        >
+                          {/* Card header */}
+                          <div className="flex gap-3 p-3 md:p-4">
+                            <div className="flex-shrink-0">
+                              <img
+                                src={resolveUrl(skill.skillImg)}
+                                alt={skill.skillName}
+                                className="w-14 h-14 rounded-xl border border-white/10 bg-dark-300"
+                                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                              />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              {skillLabel && (
+                                <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border inline-block mb-1.5 ${labelStyle}`}>
+                                  {skillLabel}
+                                </span>
+                              )}
+                              <h3 className="text-sm font-semibold text-white leading-tight">{skill.skillName}</h3>
+                              <div className="flex gap-3 mt-1.5 flex-wrap">
+                                {skill.cooldown && skill.cooldown[0] > 0 && (
+                                  <span className="text-[11px] text-blue-400 font-medium">
+                                    CD {skill.cooldown.join('/')}s
+                                  </span>
+                                )}
+                                {skill.cost && skill.cost[0] > 0 && (
+                                  <span className="text-[11px] text-cyan-400 font-medium">
+                                    Cost {skill.cost.join('/')}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          {/* Description */}
+                          {desc && (
+                            <div className="px-3 pb-3 md:px-4 md:pb-4">
+                              <p className="text-xs text-gray-400 leading-relaxed border-t border-white/5 pt-2.5">
+                                {desc}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* ── 2. TOP BUILDS ─────────────────────────────────────── */}
+              {builds.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.25 }}
+                  className="p-4 md:p-6 bg-dark-300/50 border border-white/5 rounded-2xl"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg md:text-xl font-semibold text-white">Top Builds</h2>
+                    {/* Build tabs */}
+                    <div className="flex gap-1">
+                      {builds.map((_: any, i: number) => (
+                        <button
+                          key={i}
+                          onClick={() => setActiveBuildIndex(i)}
+                          className={`w-7 h-7 rounded-lg text-xs font-bold transition-all ${
+                            activeBuildIndex === i
+                              ? 'bg-primary-500 text-white'
+                              : 'bg-dark-200 text-gray-400 hover:bg-dark-100'
+                          }`}
+                        >
+                          {i + 1}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {builds[activeBuildIndex] && (() => {
+                    const build = builds[activeBuildIndex];
+                    return (
+                      <div className="space-y-4">
+                        {/* Items */}
+                        <div>
+                          <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">Items</p>
+                          <div className="flex gap-2 flex-wrap">
+                            {build.items.map((item: any, idx: number) => (
+                              <div key={idx} className="group relative">
+                                <div className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 bg-dark-200">
+                                  <img src={item.icon} alt={item.name} className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                                </div>
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-dark-400 border border-white/10 rounded text-xs text-white whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 pointer-events-none">
+                                  {item.name}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Emblem + Spell */}
+                        <div className="flex flex-wrap gap-4">
+                          {build.emblem && (
+                            <div>
+                              <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">Emblem</p>
+                              <div className="flex items-center gap-2">
+                                <div className="w-10 h-10 rounded-lg overflow-hidden border border-white/10 bg-dark-200">
+                                  <img src={build.emblem.icon} alt={build.emblem.name} className="w-full h-full object-contain p-1" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                                </div>
+                                <span className="text-sm text-white">{build.emblem.name}</span>
+                              </div>
+                            </div>
+                          )}
+
+                          {build.battleSpell && (
+                            <div>
+                              <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">Battle Spell</p>
+                              <div className="flex items-center gap-2 px-3 py-1.5 bg-dark-200 rounded-lg border border-white/10">
+                                <img
+                                  src={`/images/spells/${build.battleSpell.replace(/ /g, '_')}.webp`}
+                                  alt={build.battleSpell}
+                                  className="w-7 h-7 rounded object-contain"
+                                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                />
+                                <span className="text-sm text-white">{build.battleSpell}</span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Talents */}
+                        {build.talents?.length > 0 && (
+                          <div>
+                            <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">Talents</p>
+                            <div className="flex gap-2 flex-wrap">
+                              {build.talents.map((talent: any, idx: number) => (
+                                <div key={idx} className="group relative flex items-center gap-2 px-3 py-1.5 bg-dark-200 rounded-lg border border-white/10">
+                                  {talent.icon && (
+                                    <img src={talent.icon} alt={talent.name} className="w-5 h-5 object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                                  )}
+                                  <span className="text-sm text-white">{talent.name}</span>
+                                  {talent.benefits && (
+                                    <div className="absolute bottom-full left-0 mb-1 px-2 py-1 bg-dark-400 border border-white/10 rounded text-xs text-gray-300 whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 pointer-events-none">
+                                      {talent.benefits}
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
+                </motion.div>
+              )}
+
+              {/* ── 3. ARCANA ─────────────────────────────────────────── */}
+              {hero.arcana && hero.arcana.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.3 }}
+                  className="p-4 md:p-6 bg-dark-300/50 border border-white/5 rounded-2xl"
+                >
+                  <div className="flex items-center justify-between mb-4 md:mb-6">
+                    <h2 className="text-lg md:text-xl font-semibold text-white">Emblem yang Direkomendasikan</h2>
+                    <span className="text-xs md:text-sm text-gray-500">{hero.arcana.length} slot</span>
+                  </div>
+                  <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-2 md:gap-3">
+                    {hero.arcana.map((arcana: any, index: number) => (
+                      <div
+                        key={index}
+                        className="group relative bg-dark-200/50 rounded-xl p-2 md:p-3 border border-white/5 hover:border-primary-500/30 transition-all"
+                      >
+                        <div className="flex flex-col items-center text-center">
+                          <img
+                            src={arcana.icon}
+                            alt={arcana.name}
+                            className="w-10 h-10 md:w-12 md:h-12 rounded-lg mb-1.5 md:mb-2"
+                            onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/48?text=?'; }}
+                          />
+                          <p className="text-xs font-medium text-white line-clamp-2">{arcana.name}</p>
+                          <p className="text-[10px] text-gray-500 mt-1">Lv.{arcana.level}</p>
+                        </div>
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-dark-400 border border-white/10 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 pointer-events-none">
+                          <p className="text-xs text-white font-medium mb-1">{arcana.name}</p>
+                          <p className="text-[10px] text-gray-400 whitespace-pre-line">{arcana.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* ── 4. RECOMMENDED BUILD ──────────────────────────────── */}
+              {hero.recommendedEquipment && hero.recommendedEquipment.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.33 }}
+                  className="p-4 md:p-6 bg-dark-300/50 border border-white/5 rounded-2xl"
+                >
+                  <div className="flex items-center justify-between mb-4 md:mb-6">
+                    <div>
+                      <h2 className="text-lg md:text-xl font-semibold text-white">Build yang Direkomendasikan</h2>
+                      {hero.buildTitle && (
+                        <p className="text-xs md:text-sm text-gray-500 mt-1">{hero.buildTitle}</p>
+                      )}
+                    </div>
+                    <span className="text-xs md:text-sm text-gray-500">{hero.recommendedEquipment.length} item</span>
+                  </div>
+                  <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-2">
+                    {hero.recommendedEquipment.map((item: any, index: number) => (
+                      <div key={index} className="group relative">
+                        <div className={`relative bg-dark-200/50 rounded-xl p-2 border transition-all ${
+                          item.isCore
+                            ? 'border-yellow-500/50 ring-1 ring-yellow-500/20'
+                            : 'border-white/5 hover:border-primary-500/30'
+                        }`}>
+                          <img
+                            src={item.icon}
+                            alt={item.name}
+                            className="w-full aspect-square rounded-lg"
+                            onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/48?text=?'; }}
+                          />
+                          {item.isCore && (
+                            <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-500 rounded-full flex items-center justify-center">
+                              <span className="text-[8px] text-black font-bold">★</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 p-3 bg-dark-400 border border-white/10 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 pointer-events-none">
+                          <div className="flex items-start gap-2 mb-2">
+                            <img src={item.icon} alt="" className="w-8 h-8 rounded" />
+                            <div>
+                              <p className="text-sm text-white font-medium">{item.name}</p>
+                              <p className="text-xs text-yellow-500">{item.price} gold</p>
+                            </div>
+                          </div>
+                          <p className="text-[10px] text-gray-400 whitespace-pre-line">{item.description}</p>
+                          {item.passiveSkills && item.passiveSkills.length > 0 && (
+                            <div className="mt-2 pt-2 border-t border-white/10">
+                              {item.passiveSkills.map((passive: any, i: number) => (
+                                <p key={i} className="text-[10px] text-primary-400">{passive.name}</p>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* ── 5. PANDUAN HERO ───────────────────────────────────── */}
               {heroGuide && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.5 }}
+                  transition={{ duration: 0.4, delay: 0.37 }}
                   className="p-4 md:p-6 bg-dark-300/50 border border-white/5 rounded-2xl"
                 >
                   {/* Header */}
@@ -349,12 +675,12 @@ export function HeroDetailPage() {
                 </motion.div>
               )}
 
-              {/* Skins Gallery */}
+              {/* ── 6. SKINS ──────────────────────────────────────────── */}
               {hero.skins && hero.skins.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.3 }}
+                  transition={{ duration: 0.4, delay: 0.4 }}
                   className="p-4 md:p-6 bg-dark-300/50 border border-white/5 rounded-2xl"
                 >
                   <div className="flex items-center justify-between mb-4 md:mb-6">
@@ -362,7 +688,7 @@ export function HeroDetailPage() {
                     <span className="text-xs md:text-sm text-gray-500">{hero.skins.length} tersedia</span>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
-                    {hero.skins.map((skin, index) => (
+                    {hero.skins.map((skin: any, index: number) => (
                       <button
                         key={index}
                         onClick={() => setSelectedSkinIndex(index)}
@@ -373,49 +699,32 @@ export function HeroDetailPage() {
                             src={resolveUrl(skin.skinCover || skin.skinImage || skin.skinImg)}
                             alt={skin.skinName}
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            onError={(e) => {
-                              e.currentTarget.src = 'https://via.placeholder.com/400x600?text=No+Image';
-                            }}
+                            onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/400x600?text=No+Image'; }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-dark-400 via-transparent to-transparent" />
 
-                          {/* Tier Badge */}
                           {skin.tierName && (
                             <div
                               className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide shadow-lg"
-                              style={{
-                                backgroundColor: skin.tierColor || '#8B5CF6',
-                                color: '#fff',
-                                textShadow: '0 1px 2px rgba(0,0,0,0.3)'
-                              }}
+                              style={{ backgroundColor: skin.tierColor || '#8B5CF6', color: '#fff', textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}
                             >
                               {skin.tierName}
                             </div>
                           )}
 
-                          {/* Collab Badge */}
                           {skin.collab && (
                             <div
                               className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide shadow-lg"
-                              style={{
-                                backgroundColor: skin.collab.color || '#FFD700',
-                                color: '#fff',
-                                textShadow: '0 1px 2px rgba(0,0,0,0.3)'
-                              }}
+                              style={{ backgroundColor: skin.collab.color || '#FFD700', color: '#fff', textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}
                             >
                               {skin.collab.name}
                             </div>
                           )}
 
-                          {/* Skin name */}
                           <div className="absolute bottom-0 left-0 right-0 p-3">
-                            <p className="text-sm font-medium text-white truncate">
-                              {skin.skinName}
-                            </p>
+                            <p className="text-sm font-medium text-white truncate">{skin.skinName}</p>
                             {skin.skinSeries && (
-                              <p className="text-xs text-gray-400 truncate mt-0.5">
-                                {skin.skinSeries}
-                              </p>
+                              <p className="text-xs text-gray-400 truncate mt-0.5">{skin.skinSeries}</p>
                             )}
                           </div>
                         </div>
@@ -425,338 +734,6 @@ export function HeroDetailPage() {
                 </motion.div>
               )}
 
-              {/* Skills Section */}
-              {hero.skill && hero.skill.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.32 }}
-                  className="p-4 md:p-6 bg-dark-300/50 border border-white/5 rounded-2xl"
-                >
-                  <div className="flex items-center justify-between mb-4 md:mb-6">
-                    <h2 className="text-lg md:text-xl font-semibold text-white">Skill</h2>
-                    <div className="flex items-center gap-2">
-                      {isMultiMode && (
-                        <span className="text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-lg">
-                          Hero Multi-Mode • {hero.skill.length} Skill
-                        </span>
-                      )}
-                      <div className="flex rounded-lg overflow-hidden border border-white/10 text-xs">
-                        <button
-                          onClick={() => setSkillLang('id')}
-                          className={`px-2.5 py-1 transition-colors ${skillLang === 'id' ? 'bg-primary-500 text-white' : 'text-gray-400 hover:text-white'}`}
-                        >
-                          ID
-                        </button>
-                        <button
-                          onClick={() => setSkillLang('en')}
-                          className={`px-2.5 py-1 transition-colors ${skillLang === 'en' ? 'bg-primary-500 text-white' : 'text-gray-400 hover:text-white'}`}
-                        >
-                          EN
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Mode Tabs */}
-                  {isMultiMode && (
-                    <div className="flex gap-2 mb-4 overflow-x-auto">
-                      {skillGroups.map((group, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => setActiveSkillMode(idx)}
-                          className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
-                            activeSkillMode === idx
-                              ? 'bg-primary-500 text-white'
-                              : 'bg-dark-200/50 text-gray-400 hover:bg-dark-200 hover:text-white'
-                          }`}
-                        >
-                          {group.name}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Skills Display */}
-                  <div className="space-y-3 md:space-y-4">
-                    {skillGroups[activeSkillMode]?.skills.map((skill, index) => {
-                      // Determine skill label
-                      let skillLabel = '';
-                      if (index === 0) {
-                        skillLabel = 'Passive';
-                      } else if (skill.skillName.toLowerCase().includes('awakening')) {
-                        skillLabel = 'Ultimate';
-                      } else if (!isMultiMode) {
-                        const totalSkills = skillGroups[0].skills.length;
-                        skillLabel = index === totalSkills - 1 ? 'Ultimate' : `Skill ${index}`;
-                      } else {
-                        // For multi-mode, show proper labels within each mode
-                        const skillsInMode = skillGroups[activeSkillMode].skills.length;
-                        if (index === skillsInMode - 1) {
-                          skillLabel = 'Ultimate';
-                        } else if (index > 0) {
-                          skillLabel = `Skill ${index}`;
-                        }
-                      }
-
-                      return (
-                        <div
-                          key={index}
-                          className="flex gap-3 md:gap-4 p-3 md:p-4 bg-dark-200/50 rounded-xl border border-white/5 hover:border-primary-500/20 transition-all"
-                        >
-                          <div className="flex-shrink-0">
-                            <img
-                              src={resolveUrl(skill.skillImg)}
-                              alt={skill.skillName}
-                              className="w-12 h-12 md:w-14 md:h-14 rounded-xl border border-white/10"
-                              onError={(e) => {
-                                e.currentTarget.style.display = 'none';
-                              }}
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <h3 className="text-sm font-semibold text-white">
-                                {skillLabel && `${skillLabel}: `}{skill.skillName}
-                              </h3>
-                            </div>
-                            <p className="text-xs text-gray-400 leading-relaxed line-clamp-3">
-                              {skillLang === 'en' && skill.skillDescEn ? skill.skillDescEn : skill.skillDesc}
-                            </p>
-                            <div className="flex gap-4 mt-2">
-                              {skill.cooldown && skill.cooldown[0] > 0 && (
-                                <span className="text-[10px] text-blue-400">
-                                  CD: {skill.cooldown.join('/')}s
-                                </span>
-                              )}
-                              {skill.cost && skill.cost[0] > 0 && (
-                                <span className="text-[10px] text-cyan-400">
-                                  Cost: {skill.cost.join('/')}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Top Builds Section */}
-              {builds.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.33 }}
-                  className="p-4 md:p-6 bg-dark-300/50 border border-white/5 rounded-2xl"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg md:text-xl font-semibold text-white">Top Builds</h2>
-                    {/* Build tabs */}
-                    <div className="flex gap-1">
-                      {builds.map((_: any, i: number) => (
-                        <button
-                          key={i}
-                          onClick={() => setActiveBuildIndex(i)}
-                          className={`w-7 h-7 rounded-lg text-xs font-bold transition-all ${
-                            activeBuildIndex === i
-                              ? 'bg-primary-500 text-white'
-                              : 'bg-dark-200 text-gray-400 hover:bg-dark-100'
-                          }`}
-                        >
-                          {i + 1}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {builds[activeBuildIndex] && (() => {
-                    const build = builds[activeBuildIndex];
-                    return (
-                      <div className="space-y-4">
-                        {/* Items */}
-                        <div>
-                          <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">Items</p>
-                          <div className="flex gap-2 flex-wrap">
-                            {build.items.map((item: any, idx: number) => (
-                              <div key={idx} className="group relative">
-                                <div className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 bg-dark-200">
-                                  <img src={item.icon} alt={item.name} className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                                </div>
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-dark-400 border border-white/10 rounded text-xs text-white whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 pointer-events-none">
-                                  {item.name}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Emblem + Spell + Talents */}
-                        <div className="flex flex-wrap gap-4">
-                          {/* Emblem */}
-                          {build.emblem && (
-                            <div>
-                              <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">Emblem</p>
-                              <div className="flex items-center gap-2">
-                                <div className="w-10 h-10 rounded-lg overflow-hidden border border-white/10 bg-dark-200">
-                                  <img src={build.emblem.icon} alt={build.emblem.name} className="w-full h-full object-contain p-1" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                                </div>
-                                <span className="text-sm text-white">{build.emblem.name}</span>
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Battle Spell */}
-                          {build.battleSpell && (
-                            <div>
-                              <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">Battle Spell</p>
-                              <div className="flex items-center gap-2 px-3 py-1.5 bg-dark-200 rounded-lg border border-white/10">
-                                <img
-                                  src={`/images/spells/${build.battleSpell.replace(/ /g, '_')}.webp`}
-                                  alt={build.battleSpell}
-                                  className="w-7 h-7 rounded object-contain"
-                                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                                />
-                                <span className="text-sm text-white">{build.battleSpell}</span>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Talents */}
-                        {build.talents?.length > 0 && (
-                          <div>
-                            <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">Talents</p>
-                            <div className="flex gap-2 flex-wrap">
-                              {build.talents.map((talent: any, idx: number) => (
-                                <div key={idx} className="group relative flex items-center gap-2 px-3 py-1.5 bg-dark-200 rounded-lg border border-white/10">
-                                  {talent.icon && (
-                                    <img src={talent.icon} alt={talent.name} className="w-5 h-5 object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                                  )}
-                                  <span className="text-sm text-white">{talent.name}</span>
-                                  {talent.benefits && (
-                                    <div className="absolute bottom-full left-0 mb-1 px-2 py-1 bg-dark-400 border border-white/10 rounded text-xs text-gray-300 whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 pointer-events-none">
-                                      {talent.benefits}
-                                    </div>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })()}
-                </motion.div>
-              )}
-
-              {/* Arcana Section */}
-              {hero.arcana && hero.arcana.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.35 }}
-                  className="p-4 md:p-6 bg-dark-300/50 border border-white/5 rounded-2xl"
-                >
-                  <div className="flex items-center justify-between mb-4 md:mb-6">
-                    <h2 className="text-lg md:text-xl font-semibold text-white">Emblem yang Direkomendasikan</h2>
-                    <span className="text-xs md:text-sm text-gray-500">{hero.arcana.length} slot</span>
-                  </div>
-                  <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-2 md:gap-3">
-                    {hero.arcana.map((arcana, index) => (
-                      <div
-                        key={index}
-                        className="group relative bg-dark-200/50 rounded-xl p-2 md:p-3 border border-white/5 hover:border-primary-500/30 transition-all"
-                      >
-                        <div className="flex flex-col items-center text-center">
-                          <img
-                            src={arcana.icon}
-                            alt={arcana.name}
-                            className="w-10 h-10 md:w-12 md:h-12 rounded-lg mb-1.5 md:mb-2"
-                            onError={(e) => {
-                              e.currentTarget.src = 'https://via.placeholder.com/48?text=?';
-                            }}
-                          />
-                          <p className="text-xs font-medium text-white line-clamp-2">{arcana.name}</p>
-                          <p className="text-[10px] text-gray-500 mt-1">Lv.{arcana.level}</p>
-                        </div>
-                        {/* Tooltip */}
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-dark-400 border border-white/10 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 pointer-events-none">
-                          <p className="text-xs text-white font-medium mb-1">{arcana.name}</p>
-                          <p className="text-[10px] text-gray-400 whitespace-pre-line">{arcana.description}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Equipment Section */}
-              {hero.recommendedEquipment && hero.recommendedEquipment.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.4 }}
-                  className="p-4 md:p-6 bg-dark-300/50 border border-white/5 rounded-2xl"
-                >
-                  <div className="flex items-center justify-between mb-4 md:mb-6">
-                    <div>
-                      <h2 className="text-lg md:text-xl font-semibold text-white">Build yang Direkomendasikan</h2>
-                      {hero.buildTitle && (
-                        <p className="text-xs md:text-sm text-gray-500 mt-1">{hero.buildTitle}</p>
-                      )}
-                    </div>
-                    <span className="text-xs md:text-sm text-gray-500">{hero.recommendedEquipment.length} item</span>
-                  </div>
-                  <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-2">
-                    {hero.recommendedEquipment.map((item, index) => (
-                      <div
-                        key={index}
-                        className="group relative"
-                      >
-                        <div className={`relative bg-dark-200/50 rounded-xl p-2 border transition-all ${
-                          item.isCore
-                            ? 'border-yellow-500/50 ring-1 ring-yellow-500/20'
-                            : 'border-white/5 hover:border-primary-500/30'
-                        }`}>
-                          <img
-                            src={item.icon}
-                            alt={item.name}
-                            className="w-full aspect-square rounded-lg"
-                            onError={(e) => {
-                              e.currentTarget.src = 'https://via.placeholder.com/48?text=?';
-                            }}
-                          />
-                          {item.isCore && (
-                            <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-500 rounded-full flex items-center justify-center">
-                              <span className="text-[8px] text-black font-bold">★</span>
-                            </div>
-                          )}
-                        </div>
-                        {/* Tooltip */}
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 p-3 bg-dark-400 border border-white/10 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 pointer-events-none">
-                          <div className="flex items-start gap-2 mb-2">
-                            <img src={item.icon} alt="" className="w-8 h-8 rounded" />
-                            <div>
-                              <p className="text-sm text-white font-medium">{item.name}</p>
-                              <p className="text-xs text-yellow-500">{item.price} gold</p>
-                            </div>
-                          </div>
-                          <p className="text-[10px] text-gray-400 whitespace-pre-line">{item.description}</p>
-                          {item.passiveSkills && item.passiveSkills.length > 0 && (
-                            <div className="mt-2 pt-2 border-t border-white/10">
-                              {item.passiveSkills.map((passive, i) => (
-                                <p key={i} className="text-[10px] text-primary-400">{passive.name}</p>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
             </div>
 
             {/* Sidebar */}
@@ -812,13 +789,9 @@ export function HeroDetailPage() {
                     <h2 className="text-base md:text-lg font-semibold text-white">Partner Terbaik</h2>
                   </div>
                   <div className="space-y-2">
-                    {Object.values(hero.bestPartners).slice(0, 5).map((partner, index) => (
+                    {Object.values(hero.bestPartners).slice(0, 5).map((partner: any, index: number) => (
                       <div key={index} className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition-colors">
-                        <img
-                          src={partner.thumbnail}
-                          alt={partner.name}
-                          className="w-10 h-10 rounded-lg object-cover"
-                        />
+                        <img src={partner.thumbnail} alt={partner.name} className="w-10 h-10 rounded-lg object-cover" />
                         <span className="text-sm text-white">{partner.name}</span>
                       </div>
                     ))}
@@ -839,13 +812,9 @@ export function HeroDetailPage() {
                     <h2 className="text-base md:text-lg font-semibold text-white">Kuat Melawan</h2>
                   </div>
                   <div className="space-y-2">
-                    {Object.values(hero.suppressingHeroes).slice(0, 5).map((counter, index) => (
+                    {Object.values(hero.suppressingHeroes).slice(0, 5).map((counter: any, index: number) => (
                       <div key={index} className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition-colors">
-                        <img
-                          src={counter.thumbnail}
-                          alt={counter.name}
-                          className="w-10 h-10 rounded-lg object-cover"
-                        />
+                        <img src={counter.thumbnail} alt={counter.name} className="w-10 h-10 rounded-lg object-cover" />
                         <span className="text-sm text-white">{counter.name}</span>
                       </div>
                     ))}
@@ -866,13 +835,9 @@ export function HeroDetailPage() {
                     <h2 className="text-base md:text-lg font-semibold text-white">Lemah Melawan</h2>
                   </div>
                   <div className="space-y-2">
-                    {Object.values(hero.suppressedHeroes).slice(0, 5).map((counter, index) => (
+                    {Object.values(hero.suppressedHeroes).slice(0, 5).map((counter: any, index: number) => (
                       <div key={index} className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition-colors">
-                        <img
-                          src={counter.thumbnail}
-                          alt={counter.name}
-                          className="w-10 h-10 rounded-lg object-cover"
-                        />
+                        <img src={counter.thumbnail} alt={counter.name} className="w-10 h-10 rounded-lg object-cover" />
                         <span className="text-sm text-white">{counter.name}</span>
                       </div>
                     ))}
@@ -921,10 +886,7 @@ export function HeroDetailPage() {
             {/* Previous button */}
             {selectedSkinIndex > 0 && (
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedSkinIndex(selectedSkinIndex - 1);
-                }}
+                onClick={(e) => { e.stopPropagation(); setSelectedSkinIndex(selectedSkinIndex - 1); }}
                 className="absolute left-2 md:left-6 z-10 p-2 md:p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
               >
                 <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
@@ -934,10 +896,7 @@ export function HeroDetailPage() {
             {/* Next button */}
             {selectedSkinIndex < hero.skins.length - 1 && (
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedSkinIndex(selectedSkinIndex + 1);
-                }}
+                onClick={(e) => { e.stopPropagation(); setSelectedSkinIndex(selectedSkinIndex + 1); }}
                 className="absolute right-2 md:right-6 z-10 p-2 md:p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
               >
                 <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
@@ -962,9 +921,7 @@ export function HeroDetailPage() {
                   )}
                   alt={hero.skins[selectedSkinIndex].skinName}
                   className="w-full max-h-[60vh] md:max-h-[70vh] object-contain"
-                  onError={(e) => {
-                    e.currentTarget.src = 'https://via.placeholder.com/800x1200?text=No+Image';
-                  }}
+                  onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/800x1200?text=No+Image'; }}
                 />
               </div>
 
@@ -974,10 +931,7 @@ export function HeroDetailPage() {
                   {hero.skins[selectedSkinIndex].tierName && (
                     <span
                       className="px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wide"
-                      style={{
-                        backgroundColor: hero.skins[selectedSkinIndex].tierColor || '#8B5CF6',
-                        color: '#fff'
-                      }}
+                      style={{ backgroundColor: hero.skins[selectedSkinIndex].tierColor || '#8B5CF6', color: '#fff' }}
                     >
                       {hero.skins[selectedSkinIndex].tierName}
                     </span>
@@ -985,10 +939,7 @@ export function HeroDetailPage() {
                   {hero.skins[selectedSkinIndex].collab && (
                     <span
                       className="px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wide"
-                      style={{
-                        backgroundColor: hero.skins[selectedSkinIndex].collab.color || '#FFD700',
-                        color: '#fff'
-                      }}
+                      style={{ backgroundColor: hero.skins[selectedSkinIndex].collab.color || '#FFD700', color: '#fff' }}
                     >
                       {hero.skins[selectedSkinIndex].collab.name}
                     </span>
@@ -1009,7 +960,7 @@ export function HeroDetailPage() {
 
               {/* Thumbnail navigation */}
               <div className="mt-4 md:mt-6 flex justify-center gap-1.5 md:gap-2 overflow-x-auto pb-2 px-2">
-                {hero.skins.map((skin, index) => (
+                {hero.skins.map((skin: any, index: number) => (
                   <button
                     key={index}
                     onClick={() => setSelectedSkinIndex(index)}
@@ -1023,9 +974,7 @@ export function HeroDetailPage() {
                       src={resolveUrl(skin.skinCover || skin.skinImage || skin.skinImg)}
                       alt={skin.skinName}
                       className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.src = 'https://via.placeholder.com/100x150?text=No';
-                      }}
+                      onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/100x150?text=No'; }}
                     />
                   </button>
                 ))}
