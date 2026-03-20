@@ -8,6 +8,7 @@ import {
   Search,
   Calendar,
   ChevronRight,
+  ChevronDown,
   Zap,
   X,
   Shield,
@@ -240,9 +241,31 @@ export function PatchNotesPage() {
           <p className="text-gray-400 text-sm md:text-base">{patches.length} patches — Liquipedia data</p>
         </div>
 
+        {/* Mobile: Patch Dropdown */}
+        <div className="lg:hidden mb-4">
+          <div className="relative">
+            <select
+              value={selectedVersion ?? ''}
+              onChange={e => {
+                setSelectedVersion(e.target.value);
+                setSearchQuery('');
+                setFilterType('all');
+              }}
+              className="w-full appearance-none bg-dark-200 border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-primary-500/50 pr-10"
+            >
+              {patches.map(patch => (
+                <option key={patch.version} value={patch.version} className="bg-dark-300">
+                  {patch.version}{patch.releaseDate ? ` — ${patch.releaseDate}` : ''}{patch.heroCount > 0 ? ` (${patch.heroCount} heroes)` : ''}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          </div>
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Left: Patch List */}
-          <div className="lg:w-64 flex-shrink-0">
+          {/* Left: Patch List — desktop only */}
+          <div className="hidden lg:block lg:w-64 flex-shrink-0">
             <div className="bg-dark-200 border border-white/10 rounded-2xl overflow-hidden">
               <div className="p-3 border-b border-white/10">
                 <div className="relative">
@@ -256,7 +279,7 @@ export function PatchNotesPage() {
                   />
                 </div>
               </div>
-              <div className="overflow-y-auto max-h-[60vh] lg:max-h-[70vh]">
+              <div className="overflow-y-auto max-h-[70vh]">
                 {filteredPatches.map(patch => (
                   <button
                     key={patch.version}
