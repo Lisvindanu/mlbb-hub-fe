@@ -4,6 +4,22 @@ import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useUser } from '../../hooks/useUser';
 
+const API_BASE_URL = import.meta.env.DEV ? '' : 'https://mlbbapi.project-n.site';
+
+function UserAvatar({ name, avatar, size = 'md' }: { name: string; avatar?: string | null; size?: 'sm' | 'md' | 'lg' }) {
+  const sizeClass = size === 'lg' ? 'w-14 h-14 text-xl' : size === 'sm' ? 'w-8 h-8 text-sm' : 'w-9 h-9 text-sm';
+  const avatarUrl = avatar ? (avatar.startsWith('http') ? avatar : `${API_BASE_URL}${avatar}`) : null;
+  return (
+    <div className={`${sizeClass} rounded-full overflow-hidden flex-shrink-0 bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center`}>
+      {avatarUrl ? (
+        <img src={avatarUrl} alt={name} className="w-full h-full object-cover" />
+      ) : (
+        <span className="font-semibold text-white">{name.charAt(0).toUpperCase()}</span>
+      )}
+    </div>
+  );
+}
+
 const mainNav = [
   { name: 'Hero', href: '/heroes' },
   { name: 'Tier List', href: '/tier-list' },
@@ -191,11 +207,7 @@ export function Header() {
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-white/5 transition-colors duration-200"
                 >
-                  <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
-                    <span className="text-sm font-semibold text-white">
-                      {user.name.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
+                  <UserAvatar name={user.name} avatar={user.avatar} size="sm" />
                   <span className="text-[15px] text-gray-300">{user.name}</span>
                   <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${userMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
@@ -277,9 +289,7 @@ export function Header() {
                   {isAuthenticated && user ? (
                     <div className="p-4 bg-gradient-to-r from-primary-500/20 to-purple-500/20 rounded-2xl border border-primary-500/30 mb-4">
                       <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
-                          <span className="text-xl font-bold text-white">{user.name.charAt(0).toUpperCase()}</span>
-                        </div>
+                        <UserAvatar name={user.name} avatar={user.avatar} size="lg" />
                         <div>
                           <p className="font-semibold text-white text-lg">{user.name}</p>
                           <p className="text-sm text-gray-400">Kontributor</p>

@@ -67,7 +67,7 @@ export function useUpdateProfile() {
 }
 
 export function useUploadAvatar() {
-  const { token } = useAuth();
+  const { token, updateUser } = useAuth();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -96,7 +96,8 @@ export function useUploadAvatar() {
       if (!response.ok) throw new Error((await response.json()).error || 'Upload gagal');
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      updateUser({ avatar: data.url });
       queryClient.invalidateQueries({ queryKey: ['user', API_BASE_URL] });
     },
   });
