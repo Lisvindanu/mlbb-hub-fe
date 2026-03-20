@@ -151,32 +151,7 @@ export function HomePage() {
   return (
     <div className="min-h-screen bg-dark-400">
 
-      {/* Incident Banner */}
-      {!bannerDismissed && (
-        <Link
-          to="/incident"
-          className="relative flex items-center justify-between gap-3 px-4 py-3"
-          style={{ background: 'rgba(239,68,68,0.12)', borderBottom: '1px solid rgba(239,68,68,0.25)', display: 'flex' }}
-        >
-          <div className="flex items-start gap-2.5 flex-1">
-            <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" style={{ color: '#f87171' }} />
-            <p className="text-sm leading-snug" style={{ color: '#fca5a5' }}>
-              <strong style={{ color: '#fecaca' }}>Pemberitahuan penting:</strong>{' '}
-              Terjadi kehilangan data tier list komunitas pada 26 Feb 2026.{' '}
-              <span className="underline underline-offset-2 font-medium" style={{ color: '#fb923c' }}>
-                Baca selengkapnya →
-              </span>
-            </p>
-          </div>
-          <button
-            onClick={e => { e.preventDefault(); dismissBanner(); }}
-            className="shrink-0 p-1 rounded"
-            style={{ color: '#f87171' }}
-            aria-label="Tutup"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </Link>
+      {/* Incident Banner — hidden */}
       )}
 
       {/* Hero Section - Full Height */}
