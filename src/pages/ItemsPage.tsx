@@ -38,6 +38,7 @@ export function ItemsPage() {
   const [selectedType, setSelectedType] = useState(0);
   const [selectedLevel, setSelectedLevel] = useState(0);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [itemLang, setItemLang] = useState<'id' | 'en'>('id');
 
   const filteredItems = useMemo(() => {
     if (!items) return [];
@@ -297,8 +298,16 @@ export function ItemsPage() {
                   alt={selectedItem.name}
                   className="w-20 h-20 rounded-xl"
                 />
-                <div>
-                  <h2 className="text-xl font-bold text-white">{selectedItem.name}</h2>
+                <div className="flex-1">
+                  <div className="flex items-start justify-between gap-2">
+                    <h2 className="text-xl font-bold text-white">{selectedItem.name}</h2>
+                    {(selectedItem as any).descriptionEn && (
+                      <div className="flex rounded-lg overflow-hidden border border-white/10 text-xs shrink-0">
+                        <button onClick={() => setItemLang('id')} className={`px-2.5 py-1 transition-colors ${itemLang === 'id' ? 'bg-primary-500 text-white' : 'text-gray-400 hover:text-white'}`}>ID</button>
+                        <button onClick={() => setItemLang('en')} className={`px-2.5 py-1 transition-colors ${itemLang === 'en' ? 'bg-primary-500 text-white' : 'text-gray-400 hover:text-white'}`}>EN</button>
+                      </div>
+                    )}
+                  </div>
                   <p className="text-gray-400 text-sm">{selectedItem.typeName}</p>
                   <div className="flex items-center gap-1 text-amber-400 mt-1">
                     <Coins className="w-4 h-4" />
@@ -310,7 +319,9 @@ export function ItemsPage() {
               {/* Description */}
               <div className="mb-4">
                 <h3 className="text-sm font-semibold text-gray-400 mb-1">Statistik</h3>
-                <p className="text-white whitespace-pre-line">{selectedItem.description}</p>
+                <p className="text-white whitespace-pre-line">
+                  {itemLang === 'en' && (selectedItem as any).descriptionEn ? (selectedItem as any).descriptionEn : selectedItem.description}
+                </p>
               </div>
 
               {/* Passive Skills */}
@@ -319,7 +330,9 @@ export function ItemsPage() {
                   <h3 className="text-sm font-semibold text-gray-400 mb-2">Skill Passive</h3>
                   {selectedItem.passiveSkills.map((skill, idx) => (
                     <div key={idx} className="bg-dark-400 rounded-lg p-3 mb-2">
-                      <p className="text-white text-sm whitespace-pre-line">{skill.description}</p>
+                      <p className="text-white text-sm whitespace-pre-line">
+                        {itemLang === 'en' && (skill as any).descriptionEn ? (skill as any).descriptionEn : skill.description}
+                      </p>
                     </div>
                   ))}
                 </div>

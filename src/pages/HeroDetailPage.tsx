@@ -21,6 +21,8 @@ export function HeroDetailPage() {
   const [selectedSkinIndex, setSelectedSkinIndex] = useState<number | null>(null);
   const [activeSkillMode, setActiveSkillMode] = useState(0);
   const [activeBuildIndex, setActiveBuildIndex] = useState(0);
+  const [skillLang, setSkillLang] = useState<'id' | 'en'>('id');
+  const [guideLang, setGuideLang] = useState<'id' | 'en'>('id');
 
   const { data: builds = [] } = useQuery({
     queryKey: ['builds', hero?.name],
@@ -30,6 +32,26 @@ export function HeroDetailPage() {
   });
 
   const API_BASE = import.meta.env.DEV ? '' : 'https://mlbbapi.project-n.site';
+  const { data: heroGuide } = useQuery({
+    queryKey: ['hero-guide', hero?.name],
+    queryFn: async () => {
+      const res = await fetch(`${API_BASE}/api/hero-guides?hero=${encodeURIComponent(hero!.name)}`);
+      if (!res.ok) return null;
+      return res.json() as Promise<{
+        description?: string; descriptionEn?: string;
+        howToPlay?: string; howToPlayEn?: string;
+        gamePhase?: { early?: string; mid?: string; late?: string };
+        gamePhaseEn?: { early?: string; mid?: string; late?: string };
+        laneAssignment?: { lane?: string; desc?: string };
+        laneAssignmentEn?: { lane?: string; desc?: string };
+        proTips?: string[]; proTipsEn?: string[];
+        summary?: string; summaryEn?: string;
+      }>;
+    },
+    enabled: !!hero?.name,
+    staleTime: 1000 * 60 * 30,
+  });
+
   const { data: heroBalanceHistory = [] } = useQuery({
     queryKey: ['patches-hero', hero?.name],
     queryFn: async () => {
@@ -195,6 +217,138 @@ export function HeroDetailPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6 md:space-y-8">
+              {/* Hero Guide Section */}
+              {heroGuide && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.5 }}
+                  className="p-4 md:p-6 bg-dark-300/50 border border-white/5 rounded-2xl"
+                >
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-5">
+                    <h2 className="text-lg md:text-xl font-semibold text-white">Panduan Hero</h2>
+                    <div className="flex rounded-lg overflow-hidden border border-white/10 text-xs">
+                      <button onClick={() => setGuideLang('id')} className={`px-2.5 py-1 transition-colors ${guideLang === 'id' ? 'bg-primary-500 text-white' : 'text-gray-400 hover:text-white'}`}>ID</button>
+                      <button onClick={() => setGuideLang('en')} className={`px-2.5 py-1 transition-colors ${guideLang === 'en' ? 'bg-primary-500 text-white' : 'text-gray-400 hover:text-white'}`}>EN</button>
+                    </div>
+                  </div>
+
+                  {/* Difficulty Bars */}
+                  <div className="mb-5 p-3 bg-dark-200/40 rounded-xl">
+                    <p className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold mb-3">Statistik Hero</p>
+                    {[
+                      { label: 'Durability', value: Number(hero.survivalPercentage), color: '#22c55e' },
+                      { label: 'Offense', value: Number(hero.attackPercentage), color: '#ef4444' },
+                      { label: 'Control', value: Number(hero.abilityPercentage), color: '#3b82f6' },
+                      { label: 'Difficulty', value: Number(hero.difficultyPercentage), color: '#a855f7' },
+                    ].map(({ label, value, color }) => (
+                      <div key={label} className="flex items-center gap-3 mb-2 last:mb-0">
+                        <span className="text-[11px] text-gray-400 w-20 shrink-0">{label}</span>
+                        <div className="flex-1 h-2 bg-dark-400 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${value}%` }}
+                            transition={{ duration: 0.8, delay: 0.3 }}
+                            className="h-full rounded-full"
+                            style={{ backgroundColor: color }}
+                          />
+                        </div>
+                        <span className="text-[11px] font-semibold w-8 text-right" style={{ color }}>{value}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="space-y-5">
+                    {/* Description */}
+                    {(heroGuide.description || heroGuide.descriptionEn) && (
+                      <div>
+                        <p className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold mb-2">Tentang {hero.name}</p>
+                        <p className="text-sm text-gray-300 leading-relaxed">
+                          {guideLang === 'en' && heroGuide.descriptionEn ? heroGuide.descriptionEn : heroGuide.description}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* How to Play */}
+                    {(heroGuide.howToPlay || heroGuide.howToPlayEn) && (
+                      <div>
+                        <p className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold mb-2">Cara Bermain</p>
+                        <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">
+                          {guideLang === 'en' && heroGuide.howToPlayEn ? heroGuide.howToPlayEn : heroGuide.howToPlay}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Game Phase */}
+                    {heroGuide.gamePhase && (
+                      <div>
+                        <p className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold mb-2">Strategi Per Fase</p>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                          {[
+                            { key: 'early', label: 'Early Game', color: '#22c55e', bg: '#22c55e18' },
+                            { key: 'mid',   label: 'Mid Game',   color: '#f59e0b', bg: '#f59e0b18' },
+                            { key: 'late',  label: 'Late Game',  color: '#ef4444', bg: '#ef444418' },
+                          ].map(({ key, label, color, bg }) => {
+                            const phaseData = guideLang === 'en' && heroGuide.gamePhaseEn ? heroGuide.gamePhaseEn : heroGuide.gamePhase!;
+                            const text = phaseData[key as 'early' | 'mid' | 'late'];
+                            if (!text) return null;
+                            return (
+                              <div key={key} className="p-3 rounded-xl" style={{ background: bg, border: `1px solid ${color}22` }}>
+                                <p className="text-[10px] font-bold uppercase tracking-wide mb-1" style={{ color }}>{label}</p>
+                                <p className="text-xs text-gray-300 leading-relaxed">{text}</p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Lane Assignment */}
+                    {heroGuide.laneAssignment?.lane && (
+                      <div>
+                        <p className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold mb-2">Lane Rekomendasi</p>
+                        <div className="flex items-start gap-2">
+                          <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary-500/20 text-primary-400 border border-primary-500/30 shrink-0">
+                            {heroGuide.laneAssignment.lane}
+                          </span>
+                          {(guideLang === 'en' && heroGuide.laneAssignmentEn?.desc ? heroGuide.laneAssignmentEn.desc : heroGuide.laneAssignment.desc) && (
+                            <p className="text-xs text-gray-400 leading-relaxed">
+                              {guideLang === 'en' && heroGuide.laneAssignmentEn?.desc ? heroGuide.laneAssignmentEn.desc : heroGuide.laneAssignment.desc}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Pro Tips */}
+                    {heroGuide.proTips && heroGuide.proTips.length > 0 && (
+                      <div>
+                        <p className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold mb-2">Pro Tips</p>
+                        <ul className="space-y-2">
+                          {(guideLang === 'en' && heroGuide.proTipsEn ? heroGuide.proTipsEn : heroGuide.proTips).map((tip, i) => (
+                            <li key={i} className="flex items-start gap-2">
+                              <span className="w-5 h-5 rounded-full bg-primary-500/20 text-primary-400 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+                              <span className="text-sm text-gray-300 leading-relaxed">{tip}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Summary */}
+                    {(heroGuide.summary || heroGuide.summaryEn) && (
+                      <div className="p-3 rounded-xl bg-dark-200/40 border border-white/5">
+                        <p className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold mb-1.5">Ringkasan</p>
+                        <p className="text-sm text-gray-300 italic leading-relaxed">
+                          {guideLang === 'en' && heroGuide.summaryEn ? heroGuide.summaryEn : heroGuide.summary}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+
               {/* Skins Gallery */}
               {hero.skins && hero.skins.length > 0 && (
                 <motion.div
@@ -281,11 +435,27 @@ export function HeroDetailPage() {
                 >
                   <div className="flex items-center justify-between mb-4 md:mb-6">
                     <h2 className="text-lg md:text-xl font-semibold text-white">Skill</h2>
-                    {isMultiMode && (
-                      <span className="text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-lg">
-                        Hero Multi-Mode • {hero.skill.length} Skill
-                      </span>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {isMultiMode && (
+                        <span className="text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-lg">
+                          Hero Multi-Mode • {hero.skill.length} Skill
+                        </span>
+                      )}
+                      <div className="flex rounded-lg overflow-hidden border border-white/10 text-xs">
+                        <button
+                          onClick={() => setSkillLang('id')}
+                          className={`px-2.5 py-1 transition-colors ${skillLang === 'id' ? 'bg-primary-500 text-white' : 'text-gray-400 hover:text-white'}`}
+                        >
+                          ID
+                        </button>
+                        <button
+                          onClick={() => setSkillLang('en')}
+                          className={`px-2.5 py-1 transition-colors ${skillLang === 'en' ? 'bg-primary-500 text-white' : 'text-gray-400 hover:text-white'}`}
+                        >
+                          EN
+                        </button>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Mode Tabs */}
@@ -351,7 +521,7 @@ export function HeroDetailPage() {
                               </h3>
                             </div>
                             <p className="text-xs text-gray-400 leading-relaxed line-clamp-3">
-                              {skill.skillDesc}
+                              {skillLang === 'en' && skill.skillDescEn ? skill.skillDescEn : skill.skillDesc}
                             </p>
                             <div className="flex gap-4 mt-2">
                               {skill.cooldown && skill.cooldown[0] > 0 && (

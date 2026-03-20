@@ -3,6 +3,7 @@ export interface Skill {
   cooldown: number[];
   cost: number[];
   skillDesc: string;
+  skillDescEn?: string;
   skillImg: string;
 }
 

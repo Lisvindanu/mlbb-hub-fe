@@ -25,9 +25,9 @@ function calcY(roundIdx: number, matchIdx: number): number {
 }
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-interface Player { id: number; team_id: number; player_name: string; role: string; is_captain: boolean; }
-interface Team { id: number; name: string; seed: number | null; logo_url?: string; players?: Player[]; }
-interface JoinPlayer { player_name: string; role: string; is_captain: boolean; }
+interface Player { id: number; team_id: number; player_name: string; role: string; is_captain: boolean; game_id?: string; }
+interface Team { id: number; name: string; seed: number | null; logo_url?: string; players?: Player[]; team_status?: string; }
+interface JoinPlayer { player_name: string; role: string; is_captain: boolean; game_id: string; is_sub: boolean; }
 interface Match {
   id: number; round: number; match_number: number; bracket: string;
   team1_id: number | null; team2_id: number | null;
@@ -48,6 +48,8 @@ interface Tournament {
   room_id?: string;
   room_password?: string;
   contact?: string;
+  is_paid?: boolean;
+  registration_fee?: string;
 }
 
 // ─── API helpers ──────────────────────────────────────────────────────────────
@@ -584,7 +586,7 @@ function RoomInfoCard({ room_id, room_password }: { room_id?: string; room_passw
 }
 
 // ─── MLBB lane roles ──────────────────────────────────────────────────────────
-const LANE_ROLES = ['Roamer', 'Jungler', 'Mid Lane', 'EXP Lane', 'Gold Lane', 'Cadangan'];
+const MAIN_ROLES = ['Roamer', 'Jungler', 'Mid Lane', 'EXP Lane', 'Gold Lane'];
 
 const ROLE_COLOR: Record<string, string> = {
   Roamer: 'text-blue-400',
@@ -624,9 +626,10 @@ function TeamAvatar({ name, logoUrl, size = 'md' }: { name: string; logoUrl?: st
 function JoinModal({ tournamentId, token, onSuccess, onClose }: {
   tournamentId: string; token: string; onSuccess: () => void; onClose: () => void;
 }) {
-  const EMPTY_PLAYERS: JoinPlayer[] = Array.from({ length: 5 }, (_, i) => ({
-    player_name: '', role: '', is_captain: i === 0,
-  }));
+  const EMPTY_PLAYERS: JoinPlayer[] = [
+    ...Array.from({ length: 5 }, (_, i) => ({ player_name: '', role: MAIN_ROLES[i], is_captain: i === 0, game_id: '', is_sub: false })),
+    ...Array.from({ length: 2 }, () => ({ player_name: '', role: 'Cadangan', is_captain: false, game_id: '', is_sub: true })),
+  ];
 
   const [teamName, setTeamName] = useState('');
   const [logoFile, setLogoFile] = useState<File | null>(null);
@@ -754,37 +757,83 @@ function JoinModal({ tournamentId, token, onSuccess, onClose }: {
           {/* Data Pemain */}
           <div>
             <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">
-              Data Pemain <span className="normal-case font-normal text-gray-600">(opsional, maks 5)</span>
+              Data Pemain <span className="normal-case font-normal text-gray-600">(opsional)</span>
             </p>
-            <p className="text-[10px] text-gray-600 mb-3">Klik <Crown className="w-2.5 h-2.5 inline mb-0.5" /> untuk tandai captain</p>
+            <p className="text-[10px] text-gray-600 mb-3">Klik <Crown className="w-2.5 h-2.5 inline mb-0.5" /> untuk tandai captain • ID In-Game untuk distribusi hadiah</p>
+
+            {/* Main players */}
+            <div className="space-y-2 mb-3">
+              {players.filter(p => !p.is_sub).map((p, i) => {
+                const takenRoles = players.filter((pp, ii) => !pp.is_sub && ii !== i && pp.role).map(pp => pp.role);
+                const availableRoles = MAIN_ROLES.filter(r => !takenRoles.includes(r));
+                return (
+                  <div key={i} className="space-y-1">
+                    <div className="flex gap-2 items-center">
+                      <button
+                        onClick={() => setCaptain(i)}
+                        title="Tandai captain"
+                        className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all shrink-0 ${
+                          p.is_captain
+                            ? 'bg-yellow-500/20 border border-yellow-500/40 text-yellow-400'
+                            : 'bg-dark-400/60 border border-white/8 text-gray-600 hover:text-yellow-500/60'
+                        }`}
+                      >
+                        <Crown className="w-3 h-3" />
+                      </button>
+                      <input
+                        className="flex-1 min-w-0 bg-dark-400 border border-white/10 rounded-lg px-2.5 py-1.5 text-white placeholder-gray-600 text-xs focus:outline-none focus:border-primary-500/50 transition-colors"
+                        placeholder={`Pemain ${i + 1} (IGN)`}
+                        value={p.player_name}
+                        onChange={e => updatePlayer(i, 'player_name', e.target.value)}
+                      />
+                      <select
+                        value={p.role}
+                        onChange={e => updatePlayer(i, 'role', e.target.value)}
+                        className="w-28 bg-dark-400 border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-primary-500/50 transition-colors shrink-0"
+                      >
+                        <option value="">Lane/Role</option>
+                        {availableRoles.map(r => <option key={r} value={r}>{r}</option>)}
+                        {p.role && !availableRoles.includes(p.role) && <option value={p.role}>{p.role}</option>}
+                      </select>
+                    </div>
+                    <div className="flex gap-2 pl-9">
+                      <input
+                        className="flex-1 bg-dark-500 border border-white/8 rounded-lg px-2.5 py-1 text-gray-300 placeholder-gray-700 text-[11px] focus:outline-none focus:border-primary-500/30 transition-colors"
+                        placeholder="ID In-Game (opsional, untuk hadiah)"
+                        value={p.game_id}
+                        onChange={e => updatePlayer(i, 'game_id', e.target.value)}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Substitute players */}
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-600 mb-2">Cadangan (opsional)</p>
             <div className="space-y-2">
-              {players.map((p, i) => (
-                <div key={i} className="flex gap-2 items-center">
-                  <button
-                    onClick={() => setCaptain(i)}
-                    title="Tandai captain"
-                    className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all shrink-0 ${
-                      p.is_captain
-                        ? 'bg-yellow-500/20 border border-yellow-500/40 text-yellow-400'
-                        : 'bg-dark-400/60 border border-white/8 text-gray-600 hover:text-yellow-500/60'
-                    }`}
-                  >
-                    <Crown className="w-3 h-3" />
-                  </button>
-                  <input
-                    className="flex-1 min-w-0 bg-dark-400 border border-white/10 rounded-lg px-2.5 py-1.5 text-white placeholder-gray-600 text-xs focus:outline-none focus:border-primary-500/50 transition-colors"
-                    placeholder={`Pemain ${i + 1} (IGN)`}
-                    value={p.player_name}
-                    onChange={e => updatePlayer(i, 'player_name', e.target.value)}
-                  />
-                  <select
-                    value={p.role}
-                    onChange={e => updatePlayer(i, 'role', e.target.value)}
-                    className="w-28 bg-dark-400 border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-primary-500/50 transition-colors shrink-0"
-                  >
-                    <option value="">Lane/Role</option>
-                    {LANE_ROLES.map(r => <option key={r} value={r}>{r}</option>)}
-                  </select>
+              {players.map((p, i) => !p.is_sub ? null : (
+                <div key={i} className="space-y-1">
+                  <div className="flex gap-2 items-center">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-dark-400/40 border border-white/5 shrink-0">
+                      <span className="text-[9px] text-gray-600 font-bold">SUB</span>
+                    </div>
+                    <input
+                      className="flex-1 min-w-0 bg-dark-400 border border-white/10 rounded-lg px-2.5 py-1.5 text-white placeholder-gray-600 text-xs focus:outline-none focus:border-primary-500/50 transition-colors"
+                      placeholder={`Cadangan ${i - 4} (IGN)`}
+                      value={p.player_name}
+                      onChange={e => updatePlayer(i, 'player_name', e.target.value)}
+                    />
+                    <span className="w-28 text-[10px] text-gray-600 text-center shrink-0">Cadangan</span>
+                  </div>
+                  <div className="flex gap-2 pl-9">
+                    <input
+                      className="flex-1 bg-dark-500 border border-white/8 rounded-lg px-2.5 py-1 text-gray-300 placeholder-gray-700 text-[11px] focus:outline-none focus:border-primary-500/30 transition-colors"
+                      placeholder="ID In-Game (opsional)"
+                      value={p.game_id}
+                      onChange={e => updatePlayer(i, 'game_id', e.target.value)}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
@@ -817,8 +866,35 @@ function JoinModal({ tournamentId, token, onSuccess, onClose }: {
 }
 
 // ─── Team list with expandable roster ────────────────────────────────────────
-function TeamList({ teams }: { teams: Team[] }) {
+function TeamList({ teams, tournamentId, isCreator, isPaid, token, onRefresh }: {
+  teams: Team[]; tournamentId: string; isCreator: boolean; isPaid: boolean; token: string | null; onRefresh: () => void;
+}) {
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [loadingId, setLoadingId] = useState<number | null>(null);
+
+  async function handleStatus(teamId: number, status: 'approved' | 'rejected') {
+    setLoadingId(teamId);
+    try {
+      await fetch(`${API_BASE}/api/tournaments/${tournamentId}/teams/${teamId}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ status }),
+      });
+      onRefresh();
+    } finally { setLoadingId(null); }
+  }
+
+  async function handleDelete(teamId: number, teamName: string) {
+    if (!confirm(`Hapus tim "${teamName}"?`)) return;
+    setLoadingId(teamId);
+    try {
+      await fetch(`${API_BASE}/api/tournaments/${tournamentId}/teams/${teamId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      onRefresh();
+    } finally { setLoadingId(null); }
+  }
 
   return (
     <div className="space-y-1.5">
@@ -827,8 +903,10 @@ function TeamList({ teams }: { teams: Team[] }) {
         const hasPlayers = (team.players?.length ?? 0) > 0;
         const captain = team.players?.find(p => p.is_captain);
 
+        const isPending = team.team_status === 'pending';
+        const isRejected = team.team_status === 'rejected';
         return (
-          <div key={team.id} className="rounded-lg bg-white/[0.03] overflow-hidden">
+          <div key={team.id} className={`rounded-lg overflow-hidden ${isPending ? 'bg-orange-500/5 border border-orange-500/15' : isRejected ? 'bg-red-500/5 border border-red-500/15 opacity-60' : 'bg-white/[0.03]'}`}>
             <div
               className={`flex items-center gap-2 px-2 py-1.5 ${hasPlayers ? 'cursor-pointer hover:bg-white/[0.05]' : ''} transition-all`}
               onClick={() => hasPlayers && setExpandedId(isExpanded ? null : team.id)}
@@ -836,19 +914,57 @@ function TeamList({ teams }: { teams: Team[] }) {
               <span className="text-xs text-gray-600 w-4 text-right shrink-0">{team.seed ?? i + 1}</span>
               <TeamAvatar name={team.name} logoUrl={team.logo_url} size="sm" />
               <div className="flex-1 min-w-0">
-                <span className="text-sm text-gray-300 truncate block">{team.name}</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm text-gray-300 truncate">{team.name}</span>
+                  {isPending && <span className="text-[9px] bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded-full shrink-0">Pending</span>}
+                  {isRejected && <span className="text-[9px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full shrink-0">Ditolak</span>}
+                </div>
                 {captain && (
                   <span className="text-[10px] text-gray-600 truncate">
                     <Crown className="w-2 h-2 inline mr-0.5 text-yellow-600" />{captain.player_name}
                   </span>
                 )}
               </div>
-              {hasPlayers && (
+              {/* Admin controls */}
+              {isCreator && (
+                <div className="flex items-center gap-1 shrink-0" onClick={e => e.stopPropagation()}>
+                  {isPaid && isPending && (
+                    <>
+                      <button
+                        disabled={loadingId === team.id}
+                        onClick={() => handleStatus(team.id, 'approved')}
+                        className="text-[10px] bg-green-500/20 hover:bg-green-500/30 text-green-300 px-2 py-0.5 rounded-full transition-colors"
+                      >✓ Acc</button>
+                      <button
+                        disabled={loadingId === team.id}
+                        onClick={() => handleStatus(team.id, 'rejected')}
+                        className="text-[10px] bg-red-500/20 hover:bg-red-500/30 text-red-300 px-2 py-0.5 rounded-full transition-colors"
+                      >✕ Tolak</button>
+                    </>
+                  )}
+                  {isPaid && isRejected && (
+                    <button
+                      disabled={loadingId === team.id}
+                      onClick={() => handleStatus(team.id, 'approved')}
+                      className="text-[10px] bg-green-500/20 hover:bg-green-500/30 text-green-300 px-2 py-0.5 rounded-full transition-colors"
+                    >↩ Acc</button>
+                  )}
+                  <button
+                    disabled={loadingId === team.id}
+                    onClick={() => handleDelete(team.id, team.name)}
+                    className="text-[10px] bg-white/5 hover:bg-red-500/20 text-gray-600 hover:text-red-400 px-1.5 py-0.5 rounded-full transition-colors"
+                  >🗑</button>
+                </div>
+              )}
+              {hasPlayers && !isCreator && (
                 <div className="flex items-center gap-1 shrink-0">
                   <span className="text-[10px] text-gray-600">{team.players!.length}p</span>
-                  {isExpanded
-                    ? <ChevronUp className="w-3 h-3 text-gray-600" />
-                    : <ChevronDown className="w-3 h-3 text-gray-600" />}
+                  {isExpanded ? <ChevronUp className="w-3 h-3 text-gray-600" /> : <ChevronDown className="w-3 h-3 text-gray-600" />}
+                </div>
+              )}
+              {hasPlayers && isCreator && (
+                <div className="shrink-0">
+                  {isExpanded ? <ChevronUp className="w-3 h-3 text-gray-600" /> : <ChevronDown className="w-3 h-3 text-gray-600" />}
                 </div>
               )}
             </div>
@@ -867,7 +983,12 @@ function TeamList({ teams }: { teams: Team[] }) {
                       <div key={p.id} className="flex items-center gap-2">
                         {p.is_captain && <Crown className="w-2.5 h-2.5 text-yellow-500 shrink-0" />}
                         {!p.is_captain && <div className="w-2.5" />}
-                        <span className="text-xs text-gray-300 flex-1 truncate">{p.player_name}</span>
+                        <div className="flex-1 min-w-0">
+                          <span className="text-xs text-gray-300 truncate block">{p.player_name}</span>
+                          {p.game_id && (
+                            <span className="text-[10px] text-gray-600 truncate block">ID: {p.game_id}</span>
+                          )}
+                        </div>
                         {p.role && (
                           <span className={`text-[10px] shrink-0 ${ROLE_COLOR[p.role] ?? 'text-gray-500'}`}>
                             {p.role}
@@ -1032,14 +1153,30 @@ export function TournamentDetailPage() {
           </motion.div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className={`grid grid-cols-1 gap-6 ${isDouble && t.status !== 'registration' ? 'lg:grid-cols-5' : 'lg:grid-cols-4'}`}>
           {/* ── Left sidebar ─────────────────────────────────────────────── */}
           <div className="space-y-4 lg:col-span-1">
 
             {/* Info card (registration phase) */}
-            {(t.scheduled_at || t.prize || t.contact || t.rules || t.bo_format) && (
+            {(t.scheduled_at || t.prize || t.contact || t.rules || t.bo_format || t.is_paid !== undefined) && (
               <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 space-y-3">
                 <p className="text-xs text-gray-500 uppercase tracking-wider">Info Turnamen</p>
+
+                {/* Paid/Free badge */}
+                <div className={`flex items-center justify-between rounded-lg px-3 py-2 ${t.is_paid ? 'bg-orange-500/10 border border-orange-500/20' : 'bg-green-500/10 border border-green-500/20'}`}>
+                  <span className="text-xs text-gray-400">Registrasi</span>
+                  <span className={`text-sm font-bold ${t.is_paid ? 'text-orange-300' : 'text-green-300'}`}>
+                    {t.is_paid ? `💰 Berbayar` : '✓ Gratis'}
+                  </span>
+                </div>
+                {t.is_paid && t.registration_fee && (
+                  <div className="flex items-start gap-2">
+                    <div>
+                      <p className="text-[10px] text-gray-600 mb-0.5">Biaya Registrasi</p>
+                      <p className="text-xs text-orange-200/80">{t.registration_fee}</p>
+                    </div>
+                  </div>
+                )}
 
                 {t.bo_format && (
                   <div className="flex items-center justify-between bg-dark-400/50 rounded-lg px-3 py-2">
@@ -1141,7 +1278,7 @@ export function TournamentDetailPage() {
               {t.teams.length === 0 ? (
                 <p className="text-xs text-gray-600 text-center py-3">Belum ada tim</p>
               ) : (
-                <TeamList teams={t.teams} />
+                <TeamList teams={t.teams} tournamentId={id} isCreator={isCreator} isPaid={!!t.is_paid} token={token} onRefresh={refresh} />
               )}
 
               {/* Join form */}
@@ -1249,39 +1386,43 @@ export function TournamentDetailPage() {
           </div>
 
           {/* ── Right: Bracket ───────────────────────────────────────────── */}
-          <div className="lg:col-span-3">
+          <div className={isDouble && t.status !== 'registration' ? 'lg:col-span-4' : 'lg:col-span-3'}>
             {t.status === 'registration' ? (
               <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-8 text-center text-gray-500">
                 <Trophy className="w-10 h-10 mx-auto mb-3 opacity-20" />
                 <p>Bracket akan tampil setelah turnamen dimulai</p>
                 <p className="text-xs mt-1 text-gray-600">{t.teams.length}/{t.team_count} tim terdaftar</p>
               </div>
-            ) : (
-              <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
-                <BracketSection
-                  label={isDouble ? '🏆 Winners Bracket' : 'Bracket'}
-                  labelColor={isDouble ? 'text-blue-400' : 'text-gray-400'}
-                  matches={winnerMatches}
-                  teams={t.teams}
-                  isCreator={isCreator}
-                  onRequestWinner={(match, teamId, isTeam1) => setWinnerModal({ match, teamId, isTeam1 })}
-                />
-                {isDouble && loserMatches.length > 0 && (
-                  <>
-                    <div className="border-t border-white/8 my-4" />
+            ) : isDouble ? (
+              <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 space-y-4">
+                {/* Winners + Losers side by side */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <div>
                     <BracketSection
-                      label="💀 Losers Bracket"
-                      labelColor="text-red-400"
-                      matches={loserMatches}
+                      label="🏆 Winners Bracket"
+                      labelColor="text-blue-400"
+                      matches={winnerMatches}
                       teams={t.teams}
                       isCreator={isCreator}
                       onRequestWinner={(match, teamId, isTeam1) => setWinnerModal({ match, teamId, isTeam1 })}
                     />
-                  </>
-                )}
-                {isDouble && grandFinalMatches.length > 0 && (
+                  </div>
+                  {loserMatches.length > 0 && (
+                    <div>
+                      <BracketSection
+                        label="💀 Losers Bracket"
+                        labelColor="text-red-400"
+                        matches={loserMatches}
+                        teams={t.teams}
+                        isCreator={isCreator}
+                        onRequestWinner={(match, teamId, isTeam1) => setWinnerModal({ match, teamId, isTeam1 })}
+                      />
+                    </div>
+                  )}
+                </div>
+                {grandFinalMatches.length > 0 && (
                   <>
-                    <div className="border-t border-white/8 my-4" />
+                    <div className="border-t border-white/8" />
                     <div className="mb-2 text-xs font-bold uppercase tracking-widest text-yellow-400">
                       🎖 Grand Final
                     </div>
@@ -1298,6 +1439,17 @@ export function TournamentDetailPage() {
                     </div>
                   </>
                 )}
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
+                <BracketSection
+                  label="Bracket"
+                  labelColor="text-gray-400"
+                  matches={winnerMatches}
+                  teams={t.teams}
+                  isCreator={isCreator}
+                  onRequestWinner={(match, teamId, isTeam1) => setWinnerModal({ match, teamId, isTeam1 })}
+                />
               </div>
             )}
           </div>

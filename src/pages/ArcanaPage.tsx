@@ -1,281 +1,278 @@
 import { useState, useEffect } from 'react';
-import { useArcana } from '../hooks/useItems';
-import { Loading } from '../components/ui/Loading';
+import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import type { Arcana } from '../types/hero';
-import { EMBLEMS } from '../data/mlbbEmblems';
-import type { EmblemDef } from '../data/mlbbEmblems';
+import { Star, RotateCcw } from 'lucide-react';
 
-const ROLE_COLORS: Record<string, { bg: string; border: string; text: string; badge: string }> = {
-  'tank':     { bg: 'bg-blue-500/10',   border: 'border-blue-500/30',   text: 'text-blue-400',   badge: 'bg-blue-500/20 text-blue-400' },
-  'assassin': { bg: 'bg-purple-500/10', border: 'border-purple-500/30', text: 'text-purple-400', badge: 'bg-purple-500/20 text-purple-400' },
-  'mage':     { bg: 'bg-cyan-500/10',   border: 'border-cyan-500/30',   text: 'text-cyan-400',   badge: 'bg-cyan-500/20 text-cyan-400' },
-  'fighter':  { bg: 'bg-red-500/10',    border: 'border-red-500/30',    text: 'text-red-400',    badge: 'bg-red-500/20 text-red-400' },
-  'support':  { bg: 'bg-green-500/10',  border: 'border-green-500/30',  text: 'text-green-400',  badge: 'bg-green-500/20 text-green-400' },
-  'marksman': { bg: 'bg-yellow-500/10', border: 'border-yellow-500/30', text: 'text-yellow-400', badge: 'bg-yellow-500/20 text-yellow-400' },
-  'common':   { bg: 'bg-gray-500/10',   border: 'border-gray-500/30',   text: 'text-gray-400',   badge: 'bg-gray-500/20 text-gray-400' },
-};
+const API_BASE = import.meta.env.DEV ? '' : 'https://mlbbapi.project-n.site';
 
-function getRoleClasses(role: string) {
-  return ROLE_COLORS[role] || ROLE_COLORS['common'];
+interface Talent {
+  name: string;
+  desc: string;
+  descEn?: string;
+  icon: string;
+  recommended: boolean;
+}
+interface TierGroup {
+  tier: number;
+  talents: Talent[];
+}
+interface ActiveTalent {
+  name: string;
+  desc: string;
+  descEn?: string;
+  colorHex: string;
+}
+interface EmblemDef {
+  id: number;
+  name: string;
+  icon: string;
+  colorHex: string;
+  roles: string[];
+  tiers: TierGroup[];
+  activeTalents: ActiveTalent[];
+  baseStats: string[];
+}
+
+async function fetchTalents(): Promise<EmblemDef[]> {
+  const res = await fetch(`${API_BASE}/api/talents`);
+  if (!res.ok) throw new Error('Failed to fetch talents');
+  return res.json();
+}
+
+function TalentCard({ talent, selected, onToggle, colorHex, lang }: {
+  talent: Talent; selected: boolean; onToggle: () => void; colorHex: string; lang: 'id' | 'en';
+}) {
+  return (
+    <button
+      onClick={onToggle}
+      className="relative flex flex-col items-center gap-1.5 p-2 rounded-xl transition-all text-center group"
+      style={selected ? {
+        background: `${colorHex}22`,
+        boxShadow: `0 0 0 1.5px ${colorHex}88`,
+      } : {}}
+    >
+      {talent.recommended && (
+        <Star className="absolute -top-1 -right-1 w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+      )}
+      <div
+        className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 border transition-all"
+        style={selected ? { borderColor: `${colorHex}99` } : { borderColor: 'rgba(255,255,255,0.1)' }}
+      >
+        <img
+          src={talent.icon}
+          alt={talent.name}
+          className="w-full h-full object-contain p-1"
+          onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.3'; }}
+        />
+      </div>
+      <span
+        className="text-[10px] font-semibold leading-tight transition-colors"
+        style={{ color: selected ? colorHex : 'rgb(209,213,219)' }}
+      >
+        {talent.name}
+      </span>
+      <span className="text-[9px] text-gray-500 leading-tight line-clamp-2">
+        {lang === 'en' && talent.descEn ? talent.descEn : talent.desc}
+      </span>
+    </button>
+  );
+}
+
+function EmblemCard({ emblem, lang }: { emblem: EmblemDef; lang: 'id' | 'en' }) {
+  const [selected, setSelected] = useState<Record<number, string>>({});
+
+  function toggle(tier: number, name: string) {
+    setSelected(prev => prev[tier] === name ? { ...prev, [tier]: '' } : { ...prev, [tier]: name });
+  }
+
+  function reset() { setSelected({}); }
+
+  function applyRecommended() {
+    const rec: Record<number, string> = {};
+    emblem.tiers.forEach(t => {
+      const r = t.talents.find(x => x.recommended);
+      if (r) rec[t.tier] = r.name;
+    });
+    setSelected(rec);
+  }
+
+  const activeSel = emblem.tiers.map(t => t.talents.find(x => x.name === selected[t.tier])).filter(Boolean);
+  const hasSelection = Object.values(selected).some(Boolean);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-2xl overflow-hidden border"
+      style={{ borderColor: `${emblem.colorHex}44`, background: 'rgba(255,255,255,0.02)' }}
+    >
+      {/* Header */}
+      <div className="flex items-center gap-3 p-4" style={{ background: `${emblem.colorHex}18`, borderBottom: `1px solid ${emblem.colorHex}33` }}>
+        <div className="w-12 h-12 rounded-xl overflow-hidden border flex-shrink-0" style={{ borderColor: `${emblem.colorHex}55` }}>
+          <img src={emblem.icon} alt={emblem.name} className="w-full h-full object-contain p-1" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="text-sm font-bold text-white uppercase tracking-wide">Custom {emblem.name} Emblem</h3>
+          <div className="flex flex-wrap gap-1 mt-1">
+            {emblem.roles.map(r => (
+              <span key={r} className="text-[10px] px-2 py-0.5 rounded-full font-medium"
+                style={{ background: `${emblem.colorHex}33`, color: emblem.colorHex }}>
+                {r}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="p-4 space-y-4">
+        {/* Talent Tree */}
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">
+              Talent Tree <span className="text-gray-600">(click to select)</span>
+            </p>
+            <div className="flex items-center gap-2">
+              <button onClick={applyRecommended} className="flex items-center gap-1 text-[10px] text-amber-400 hover:text-amber-300 transition-colors">
+                <Star className="w-3 h-3 fill-amber-400" /> Recommended
+              </button>
+              {hasSelection && (
+                <button onClick={reset} className="flex items-center gap-1 text-[10px] text-gray-500 hover:text-gray-300 transition-colors">
+                  <RotateCcw className="w-3 h-3" /> Reset
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {emblem.tiers.map((tierGroup, tIdx) => (
+              <div key={tierGroup.tier}>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-[9px] px-2 py-0.5 rounded font-bold uppercase tracking-widest"
+                    style={{ background: `${emblem.colorHex}22`, color: emblem.colorHex }}>
+                    Tier {tierGroup.tier}
+                  </span>
+                  {tIdx < emblem.tiers.length - 1 && (
+                    <div className="flex-1 h-px" style={{ background: `${emblem.colorHex}22` }} />
+                  )}
+                </div>
+                <div className="grid grid-cols-3 gap-1">
+                  {tierGroup.talents.map(talent => (
+                    <TalentCard
+                      key={talent.name}
+                      talent={talent}
+                      selected={selected[tierGroup.tier] === talent.name}
+                      onToggle={() => toggle(tierGroup.tier, talent.name)}
+                      colorHex={emblem.colorHex}
+                      lang={lang}
+                    />
+                  ))}
+                </div>
+                {tIdx < emblem.tiers.length - 1 && (
+                  <div className="flex justify-center mt-2">
+                    <div className="w-px h-4" style={{ background: `${emblem.colorHex}44` }} />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Active Talents — show selected or default recommended */}
+        <div>
+          <p className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold mb-2">Active Talents</p>
+          <div className="space-y-1">
+            {(hasSelection ? activeSel : emblem.activeTalents.map(a => ({ name: a.name, desc: a.desc, descEn: a.descEn }))).map((t, i) => t && (
+              <div key={i} className="flex items-start gap-2">
+                <span className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style={{ background: emblem.colorHex }} />
+                <span className="text-xs font-semibold" style={{ color: emblem.colorHex }}>{t.name}</span>
+                <span className="text-xs text-gray-500">- {lang === 'en' && (t as any).descEn ? (t as any).descEn : t.desc}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Base Stats */}
+        <div>
+          <p className="text-[10px] text-gray-600 uppercase tracking-widest font-semibold mb-1.5">Base Stats</p>
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+            {emblem.baseStats.map((s, i) => (
+              <span key={i} className="text-[11px] text-gray-400">{s}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
 }
 
 export function ArcanaPage() {
+  const [filter, setFilter] = useState('All');
+  const [lang, setLang] = useState<'id' | 'en'>('id');
+
   useEffect(() => {
-    document.title = 'Panduan Emblem - Mobile Legends: Bang Bang | MLBB Hub';
+    document.title = 'Panduan Emblem & Talent - Mobile Legends | MLBB Hub';
     const desc = document.querySelector('meta[name="description"]');
-    if (desc) desc.setAttribute('content', 'Jelajahi semua emblem Mobile Legends: Bang Bang. Temukan emblem terbaik untuk setiap hero dan role.');
+    if (desc) desc.setAttribute('content', 'Jelajahi talent tree semua emblem Mobile Legends. Pilih talent terbaik per tier dan lihat rekomendasi pro.');
     return () => { document.title = 'MLBB Hub - Mobile Legends: Bang Bang Community Hub'; };
   }, []);
 
-  const { data: emblems, isLoading, error } = useArcana();
-  const [selectedEmblem, setSelectedEmblem] = useState<Arcana | null>(null);
-  const [selectedStandard, setSelectedStandard] = useState<string[]>([]);
-  const [selectedCore, setSelectedCore] = useState<string | null>(null);
+  const { data: emblems, isLoading, error } = useQuery({
+    queryKey: ['talents'],
+    queryFn: fetchTalents,
+    staleTime: 5 * 60 * 1000,
+  });
 
-  // Find static emblem data (talents, icons) matching the selected API emblem
-  const emblemData: EmblemDef | null = selectedEmblem
-    ? (EMBLEMS.find(e => e.id === (selectedEmblem.role || selectedEmblem.colorName?.toLowerCase())) ?? null)
-    : null;
+  const FILTERS = ['All', 'Assassin', 'Mage', 'Fighter', 'Tank', 'Marksman', 'Support'];
 
-  function openModal(emblem: Arcana) {
-    setSelectedEmblem(emblem);
-    setSelectedStandard([]);
-    setSelectedCore(null);
-  }
+  const filtered = (emblems || []).filter(e =>
+    filter === 'All' || e.name.toLowerCase() === filter.toLowerCase()
+  );
 
-  function closeModal() {
-    setSelectedEmblem(null);
-    setSelectedStandard([]);
-    setSelectedCore(null);
-  }
-
-  function toggleStandard(name: string) {
-    setSelectedStandard(prev =>
-      prev.includes(name) ? prev.filter(n => n !== name) : [...prev, name]
-    );
-  }
-
-  if (isLoading) return <Loading />;
-  if (error) return <div className="text-center text-red-500 py-10">Gagal memuat emblem</div>;
+  if (isLoading) return (
+    <div className="min-h-screen bg-dark-400 flex items-center justify-center">
+      <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
+  if (error) return <div className="text-center text-red-500 py-10">Gagal memuat data emblem</div>;
 
   return (
     <div className="min-h-screen bg-dark-400 py-8">
-      <div className="max-w-5xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-display font-bold text-white mb-2">Emblem</h1>
-          <p className="text-gray-400">
-            Pilih emblem yang sesuai dengan role hero-mu. Setiap emblem memberikan stat utama dan talent unik.
-          </p>
-        </div>
-
-        {/* Emblem Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {(emblems || []).map((emblem, idx) => {
-            const classes = getRoleClasses(emblem.role || emblem.colorName?.toLowerCase());
-            return (
-              <motion.div
-                key={emblem.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.06 }}
-                onClick={() => openModal(emblem)}
-                className={`
-                  cursor-pointer rounded-xl p-5 border transition-all duration-200
-                  ${classes.bg} ${classes.border}
-                  hover:scale-[1.02] hover:shadow-lg
-                `}
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className={`w-16 h-16 rounded-xl overflow-hidden border ${classes.border} flex-shrink-0 bg-dark-400`}>
-                    <img
-                      src={emblem.icon}
-                      alt={emblem.name}
-                      className="w-full h-full object-contain p-1"
-                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                    />
-                  </div>
-                  <div>
-                    <h3 className={`text-lg font-bold ${classes.text}`}>{emblem.name}</h3>
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${classes.badge}`}>
-                      {emblem.colorName} Emblem
-                    </span>
-                  </div>
-                </div>
-
-                {/* Attributes */}
-                <div className="space-y-1.5">
-                  {emblem.description.split(', ').map((attr, i) => (
-                    <div key={i} className="flex items-center justify-between">
-                      <span className="text-xs text-gray-400 capitalize">{attr.split(' +')[0]?.trim()}</span>
-                      <span className={`text-xs font-semibold ${classes.text}`}>
-                        +{attr.split(' +')[1]?.trim() || '—'}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* Detail Modal */}
-        {selectedEmblem && (
-          <div
-            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
-            onClick={closeModal}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-dark-300 rounded-2xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {(() => {
-                const classes = getRoleClasses(selectedEmblem.role || selectedEmblem.colorName?.toLowerCase());
-                return (
-                  <>
-                    {/* Header */}
-                    <div className="flex items-start gap-4 mb-5">
-                      <div className={`w-20 h-20 rounded-xl overflow-hidden border ${classes.border} ${classes.bg} flex-shrink-0`}>
-                        <img
-                          src={selectedEmblem.icon}
-                          alt={selectedEmblem.name}
-                          className="w-full h-full object-contain p-2"
-                          onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                        />
-                      </div>
-                      <div>
-                        <h2 className="text-xl font-bold text-white">{selectedEmblem.name}</h2>
-                        <span className={`text-sm ${classes.text}`}>{selectedEmblem.colorName} Emblem</span>
-                      </div>
-                    </div>
-
-                    {/* Base Stats */}
-                    <div className="mb-5">
-                      <h3 className="text-sm font-semibold text-gray-400 mb-3">Base Stats (Max Level)</h3>
-                      <div className={`rounded-xl ${classes.bg} border ${classes.border} divide-y divide-white/5`}>
-                        {selectedEmblem.description.split(', ').map((attr, i) => {
-                          const [label, val] = attr.split(' +');
-                          return (
-                            <div key={i} className="flex items-center justify-between px-4 py-2.5">
-                              <span className="text-sm text-gray-300 capitalize">{label?.trim()}</span>
-                              <span className={`text-sm font-bold ${classes.text}`}>+{val?.trim()}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Talents from static data */}
-                    {emblemData && (
-                      <>
-                        {/* Standard Talents */}
-                        <div className="mb-5">
-                          <h3 className="text-sm font-semibold text-gray-400 mb-3">Standard Talents</h3>
-                          <div className="grid grid-cols-1 gap-2">
-                            {emblemData.standard.map(talent => {
-                              const isSelected = selectedStandard.includes(talent.name);
-                              return (
-                                <button
-                                  key={talent.name}
-                                  onClick={() => toggleStandard(talent.name)}
-                                  className={`flex items-center gap-3 p-3 rounded-xl border text-left transition-all ${
-                                    isSelected
-                                      ? `${classes.bg} ${classes.border} ring-1 ring-current`
-                                      : 'bg-dark-400 border-white/10 hover:border-white/20'
-                                  }`}
-                                >
-                                  <div className="w-10 h-10 rounded-lg overflow-hidden bg-dark-300 flex-shrink-0">
-                                    <img
-                                      src={talent.icon}
-                                      alt={talent.name}
-                                      className="w-full h-full object-contain p-1"
-                                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                                    />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className={`text-sm font-semibold ${isSelected ? classes.text : 'text-white'}`}>
-                                      {talent.name}
-                                    </div>
-                                    <div className="text-xs text-gray-400 mt-0.5 leading-relaxed">{talent.effect}</div>
-                                  </div>
-                                  {isSelected && (
-                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${classes.badge}`}>
-                                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                                      </svg>
-                                    </div>
-                                  )}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-
-                        {/* Core Talent */}
-                        <div className="mb-5">
-                          <h3 className="text-sm font-semibold text-gray-400 mb-3">Core Talent
-                            <span className="ml-2 text-xs px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 font-normal">Signature</span>
-                          </h3>
-                          <div className="grid grid-cols-1 gap-2">
-                            {emblemData.core.map(talent => {
-                              const isSelected = selectedCore === talent.name;
-                              return (
-                                <button
-                                  key={talent.name}
-                                  onClick={() => setSelectedCore(isSelected ? null : talent.name)}
-                                  className={`flex items-center gap-3 p-3 rounded-xl border text-left transition-all ${
-                                    isSelected
-                                      ? `${classes.bg} ${classes.border} ring-1 ring-current`
-                                      : 'bg-dark-400 border-white/10 hover:border-white/20'
-                                  }`}
-                                >
-                                  <div className="w-10 h-10 rounded-lg overflow-hidden bg-dark-300 flex-shrink-0">
-                                    <img
-                                      src={talent.icon}
-                                      alt={talent.name}
-                                      className="w-full h-full object-contain p-1"
-                                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                                    />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2">
-                                      <span className={`text-sm font-semibold ${isSelected ? classes.text : 'text-white'}`}>
-                                        {talent.name}
-                                      </span>
-                                      <span className="text-xs px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400">SIG</span>
-                                    </div>
-                                    <div className="text-xs text-gray-400 mt-0.5 leading-relaxed">{talent.effect}</div>
-                                  </div>
-                                  {isSelected && (
-                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${classes.badge}`}>
-                                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                                      </svg>
-                                    </div>
-                                  )}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      </>
-                    )}
-
-                    <button
-                      onClick={closeModal}
-                      className="w-full py-3 bg-dark-400 hover:bg-dark-200 text-white rounded-xl transition-colors"
-                    >
-                      Tutup
-                    </button>
-                  </>
-                );
-              })()}
-            </motion.div>
+        <div className="flex items-start justify-between mb-6 gap-4">
+          <div>
+            <h1 className="text-3xl font-display font-bold text-white mb-1">Emblem & Talent</h1>
+            <p className="text-gray-400 text-sm">Pilih talent terbaik untuk setiap role. Klik talent untuk memilih, ★ = rekomendasi.</p>
           </div>
-        )}
+          <div className="flex rounded-lg overflow-hidden border border-white/10 text-xs shrink-0 mt-1">
+            <button onClick={() => setLang('id')} className={`px-3 py-1.5 transition-colors ${lang === 'id' ? 'bg-primary-500 text-white' : 'text-gray-400 hover:text-white'}`}>ID</button>
+            <button onClick={() => setLang('en')} className={`px-3 py-1.5 transition-colors ${lang === 'en' ? 'bg-primary-500 text-white' : 'text-gray-400 hover:text-white'}`}>EN</button>
+          </div>
+        </div>
+
+        {/* Filter Tabs */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {FILTERS.map(f => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wide transition-all border ${
+                filter === f
+                  ? 'bg-primary-500/20 border-primary-500/50 text-primary-400'
+                  : 'border-white/10 text-gray-400 hover:text-white hover:border-white/20'
+              }`}
+            >
+              {f === 'All' ? 'All Emblems' : f}
+            </button>
+          ))}
+        </div>
+
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          {filtered.map(emblem => (
+            <EmblemCard key={emblem.id} emblem={emblem} lang={lang} />
+          ))}
+        </div>
       </div>
     </div>
   );
