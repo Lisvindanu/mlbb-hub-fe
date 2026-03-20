@@ -36,7 +36,7 @@ export function Footer() {
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center space-x-2.5 mb-4">
               <img
-                src="/mlbbhub.webp"
+                src="/mlbbhub-logo.webp"
                 alt=""
                 aria-hidden="true"
                 className="w-10 h-10 object-contain"

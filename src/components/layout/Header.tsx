@@ -106,7 +106,7 @@ export function Header() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2.5 group">
             <img
-              src="/mlbbhub.webp"
+              src="/mlbbhub-logo.webp"
               alt=""
               aria-hidden="true"
               className="w-9 h-9 object-contain group-hover:scale-110 transition-transform duration-300"
