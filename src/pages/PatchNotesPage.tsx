@@ -181,6 +181,7 @@ export function PatchNotesPage() {
   const [filterType, setFilterType] = useState<FilterType>('all');
   const [selectedHero, setSelectedHero] = useState<HeroChange | null>(null);
   const [patchSearch, setPatchSearch] = useState('');
+  const [showPatchSheet, setShowPatchSheet] = useState(false);
 
   useEffect(() => {
     if (patches && patches.length > 0 && !selectedVersion) {
@@ -241,27 +242,86 @@ export function PatchNotesPage() {
           <p className="text-gray-400 text-sm md:text-base">{patches.length} patches — Liquipedia data</p>
         </div>
 
-        {/* Mobile: Patch Dropdown */}
+        {/* Mobile: Patch Picker Button */}
         <div className="lg:hidden mb-4">
-          <div className="relative">
-            <select
-              value={selectedVersion ?? ''}
-              onChange={e => {
-                setSelectedVersion(e.target.value);
-                setSearchQuery('');
-                setFilterType('all');
-              }}
-              className="w-full appearance-none bg-dark-200 border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium focus:outline-none focus:border-primary-500/50 pr-10"
-            >
-              {patches.map(patch => (
-                <option key={patch.version} value={patch.version} className="bg-dark-300">
-                  {patch.version}{patch.releaseDate ? ` — ${patch.releaseDate}` : ''}{patch.heroCount > 0 ? ` (${patch.heroCount} heroes)` : ''}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-          </div>
+          <button
+            onClick={() => setShowPatchSheet(true)}
+            className="w-full flex items-center justify-between gap-3 bg-dark-200 border border-white/10 rounded-2xl px-4 py-3.5 text-left hover:bg-dark-100 transition-colors"
+          >
+            <div>
+              <p className="text-xs text-gray-500 mb-0.5">Patch terpilih</p>
+              <p className="text-white font-bold text-lg leading-none">{selectedVersion ?? '—'}</p>
+              {currentPatch?.releaseDate && (
+                <p className="text-xs text-gray-400 mt-1">{currentPatch.releaseDate} · {currentPatch.heroCount} heroes</p>
+              )}
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <span className="text-xs text-gray-500 bg-dark-100 border border-white/10 px-2 py-1 rounded-lg">{patches.length} patch</span>
+              <ChevronDown className="w-5 h-5 text-gray-400" />
+            </div>
+          </button>
         </div>
+
+        {/* Mobile: Patch Bottom Sheet */}
+        {showPatchSheet && (
+          <div className="lg:hidden fixed inset-0 z-50 flex items-end">
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setShowPatchSheet(false)} />
+            <div className="relative w-full bg-dark-300 border-t border-white/10 rounded-t-3xl max-h-[75vh] flex flex-col">
+              {/* Handle + Header */}
+              <div className="flex-shrink-0 px-4 pt-3 pb-2">
+                <div className="w-10 h-1 bg-white/20 rounded-full mx-auto mb-4" />
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-bold text-white text-lg">Pilih Patch</h3>
+                  <button onClick={() => setShowPatchSheet(false)} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors">
+                    <X className="w-5 h-5 text-gray-400" />
+                  </button>
+                </div>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                  <input
+                    type="text"
+                    placeholder="Cari versi..."
+                    value={patchSearch}
+                    onChange={e => setPatchSearch(e.target.value)}
+                    className="w-full pl-9 pr-3 py-2.5 bg-dark-200 border border-white/10 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-primary-500/50"
+                  />
+                </div>
+              </div>
+              {/* Grid */}
+              <div className="overflow-y-auto flex-1 px-4 pb-8 pt-2">
+                <div className="grid grid-cols-3 gap-2">
+                  {filteredPatches.map(patch => {
+                    const isSelected = patch.version === selectedVersion;
+                    return (
+                      <button
+                        key={patch.version}
+                        onClick={() => {
+                          setSelectedVersion(patch.version);
+                          setSearchQuery('');
+                          setFilterType('all');
+                          setShowPatchSheet(false);
+                        }}
+                        className={`rounded-xl p-3 text-left transition-all border ${
+                          isSelected
+                            ? 'bg-primary-500/20 border-primary-500/50 text-primary-400'
+                            : 'bg-dark-200 border-white/10 text-gray-300 hover:bg-dark-100'
+                        }`}
+                      >
+                        <p className="font-bold text-sm leading-tight">{patch.version}</p>
+                        {patch.heroCount > 0 && (
+                          <p className={`text-xs mt-1 ${isSelected ? 'text-primary-400/70' : 'text-gray-500'}`}>{patch.heroCount} hero</p>
+                        )}
+                        {patch.releaseDate && (
+                          <p className={`text-xs mt-0.5 ${isSelected ? 'text-primary-400/70' : 'text-gray-500'}`}>{patch.releaseDate}</p>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left: Patch List — desktop only */}
