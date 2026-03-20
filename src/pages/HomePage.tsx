@@ -152,7 +152,6 @@ export function HomePage() {
     <div className="min-h-screen bg-dark-400">
 
       {/* Incident Banner — hidden */}
-      )}
 
       {/* Hero Section - Full Height */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
