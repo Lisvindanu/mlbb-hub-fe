@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Trophy, Users, Copy, Check, Play, Shield, LogIn, Settings,
   Gift, CalendarDays, Lock, Eye, EyeOff, MessageCircle, ScrollText,
-  ChevronLeft, X, Crown, ChevronDown, ChevronUp,
+  ChevronLeft, X, Crown, ChevronDown, ChevronUp, Upload,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useUser } from '../hooks/useUser';
@@ -44,6 +44,7 @@ interface Tournament {
   prize?: string;
   rules?: string;
   scheduled_at?: string;
+  end_date?: string;
   room_id?: string;
   room_password?: string;
   contact?: string;
@@ -54,6 +55,35 @@ async function fetchTournament(id: string): Promise<Tournament> {
   const res = await fetch(`${API_BASE}/api/tournaments/${id}`);
   if (!res.ok) throw new Error('Tournament not found');
   return res.json();
+}
+
+async function uploadLogoAsWebp(file: File, token: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = async () => {
+      URL.revokeObjectURL(url);
+      const maxSize = 256;
+      const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/webp', 0.85);
+      try {
+        const res = await fetch(`${API_BASE}/api/tournaments/upload-logo`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ image: dataUrl }),
+        });
+        if (!res.ok) throw new Error((await res.json()).error || 'Upload gagal');
+        const { url: logoUrl } = await res.json();
+        resolve(`${API_BASE}${logoUrl}`);
+      } catch (e) { reject(e); }
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Gagal membaca gambar')); };
+    img.src = url;
+  });
 }
 
 async function joinTournament(id: string, team_name: string, token: string, logo_url?: string, players?: JoinPlayer[]) {
@@ -599,11 +629,11 @@ function JoinModal({ tournamentId, token, onSuccess, onClose }: {
   }));
 
   const [teamName, setTeamName] = useState('');
-  const [logoUrl, setLogoUrl] = useState('');
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState('');
   const [players, setPlayers] = useState<JoinPlayer[]>(EMPTY_PLAYERS);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState('');
-  const [logoImgErr, setLogoImgErr] = useState(false);
 
   function updatePlayer(i: number, field: keyof JoinPlayer, value: string | boolean) {
     setPlayers(ps => ps.map((p, idx) => idx === i ? { ...p, [field]: value } : p));
@@ -618,8 +648,12 @@ function JoinModal({ tournamentId, token, onSuccess, onClose }: {
     setLoading(true);
     setErr('');
     try {
+      let finalLogoUrl: string | undefined;
+      if (logoFile) {
+        finalLogoUrl = await uploadLogoAsWebp(logoFile, token);
+      }
       const activePlayers = players.filter(p => p.player_name.trim());
-      await joinTournament(tournamentId, teamName.trim(), token, logoUrl.trim() || undefined, activePlayers.length > 0 ? activePlayers : undefined);
+      await joinTournament(tournamentId, teamName.trim(), token, finalLogoUrl, activePlayers.length > 0 ? activePlayers : undefined);
       onSuccess();
       onClose();
     } catch (e: unknown) {
@@ -676,29 +710,43 @@ function JoinModal({ tournamentId, token, onSuccess, onClose }: {
               </div>
               <div>
                 <label className="text-xs text-gray-400 mb-1.5 block">
-                  Logo Tim <span className="text-gray-600">(URL gambar, opsional)</span>
+                  Logo Tim <span className="text-gray-600">(opsional, otomatis dikonversi ke webp)</span>
                 </label>
-                <div className="flex gap-2 items-center">
-                  <input
-                    className="flex-1 bg-dark-400 border border-white/10 rounded-xl px-3 py-2.5 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-primary-500/50 transition-colors"
-                    placeholder="https://i.imgur.com/..."
-                    value={logoUrl}
-                    onChange={e => { setLogoUrl(e.target.value); setLogoImgErr(false); }}
-                  />
-                  {logoUrl.trim() && !logoImgErr ? (
-                    <img
-                      src={logoUrl.trim()}
-                      alt="preview"
-                      onError={() => setLogoImgErr(true)}
-                      className="w-10 h-10 rounded-lg object-cover border border-white/15 shrink-0"
+                <div className="flex gap-3 items-center">
+                  <label className="flex-1 flex items-center gap-2 bg-dark-400 border border-white/10 rounded-xl px-3 py-2.5 cursor-pointer hover:border-primary-500/50 transition-colors">
+                    <Upload className="w-4 h-4 text-gray-500 shrink-0" />
+                    <span className="text-sm text-gray-500 truncate">
+                      {logoFile ? logoFile.name : 'Pilih gambar...'}
+                    </span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={e => {
+                        const f = e.target.files?.[0];
+                        if (!f) return;
+                        setLogoFile(f);
+                        setLogoPreview(URL.createObjectURL(f));
+                      }}
                     />
+                  </label>
+                  {logoPreview ? (
+                    <div className="relative shrink-0">
+                      <img src={logoPreview} alt="preview" className="w-12 h-12 rounded-xl object-cover border border-white/15" />
+                      <button
+                        type="button"
+                        onClick={() => { setLogoFile(null); setLogoPreview(''); }}
+                        className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-dark-200 border border-white/20 rounded-full flex items-center justify-center hover:bg-red-500/30"
+                      >
+                        <X className="w-2.5 h-2.5 text-gray-400" />
+                      </button>
+                    </div>
                   ) : (
-                    <div className="w-10 h-10 rounded-lg bg-dark-400 border border-white/10 flex items-center justify-center shrink-0">
-                      <Shield className="w-4 h-4 text-gray-600" />
+                    <div className="w-12 h-12 rounded-xl bg-dark-400 border border-white/10 flex items-center justify-center shrink-0">
+                      <Shield className="w-5 h-5 text-gray-600" />
                     </div>
                   )}
                 </div>
-                {logoImgErr && <p className="text-[10px] text-red-400 mt-1">Gambar gagal dimuat — cek URL</p>}
               </div>
             </div>
           </div>
@@ -1009,8 +1057,18 @@ export function TournamentDetailPage() {
                   <div className="flex items-start gap-2">
                     <CalendarDays className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-[10px] text-gray-600 mb-0.5">Jadwal</p>
+                      <p className="text-[10px] text-gray-600 mb-0.5">Jadwal Mulai</p>
                       <p className="text-xs text-gray-300 leading-snug">{formatScheduled(t.scheduled_at)}</p>
+                    </div>
+                  </div>
+                )}
+
+                {t.end_date && (
+                  <div className="flex items-start gap-2">
+                    <CalendarDays className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-[10px] text-gray-600 mb-0.5">Estimasi Selesai</p>
+                      <p className="text-xs text-gray-300 leading-snug">{formatScheduled(t.end_date)}</p>
                     </div>
                   </div>
                 )}

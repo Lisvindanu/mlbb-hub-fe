@@ -33,6 +33,7 @@ interface CreateForm {
   bo_format: string;
   prize: string;
   scheduled_at: string;
+  end_date: string;
   rules: string;
   contact: string;
 }
@@ -52,6 +53,7 @@ async function createTournament(data: CreateForm, token: string) {
   };
   if (data.prize.trim()) body.prize = data.prize.trim();
   if (data.scheduled_at) body.scheduled_at = new Date(data.scheduled_at).toISOString();
+  if (data.end_date) body.end_date = new Date(data.end_date).toISOString();
   if (data.rules.trim()) body.rules = data.rules.trim();
   if (data.contact.trim()) body.contact = data.contact.trim();
 
@@ -102,6 +104,7 @@ const BLANK_FORM: CreateForm = {
   bo_format: 'BO3',
   prize: '',
   scheduled_at: '',
+  end_date: '',
   rules: '',
   contact: '',
 };
@@ -427,16 +430,29 @@ export function TournamentPage() {
                     />
                   </div>
 
-                  <div>
-                    <label className="text-xs text-gray-400 mb-1.5 flex items-center gap-1.5 block">
-                      <CalendarDays className="w-3 h-3 text-blue-400" /> Jadwal Mulai
-                    </label>
-                    <input
-                      type="datetime-local"
-                      className="w-full bg-dark-400 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary-500/50 transition-colors [color-scheme:dark]"
-                      value={form.scheduled_at}
-                      onChange={e => setField('scheduled_at', e.target.value)}
-                    />
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs text-gray-400 mb-1.5 flex items-center gap-1.5 block">
+                        <CalendarDays className="w-3 h-3 text-blue-400" /> Jadwal Mulai
+                      </label>
+                      <input
+                        type="datetime-local"
+                        className="w-full bg-dark-400 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary-500/50 transition-colors [color-scheme:dark]"
+                        value={form.scheduled_at}
+                        onChange={e => setField('scheduled_at', e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-400 mb-1.5 flex items-center gap-1.5 block">
+                        <CalendarDays className="w-3 h-3 text-red-400" /> Estimasi Selesai
+                      </label>
+                      <input
+                        type="datetime-local"
+                        className="w-full bg-dark-400 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary-500/50 transition-colors [color-scheme:dark]"
+                        value={form.end_date}
+                        onChange={e => setField('end_date', e.target.value)}
+                      />
+                    </div>
                   </div>
 
                   <div>
